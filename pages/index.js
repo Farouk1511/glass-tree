@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Divider, Grid, Rating, Typography } from "@mui/material";
 import Head from "next/head";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,9 +7,17 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import Box from "@mui/material/Box";
+
 
 const links = ["Moving", "Lawn", "Plumbing", "Carpenter", "Carpenter"];
+
+const sections = [
+  { title: "Technology", url: "#" },
+  { title: "Design", url: "#" },
+  { title: "Culture", url: "#" },
+  { title: "Business", url: "#" },
+]
+
 
 export default function Home() {
   return (
@@ -73,6 +81,7 @@ export default function Home() {
           variant="contained"
           sx={{ border: 1, borderLeft: 0, borderRadius: 0, width: 110 ,fontFamily:'rockwell',fontWeight:500,letterSpacing:1}}
           color="secondary"
+          href="/search"
         >
           Search
         </Button>
@@ -136,7 +145,7 @@ export default function Home() {
           Popular Professional services
         </Typography>
 
-        <Paper
+        {/* <Paper
           elevation={0}
           sx={{
             display: "flex",
@@ -160,7 +169,74 @@ export default function Home() {
               }}
             ></Box>
           ))}
-        </Paper>
+        </Paper> */}
+
+        <Paper elevation={0} sx={{marginTop:5}}>
+      <Grid container>
+       {sections.map((sec) => (
+        <Grid lg={3} key={sec.title} item>
+        <Card sx={{ maxWidth: 350,marginBottom:5 }} elevation={1}>
+          <CardMedia
+            component={"img"}
+            alt="image"
+            height={"150"}
+            image="https://picsum.photos/400/150"
+          />
+          <CardContent>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              sx={{ fontFamily: "rockwell", margin: 0 }}
+            >
+              Farouk Kazeem
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="body2"
+              component="span"
+              sx={{ fontFamily: "rockwell", fontWeight: 200 }}
+            >
+              Computer Programmer
+            </Typography>
+          </CardContent>
+          <CardContent sx={{ margin: 0, paddingTop: 0 }}>
+            <Typography variant="body2">
+              Currently booking new projects! Clean, efficient, quality work
+              done at a fair price. Call/Text/Email today for your free, no
+              obligation quote. Renovations, new residential builds, Commercial
+              Builds, etc.
+            </Typography>
+          </CardContent>
+          <CardContent>
+            <Rating readOnly max={5} defaultValue={5}>
+              Hello
+            </Rating>
+            <Typography
+              sx={{
+                display: "inline-block",
+                fontFamily: "rockwell",
+                fontWeight: 700,
+              }}
+              variant="caption"
+            >
+              (43k)
+            </Typography>
+          </CardContent>
+          <Divider/>
+          <CardContent sx={{display:"flex",flexDirection:'column',alignItems:"flex-end",paddingBottom:0}}>
+            <Typography sx={{fontFamily: "rockwell",
+                }}>Starting at</Typography>
+            <Typography sx={{fontFamily: "rockwell",
+                fontWeight: 700,}}>CA$40/hr</Typography>
+          </CardContent>
+        </Card>
+        </Grid>
+       ))}
+      </Grid>
+        
+      </Paper>
+    
       </Paper>
     </div>
   );

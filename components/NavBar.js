@@ -2,15 +2,15 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Box, fontSize } from "@mui/system";
 
-const pages = ["Sign Up", "Sign In"];
+const pages = [{name:"Register",href:'/register'}, {name:" Login",href:'/login'}];
 
 const NavBar = () => {
   return (
     <AppBar
       position="sticky"
-      color="transparent"
+    
       elevation={0}
-      style={{ paddingLeft: 200, paddingRight: 200}}
+      style={{ paddingLeft: 200, paddingRight: 200,zIndex:1000,backgroundColor:'#fff'}}
     >
       <Toolbar disableGutters>
         <Typography
@@ -31,7 +31,7 @@ const NavBar = () => {
         <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
             <Button
-              key={page}
+              key={page.name}
               sx={{
                 my: 2,
                 color: "primary.main",
@@ -41,9 +41,9 @@ const NavBar = () => {
                 fontSize: 20,
               }}
               color={"primary"}
-              href="/login"
+              href={page.href}
             >
-              {page}
+              {page.name}
             </Button>
           ))}
         </Box>

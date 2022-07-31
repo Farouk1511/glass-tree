@@ -1,34 +1,39 @@
 import {
   Button,
   FormControl,
-  makeStyles,
+  FormControlLabel,
   Paper,
   TextField,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import React from "react";
 
-const Login = () => {
+const Register = () => {
   return (
     <Paper
-      sx={{ height: "100vh", display: "flex", justifyContent: "center",borderRadius:0,backgroundColor: "primary.main" }}
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        borderRadius: 0,
+      }}
       elevation={0}
     >
       <Paper
         sx={{
           width: "50%",
-          backgroundColor:'transparent',
+          backgroundColor: "primary.main",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-        borderRadius:0 ,
-            
+          borderRadius: 0,
         }}
       >
         <Typography
           sx={{
-            color:'#fff',
+            color: "#fff",
             fontFamily: "rockwell",
             fontWeight: 700,
             textDecoration: "none",
@@ -43,7 +48,7 @@ const Login = () => {
         </Typography>
         <Typography
           sx={{
-            color:'#fff',
+            color: "#fff",
             fontFamily: "rockwell",
             fontWeight: 400,
             textDecoration: "none",
@@ -64,7 +69,7 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          borderRadius:0 
+          borderRadius: 0,
         }}
       >
         <Typography
@@ -76,7 +81,7 @@ const Login = () => {
             marginBottom: 10,
           }}
         >
-          Log in
+          Register
         </Typography>
 
         <FormControl
@@ -88,6 +93,34 @@ const Login = () => {
             justifyContent: "center",
           }}
         >
+          <TextField
+            sx={{
+              width: "60%",
+              marginBottom: 5,
+              borderWidth: 3,
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { border: 2, borderRadius: 0 },
+              },
+            }}
+            required
+            id="name"
+            label="Name"
+            placeholder="John Doe"
+          />
+          <TextField
+            sx={{
+              width: "60%",
+              marginBottom: 5,
+              borderWidth: 3,
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { border: 2, borderRadius: 0 },
+              },
+            }}
+            required
+            id="username"
+            label="Username"
+            placeholder="erenyaeger00"
+          />
           <TextField
             sx={{
               width: "60%",
@@ -114,7 +147,26 @@ const Login = () => {
             required
             id="password"
             label="Password"
-            placeholder="Enter your Password"
+            placeholder="Enter Password"
+          />
+          <TextField
+            sx={{
+              width: "60%",
+              marginBottom: 5,
+              borderWidth: 3,
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { border: 2, borderRadius: 0 },
+              },
+            }}
+            required
+            id="confirm-password"
+            label="Confirm Password"
+            placeholder="Re-type Password"
+          />
+
+          <FormControlLabel
+            label="By joining I agree to receive emails from GlassTree"
+            control={<Checkbox />}
           />
 
           <Button
@@ -127,12 +179,11 @@ const Login = () => {
               borderRadius: 0,
             }}
           >
-            Login
+            Create Account
           </Button>
         </FormControl>
       </Paper>
     </Paper>
   );
 };
-
-export default Login;
+export default Register;
