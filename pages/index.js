@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Divider, Grid, Rating, Typography } from "@mui/material";
+import { Card, CardActionArea, CardContent, CardMedia, Divider, Grid, Rating, Typography } from "@mui/material";
 import Head from "next/head";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
@@ -176,12 +176,15 @@ export default function Home() {
        {sections.map((sec) => (
         <Grid lg={3} key={sec.title} item>
         <Card sx={{ maxWidth: 350,marginBottom:5 }} elevation={1}>
+        <CardActionArea href="/seller">
+
           <CardMedia
             component={"img"}
             alt="image"
             height={"150"}
             image="https://picsum.photos/400/150"
           />
+        </CardActionArea>
           <CardContent>
             <Typography
               gutterBottom

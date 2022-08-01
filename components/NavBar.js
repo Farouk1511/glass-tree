@@ -1,12 +1,24 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar,Paper ,Toolbar, Typography, Button, Link } from "@mui/material";
 import { Box, fontSize } from "@mui/system";
 
 const pages = [{name:"Register",href:'/register'}, {name:" Login",href:'/login'}];
-
+const sections = [
+  { title: "Technology", url: "#" },
+  { title: "Design", url: "#" },
+  { title: "Culture", url: "#" },
+  { title: "Business", url: "#" },
+  { title: "Politics", url: "#" },
+  { title: "Opinion", url: "#" },
+  { title: "Science", url: "#" },
+  { title: "Health", url: "#" },
+  { title: "Style", url: "#" },
+  { title: "Travel", url: "#" },
+];
 const NavBar = () => {
   return (
-    <AppBar
+   <>
+     <AppBar
       position="sticky"
     
       elevation={0}
@@ -48,7 +60,11 @@ const NavBar = () => {
           ))}
         </Box>
       </Toolbar>
+
+      
     </AppBar>
+   
+   </>
   );
 };
 
