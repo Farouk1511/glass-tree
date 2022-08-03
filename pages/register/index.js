@@ -7,9 +7,18 @@ import {
   Typography,
   Checkbox,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { signup } from "../../firbase/utilities";
 
 const Register = () => {
+
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+
+    const handleSubmit = async() => {
+        const user = await signup(email,password)
+        console.log(user)
+    }
   return (
     <Paper
       sx={{
@@ -134,6 +143,7 @@ const Register = () => {
             id="email"
             label="Email"
             placeholder="joe@email.com"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             sx={{
@@ -148,6 +158,7 @@ const Register = () => {
             id="password"
             label="Password"
             placeholder="Enter Password"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             sx={{
@@ -178,6 +189,7 @@ const Register = () => {
               fontFamily: "rockwell",
               borderRadius: 0,
             }}
+            onClick={handleSubmit}
           >
             Create Account
           </Button>

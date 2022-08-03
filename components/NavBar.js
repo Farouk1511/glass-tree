@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar,Paper ,Toolbar, Typography, Button, Link } from "@mui/material";
 import { Box, fontSize } from "@mui/system";
-
+import { useUser } from "@auth0/nextjs-auth0";
 const pages = [{name:"Register",href:'/register'}, {name:" Login",href:'/login'}];
 const sections = [
   { title: "Technology", url: "#" },
@@ -16,6 +16,8 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 const NavBar = () => {
+const {user,error,isLoading} = useUser()
+
   return (
    <>
      <AppBar
@@ -55,7 +57,7 @@ const NavBar = () => {
               color={"primary"}
               href={page.href}
             >
-              {page.name}
+              {user?'Logout':page.name}
             </Button>
           ))}
         </Box>

@@ -6,9 +6,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { signin } from "../../firbase/utilities";
 
 const Login = () => {
+
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+    const [user,setUser] = useState(null)
+
+    const handleSubmit = async() => {
+        const user_firebase = await signin(email,password)
+        setUser(user_firebase) 
+    }
+
   return (
     <Paper
       sx={{ height: "100vh", display: "flex", justifyContent: "center",borderRadius:0,backgroundColor: "primary.main" }}
@@ -39,7 +50,7 @@ const Login = () => {
           color="primary"
           margin={"dense"}
         >
-          GlassTree
+          {user?"Logged In":" GlassTree"}
         </Typography>
         <Typography
           sx={{
@@ -101,6 +112,7 @@ const Login = () => {
             id="email"
             label="Email"
             placeholder="joe@email.com"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             sx={{
@@ -115,6 +127,8 @@ const Login = () => {
             id="password"
             label="Password"
             placeholder="Enter your Password"
+            type={"password"}
+            onChange ={(e) => setPassword(e.target.value)}
           />
 
           <Button
@@ -126,6 +140,7 @@ const Login = () => {
               fontFamily: "rockwell",
               borderRadius: 0,
             }}
+            onClick={handleSubmit}
           >
             Login
           </Button>
