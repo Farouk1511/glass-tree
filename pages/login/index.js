@@ -10,36 +10,40 @@ import React, { useState } from "react";
 import { signin } from "../../firbase/utilities";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const [user,setUser] = useState(null)
-
-    const handleSubmit = async() => {
-        const user_firebase = await signin(email,password)
-        setUser(user_firebase) 
-    }
+  const handleSubmit = async () => {
+    const user_firebase = await signin(email, password);
+    setUser(user_firebase);
+  };
 
   return (
     <Paper
-      sx={{ height: "100vh", display: "flex", justifyContent: "center",borderRadius:0,backgroundColor: "primary.main" }}
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        borderRadius: 0,
+        backgroundColor: "primary.main",
+      }}
       elevation={0}
     >
       <Paper
         sx={{
           width: "50%",
-          backgroundColor:'transparent',
+          backgroundColor: "transparent",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-        borderRadius:0 ,
-            
+          borderRadius: 0,
         }}
       >
         <Typography
           sx={{
-            color:'#fff',
+            color: "#fff",
             fontFamily: "rockwell",
             fontWeight: 700,
             textDecoration: "none",
@@ -50,11 +54,11 @@ const Login = () => {
           color="primary"
           margin={"dense"}
         >
-          {user?"Logged In":" GlassTree"}
+          {user ? "Logged In" : " GlassTree"}
         </Typography>
         <Typography
           sx={{
-            color:'#fff',
+            color: "#fff",
             fontFamily: "rockwell",
             fontWeight: 400,
             textDecoration: "none",
@@ -75,7 +79,7 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          borderRadius:0 
+          borderRadius: 0,
         }}
       >
         <Typography
@@ -128,7 +132,7 @@ const Login = () => {
             label="Password"
             placeholder="Enter your Password"
             type={"password"}
-            onChange ={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button

@@ -18,6 +18,8 @@ import { Box } from "@mui/system";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from "../../firbase/utilities";
 
 const pages = [
   { name: "Register", href: "/register" },
@@ -39,6 +41,9 @@ const sections = [
 
 
 const SearchPage = () => {
+
+  const [user,loading,error] = useAuthState(auth)
+
   return (
     <>
       {/* Nav */}
@@ -95,7 +100,7 @@ const SearchPage = () => {
               <SearchIcon />
             </IconButton>
           </Paper>
-          <Avatar sx={{ backgroundColor: "secondary.main" }}>F</Avatar>
+          <Avatar sx={{ backgroundColor: "secondary.main" }}>{user?user.email.split('')[0].toLocaleUpperCase():'F'}</Avatar>
         </Toolbar>
       </AppBar>
 

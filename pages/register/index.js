@@ -8,17 +8,41 @@ import {
   Checkbox,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useRouter } from 'next/router'
 import { signup } from "../../firbase/utilities";
 
 const Register = () => {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const router = useRouter()
 
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
+  const handleSubmit = async () => {
+    try {
+      const firebase_user = await signup(email, password);
+      const user = {
+        name,
+        email,
+        username,
+        uid: firebase_user.user.uid,
+      };
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
 
-    const handleSubmit = async() => {
-        const user = await signup(email,password)
-        console.log(user)
+      console.log(response.json())
+      router.push('/login')
+      
+    } catch (err) {
+      console.log(err);
     }
+  };
   return (
     <Paper
       sx={{
@@ -115,6 +139,7 @@ const Register = () => {
             id="name"
             label="Name"
             placeholder="John Doe"
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             sx={{
@@ -129,6 +154,7 @@ const Register = () => {
             id="username"
             label="Username"
             placeholder="erenyaeger00"
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             sx={{

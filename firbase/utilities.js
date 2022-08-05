@@ -9,4 +9,4 @@ const signup = (email,password) => {
 const signin = (email,password) => {
     return signInWithEmailAndPassword(auth,email,password)
 }
-export  {signup,signin}
+export  {signup,signin,auth}
