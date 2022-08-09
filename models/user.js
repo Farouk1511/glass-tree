@@ -33,3 +33,8 @@ const UserSchema = new Schema({
 const User = models.User || model('User',UserSchema)
 
 export default User
+
+/**To do
+ * add  rating
+ * add total number od reviews  
+ */
