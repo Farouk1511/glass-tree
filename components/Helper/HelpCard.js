@@ -43,10 +43,10 @@ const HelpCard = ({ helper }) => {
           </Typography>
         </CardContent>
         <CardContent sx={{ margin: 0, paddingTop: 0 }}>
-          <Typography variant="body2">{helper.helperDescription}</Typography>
+          <Typography variant="body2">{helper.description}</Typography>
         </CardContent>
         <CardContent>
-          <Rating readOnly max={5} defaultValue={helper.averageRating} />
+          <Rating readOnly max={5} defaultValue={helper.user?.averageRating || 5} />
 
           <Typography
             sx={{
@@ -56,7 +56,7 @@ const HelpCard = ({ helper }) => {
             }}
             variant="caption"
           >
-            {helper.totalRatings}K
+            {helper.user?.totalRatings}K
           </Typography>
         </CardContent>
         <Divider />
@@ -70,7 +70,7 @@ const HelpCard = ({ helper }) => {
         >
           <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
           <Typography sx={{ fontFamily: "rockwell", fontWeight: 700 }}>
-            CA${helper.ratePerHour}/hr
+            CA${helper.user?.ratePerHour}/hr
           </Typography>
         </CardContent>
       </Card>
@@ -88,7 +88,7 @@ HelpCard.defaultProps = {
     helper:{
         uid:"dsjhdksdjs",
         name:"John Doe",
-        helperDescription:"Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+        description:"Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
         title:"job/help title",
         averageRating:4.5,
         totalRatings:50,

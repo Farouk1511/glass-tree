@@ -1,18 +1,10 @@
 import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  Rating,
   Typography,
 } from "@mui/material";
 import Head from "next/head";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import NavBar from "../components/NavBar";
-import HelpCard from "../components/Helper/HelpCard";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -28,7 +20,20 @@ const sections = [
   { title: "Business", url: "#" },
 ];
 
-export default function Home() {
+export async function getStaticProps(){
+  const services = await fetch('http://localhost:3000/api/service/list')
+  console.log(services)
+  const servicesData = await services.json()
+
+  return {
+    props:{
+      helperList:servicesData
+    },
+    revalidate:600
+  }
+}
+
+export default function Home({helperList}) {
   return (
     <div>
       <Head>
@@ -187,7 +192,7 @@ export default function Home() {
           ))}
         </Paper> */}
 
-       <HelpCardGrid marginTop={5}/>
+       <HelpCardGrid marginTop={5} helperList={helperList}/>
       </Paper>
     </div>
   );

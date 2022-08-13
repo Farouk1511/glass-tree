@@ -134,7 +134,7 @@ const HelperProfile = ({helper}) => {
 HelperProfile.propTypes = {
   helper: PropTypes.objectOf(
     HelperShape
-  ).isRequired,
+  ),
 };
 
 HelperProfile.defaultProps = {

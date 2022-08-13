@@ -27,6 +27,15 @@ const UserSchema = new Schema({
         trim:true,
         required:'Username is required',
         unique:true
+    },
+    totalRatings:{
+        type:Number
+    },
+    averageRating:{
+        type:Number
+    },
+    ratingPerHour:{
+        type: Number
     }
 })
 

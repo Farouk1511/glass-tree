@@ -1,15 +1,18 @@
-import { find } from "lodash"
-import Service from "../../../../models/service"
+import Service from "../../../../models/service";
+import connectMongo from "../../../../utils/connectMongo";
 
-const handler = async (req,res) => {
 
-    try{
-        const services = await Service.find()
-        res.json(services)
+const handler = async (req, res) => {
+  try {
+    console.log("Connecting to DB");
+    await connectMongo();
+    console.log("Succesfully connected DB");
 
-    }catch(err){
-        res.json(err)
-    }
-}
+    const services = await Service.find({}).populate('user');
+    res.json(services);
+  } catch (err) {
+    res.json(err);
+  }
+};
 
-export default handler
+export default handler;

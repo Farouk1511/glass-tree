@@ -9,7 +9,7 @@ const HelpCardGrid = ({ helperList,marginTop,marginLeft,marginRight }) => {
     <Paper elevation={0}  sx={{ marginLeft: marginLeft , marginRight: marginRight, marginTop: marginTop }}>
       <Grid container>
         {helperList.map((helper) => (
-          <HelpCard key={helper.uid} />
+          <HelpCard key={helper.uid} helper={helper} />
         ))}
       </Grid>
     </Paper>
@@ -28,7 +28,7 @@ HelpCardGrid.defaultProps = {
     {
       uid: "dsjhdksdjs",
       name: "John Doe",
-      helperDescription:
+      description:
         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
       title: "job/help title",
       averageRating: 4.5,
@@ -38,7 +38,7 @@ HelpCardGrid.defaultProps = {
     {
       uid: "dsjhfdksdjs",
       name: "John Doe",
-      helperDescription:
+      description:
         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
       title: "job/help title",
       averageRating: 4.5,
@@ -48,7 +48,7 @@ HelpCardGrid.defaultProps = {
     {
       uid: "dsjhdsksdjs",
       name: "John Doe",
-      helperDescription:
+      description:
         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
       title: "job/help title",
       averageRating: 4.5,
@@ -58,7 +58,7 @@ HelpCardGrid.defaultProps = {
     {
       uid: "dsr4jhdksdjs",
       name: "John Doe",
-      helperDescription:
+      description:
         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
       title: "job/help title",
       averageRating: 4.5,
