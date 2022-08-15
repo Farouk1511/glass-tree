@@ -4,7 +4,7 @@ import {
 import Head from "next/head";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
-import NavBar from "../components/NavBar";
+import MainNav from "../components/Navigation/MainNav";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -42,7 +42,7 @@ export default function Home({helperList}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <NavBar />
+      <MainNav />
 
       <Paper
         sx={{
