@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   FormControl,
   makeStyles,
@@ -7,20 +8,33 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import Error from "../../components/Error/Error";
 import { signin } from "../../firbase/utilities";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [error,setError] = useState("")
 
   const handleSubmit = async () => {
-    const user_firebase = await signin(email, password);
+    try{
+      const user_firebase = await signin(email, password);
     setUser(user_firebase);
+
+    }catch(err){
+      console.log(err)
+      setError(err.message)
+     
+    }
+    
   };
 
   return (
-    <Paper
+    <>
+
+    {error && <Error message={error} closeFunc={() => setError("")}/>}
+   <Paper
       sx={{
         height: "100vh",
         display: "flex",
@@ -30,6 +44,8 @@ const Login = () => {
       }}
       elevation={0}
     >
+    {/* {error && <Error message={error}/>} */}
+    
       <Paper
         sx={{
           width: "50%",
@@ -151,6 +167,8 @@ const Login = () => {
         </FormControl>
       </Paper>
     </Paper>
+    </>
+   
   );
 };
 
