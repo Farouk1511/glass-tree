@@ -13,10 +13,10 @@ import {
     TextField,
   } from "@mui/material";
   import PropTypes from 'prop-types'
-import HelperShape from "./Utils";
+import PostShape from "./Utils";
 
 
-const HelperProfile = ({helper}) => {
+const PostDetails = ({post}) => {
 
     return (
         <Paper
@@ -31,7 +31,7 @@ const HelperProfile = ({helper}) => {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          {helper.title}
+          {post.title}
         </Typography>
 
         <Paper
@@ -45,9 +45,9 @@ const HelperProfile = ({helper}) => {
         >
           <Card elevation={0} sx={{ width: 750 }}>
             <CardHeader
-              avatar={<Avatar>{helper.name.split("")[0]}</Avatar>}
-              title={helper.title}
-              subheader={<Rating readOnly value={helper.averageRating} />}
+              avatar={<Avatar>{post.user.name.split("")[0]}</Avatar>}
+              title={post.title}
+              subheader={<Rating readOnly value={post.user.averageRating?post.user.averageRating:4 } />}
             />
             <CardMedia
               component={"img"}
@@ -60,7 +60,7 @@ const HelperProfile = ({helper}) => {
                 Description
               </Typography>
               <Typography variant="body2" color="text.secondary">
-               {helper.helperDescription}
+               {post.description}
               </Typography>
             </CardContent>
           </Card>
@@ -80,7 +80,7 @@ const HelperProfile = ({helper}) => {
           >
             <CardContent>
               <Typography variant="h5" sx={{ marginBottom: 4 }}>
-                Contact Helper
+                Contact Me
               </Typography>
             </CardContent>
             <CardContent sx={{ padding: 0 }}>
@@ -104,8 +104,8 @@ const HelperProfile = ({helper}) => {
         <Card sx={{ border: 2, borderRadius: 3, width: 350, marginBottom: 5 }}>
           <CardHeader
             sx={{ margin: 0, marginLeft: 2, marginTop: 1, padding: 0 }}
-            title={"Farouk Kazeem"}
-            avatar={<Avatar>{helper.name.split("")[0]}</Avatar>}
+            title={post.user.name}
+            avatar={<Avatar>{post.user.name.split("")[0]}</Avatar>}
           />
           <CardContent sx={{ margin: 0, marginLeft: 9, padding: 0 }}>
             <Typography
@@ -114,7 +114,7 @@ const HelperProfile = ({helper}) => {
               component="div"
               sx={{ marginLeft: 0, padding: 0 }}
             >
-              {helper.title}
+              {post.title}
             </Typography>
             <Rating readOnly value={5} />
           </CardContent>
@@ -131,21 +131,21 @@ const HelperProfile = ({helper}) => {
     )
 }
 
-HelperProfile.propTypes = {
-  helper: PropTypes.objectOf(
-    HelperShape
+PostDetails.propTypes = {
+  post: PropTypes.objectOf(
+    PostShape
   ),
 };
 
-HelperProfile.defaultProps = {
-    helper:{
+PostDetails.defaultProps = {
+    post:{
         uid:"dsjhdksdjs",
         name:"John Doe",
-        helperDescription:"Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+        description:"Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
         title:"job/help title",
         averageRating:4.5,
         totalRatings:50,
         ratePerHour:40
     }
 }
-export default HelperProfile
+export default PostDetails

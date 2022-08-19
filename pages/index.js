@@ -1,6 +1,4 @@
-import {
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import Head from "next/head";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,8 +8,11 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import HelpCardGrid from "../components/Helper/HelpCardGrid";
-
-const links = ["Moving", "Lawn", "Plumbing", "Carpenter", "Carpenter"];
+import { useState } from "react";
+import Service from "../models/service";
+import connectMongo from "../utils/connectMongo";
+import User from "../models/user";
+const links = ["Moving", "Lawn", "Plumbing", "Carpenter"];
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -20,20 +21,26 @@ const sections = [
   { title: "Business", url: "#" },
 ];
 
-export async function getStaticProps(){
-  const services = await fetch('http://localhost:3000/api/service/list')
-  console.log(services)
-  const servicesData = await services.json()
+export async function getStaticProps() {
+  console.log("Connecting to DB");
+  await connectMongo();
+  console.log("Succesfully connected DB");
+
+  const services = await Service.find({}).populate({
+    path: "user",
+    model: User,
+  }).limit(4);
 
   return {
-    props:{
-      helperList:servicesData
+    props: {
+      helperList: JSON.parse(JSON.stringify(services)),
     },
-    revalidate:600
-  }
+  };
 }
 
-export default function Home({helperList}) {
+export default function Home({ helperList }) {
+  console.log(helperList);
+
   return (
     <div>
       <Head>
@@ -192,7 +199,7 @@ export default function Home({helperList}) {
           ))}
         </Paper> */}
 
-       <HelpCardGrid marginTop={5} helperList={helperList}/>
+        <HelpCardGrid marginTop={5} helperList={helperList} />
       </Paper>
     </div>
   );

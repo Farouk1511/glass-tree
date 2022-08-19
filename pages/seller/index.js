@@ -1,29 +1,7 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Paper,
-  Link,
-  Avatar,
-  Card,
-  CardMedia,
-  CardContent,
-  Rating,
-  Grid,
-  Divider,
-  CardHeader,
-  CardActions,
-  TextField,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import HelperProfile from "../../components/Helper/HelperProfile";
 import NavBar from "../../components/Navigation/NavBar";
 import Categories from "../../components/Navigation/Categories";
+import PostDetails from "../../components/Helper/HelperProfile";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -46,7 +24,7 @@ const Seller = () => {
       {/* Categories */}
       <Categories sections={sections}/>
 
-      <HelperProfile/>
+      <PostDetails />
      
     </>
   );

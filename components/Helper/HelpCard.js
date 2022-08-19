@@ -10,13 +10,14 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import HelperShape from "./Utils";
+import PostShape from "./Utils";
 
-const HelpCard = ({ helper }) => {
+const HelpCard = ({ post }) => {
+  
   return (
-    <Grid lg={3}  item>
+    <Grid lg={3} item>
       <Card sx={{ maxWidth: 350, marginBottom: 5 }} elevation={1}>
-        <CardActionArea href="/seller">
+        <CardActionArea href={`/seller/${post._id}`}>
           <CardMedia
             component={"img"}
             alt="image"
@@ -31,7 +32,7 @@ const HelpCard = ({ helper }) => {
             component="div"
             sx={{ fontFamily: "rockwell", margin: 0 }}
           >
-            {helper.name}
+            {post.name}
           </Typography>
           <Typography
             gutterBottom
@@ -39,14 +40,18 @@ const HelpCard = ({ helper }) => {
             component="span"
             sx={{ fontFamily: "rockwell", fontWeight: 200 }}
           >
-            {helper.title}
+            {post.title}
           </Typography>
         </CardContent>
         <CardContent sx={{ margin: 0, paddingTop: 0 }}>
-          <Typography variant="body2">{helper.description}</Typography>
+          <Typography variant="body2">{post.description}</Typography>
         </CardContent>
         <CardContent>
-          <Rating readOnly max={5} defaultValue={helper.user?.averageRating || 5} />
+          <Rating
+            readOnly
+            max={5}
+            defaultValue={post.user?.averageRating || 5}
+          />
 
           <Typography
             sx={{
@@ -56,7 +61,7 @@ const HelpCard = ({ helper }) => {
             }}
             variant="caption"
           >
-            {helper.user?.totalRatings}K
+            {post.user?.totalRatings}K
           </Typography>
         </CardContent>
         <Divider />
@@ -70,7 +75,7 @@ const HelpCard = ({ helper }) => {
         >
           <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
           <Typography sx={{ fontFamily: "rockwell", fontWeight: 700 }}>
-            CA${helper.user?.ratePerHour}/hr
+            CA${post.user?.ratePerHour}/hr
           </Typography>
         </CardContent>
       </Card>
@@ -79,21 +84,20 @@ const HelpCard = ({ helper }) => {
 };
 
 HelpCard.propTypes = {
-  helper: PropTypes.objectOf(
-    HelperShape
-  ).isRequired,
+  post: PropTypes.objectOf(PostShape).isRequired,
 };
 
-HelpCard.defaultProps = {
-    helper:{
-        uid:"dsjhdksdjs",
-        name:"John Doe",
-        description:"Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-        title:"job/help title",
-        averageRating:4.5,
-        totalRatings:50,
-        ratePerHour:40
-    }
-}
+// HelpCard.defaultProps = {
+//   post: {
+//     _id: "dsjhdksdjs",
+//     name: "John Doe",
+//     description:
+//       "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//     title: "job/help title",
+//     averageRating: 4.5,
+//     totalRatings: 50,
+//     ratePerHour: 40,
+//   },
+// };
 
 export default HelpCard;

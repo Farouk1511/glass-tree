@@ -36,7 +36,8 @@ const UserSchema = new Schema({
     },
     ratingPerHour:{
         type: Number
-    }
+    },
+   
 })
 
 const User = models.User || model('User',UserSchema)

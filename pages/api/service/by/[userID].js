@@ -2,7 +2,10 @@ import Service from "../../../../models/service";
 import User from "../../../../models/user";
 import connectMongo from "../../../../utils/connectMongo";
 
-const create = async (req, res) => {
+
+
+
+const handler = async (req, res) => {
   try {
     console.log("Connecting to DB");
     await connectMongo();
@@ -10,6 +13,7 @@ const create = async (req, res) => {
 
     console.log("Registering....");
     const { userID } = req.query;
+  
 
     if (!userID) return;
 
@@ -17,7 +21,7 @@ const create = async (req, res) => {
 
     if (!req.body) return;
 
-    console.log(user);
+    // console.log(user);
 
     const service = new Service(req.body);
     service.user = user;
@@ -31,4 +35,4 @@ const create = async (req, res) => {
 
 
 
-export default create;
+export default handler;

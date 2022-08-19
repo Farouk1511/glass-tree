@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 
- const HelperShape = PropTypes.shape({
+ const PostShape = PropTypes.shape({
+    _id:PropTypes.string.isRequired,
     uid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     helperDescription: PropTypes.string.isRequired,
@@ -10,4 +11,4 @@ import PropTypes from 'prop-types'
     ratePerHour: PropTypes.number.isRequired,
   })
 
-  export default HelperShape
+  export default PostShape

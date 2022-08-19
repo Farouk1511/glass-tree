@@ -4,6 +4,9 @@ import { Typography, Paper } from "@mui/material";
 import HelpCardGrid from "../../components/Helper/HelpCardGrid";
 import NavBar from "../../components/Navigation/NavBar";
 import Categories from "../../components/Navigation/Categories";
+import Service from "../../models/service";
+import connectMongo from "../../utils/connectMongo";
+import User from "../../models/user";
 
 const pages = [
   { name: "Register", href: "/register" },
@@ -23,7 +26,29 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 
-const SearchPage = () => {
+export async function getStaticProps() {
+  
+    console.log("Connecting to DB");
+    await connectMongo();
+    console.log("Succesfully connected DB");
+
+    const services = await Service.find({})
+      .populate({
+        path: "user",
+        model: User,
+      })
+
+      // console.log(services)
+    return {
+      props: {
+        postings: JSON.parse(JSON.stringify(services)),
+      },
+    };
+  
+}
+
+//Start changing all lists to posting instead of helperService or jobListing for componets
+const SearchPage = ({ postings }) => {
   return (
     <>
       {/* Nav */}
@@ -45,7 +70,7 @@ const SearchPage = () => {
         </Typography>
       </Paper>
 
-      <HelpCardGrid marginLeft={20} marginRight={20} marginTop={5} />
+      <HelpCardGrid marginLeft={20} marginRight={20} marginTop={5} postings={postings} />
     </>
   );
 };

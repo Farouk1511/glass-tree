@@ -47,7 +47,7 @@ const Categories = ({ sections }) => {
   );
 };
 
-Categories.PropTypes = {
+Categories.propTypes = {
   section: PropTypes.array.isRequired,
 };
 
