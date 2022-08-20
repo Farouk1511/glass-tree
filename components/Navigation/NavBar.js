@@ -12,6 +12,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firbase/utilities";
+import ProfileAvatar from "./ProfileAvatar";
 
 const NavBar = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -77,9 +78,10 @@ const NavBar = () => {
               <SearchIcon />
             </IconButton>
           </Paper>
-          <Avatar sx={{ backgroundColor: "secondary.main" }}>
+          {/* <Avatar sx={{ backgroundColor: "secondary.main" }}>
             {user ? user.email.split("")[0].toLocaleUpperCase() : "F"}
-          </Avatar>
+          </Avatar> */}
+          {user && <ProfileAvatar name={user.email?user.email: 'J'}/>}
         </Toolbar>
       </AppBar>
     </>
