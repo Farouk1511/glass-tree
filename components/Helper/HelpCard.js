@@ -10,7 +10,7 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import PostShape from "./Utils";
+import PostShape from "./PostShape";
 
 const HelpCard = ({ post }) => {
   
@@ -75,7 +75,7 @@ const HelpCard = ({ post }) => {
         >
           <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
           <Typography sx={{ fontFamily: "rockwell", fontWeight: 700 }}>
-            CA${post.user?.ratePerHour}/hr
+            CA${post.ratePerHour}/hr
           </Typography>
         </CardContent>
       </Card>

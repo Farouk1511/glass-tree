@@ -29,17 +29,17 @@ export async function getStaticProps() {
   const services = await Service.find({}).populate({
     path: "user",
     model: User,
-  }).limit(4);
+  }).limit(4).exec();
 
   return {
     props: {
-      helperList: JSON.parse(JSON.stringify(services)),
+      postings: JSON.parse(JSON.stringify(services)),
     },
   };
 }
 
-export default function Home({ helperList }) {
-  console.log(helperList);
+export default function Home({ postings }) {
+  console.log(postings);
 
   return (
     <div>
@@ -199,7 +199,7 @@ export default function Home({ helperList }) {
           ))}
         </Paper> */}
 
-        <HelpCardGrid marginTop={5} helperList={helperList} />
+        <HelpCardGrid marginTop={5} postings={postings} />
       </Paper>
     </div>
   );

@@ -26,6 +26,10 @@ const ServiceSchema = new Schema({
         default:Date.now
     },
     updated:Date,
+    ratePerHour:{
+        type:Number,
+        required:"Rate is required"
+    }
     
 })
 

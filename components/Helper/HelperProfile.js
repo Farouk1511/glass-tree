@@ -13,7 +13,7 @@ import {
     TextField,
   } from "@mui/material";
   import PropTypes from 'prop-types'
-import PostShape from "./Utils";
+import PostShape from "./PostShape";
 
 
 const PostDetails = ({post}) => {

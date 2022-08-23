@@ -1,7 +1,8 @@
 import React from "react";
-import { AppBar,Paper ,Toolbar, Typography, Button, Link } from "@mui/material";
-import { Box, fontSize } from "@mui/system";
-import { useUser } from "@auth0/nextjs-auth0";
+import { AppBar,Box ,Toolbar, Typography, Button, Link } from "@mui/material";
+
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firbase/utilities";
 const pages = [{name:"Register",href:'/register'}, {name:" Login",href:'/login'}];
 const sections = [
   { title: "Technology", url: "#" },
@@ -16,7 +17,7 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 const NavBar = () => {
-const {user,error,isLoading} = useUser()
+const [user,error,isLoading] = useAuthState(auth)
 
   return (
    <>
@@ -57,7 +58,7 @@ const {user,error,isLoading} = useUser()
               color={"primary"}
               href={page.href}
             >
-              {user?'Logout':page.name}
+              {page.name}
             </Button>
           ))}
         </Box>

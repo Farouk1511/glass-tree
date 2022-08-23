@@ -16,11 +16,11 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <UserProvider>
+    
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
-    </UserProvider>
+    
   );
 }
 

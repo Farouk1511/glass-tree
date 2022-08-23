@@ -1,34 +1,48 @@
 import {
-  Alert,
   Button,
   FormControl,
-  makeStyles,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Error from "../../components/Error/Error";
 import { signin } from "../../firbase/utilities";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+
   const handleSubmit = async () => {
     try {
-      const user_firebase = await signin(email, password);
-      setUser(user_firebase);
+      await signin(values.email, values.password);
       router.push("/search");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setError(err.message);
     }
   };
+
+  const handleChanges = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  // useEffect(() => {
+  //   try {
+  //     await signin(values.email, values.password);
+  //     router.push("/search");
+  //   } catch (err) {
+  //     // console.log(err);
+  //     setError(err.message);
+  //   }
+
+  // },[values])
 
   return (
     <>
@@ -68,9 +82,7 @@ const Login = () => {
             href="/"
             color="primary"
             margin={"dense"}
-          >
-            {user ? "Logged In" : " GlassTree"}
-          </Typography>
+          ></Typography>
           <Typography
             sx={{
               color: "#fff",
@@ -131,7 +143,7 @@ const Login = () => {
               id="email"
               label="Email"
               placeholder="joe@email.com"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChanges("email")}
             />
             <TextField
               sx={{
@@ -147,7 +159,7 @@ const Login = () => {
               label="Password"
               placeholder="Enter your Password"
               type={"password"}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChanges("password")}
             />
 
             <Button
