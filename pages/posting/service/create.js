@@ -11,10 +11,66 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../../../components/Navigation/NavBar";
 import AddIcon from "@mui/icons-material/Add";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../firbase/utilities";
+import Media from "../../../components/Media";
+import { useRouter } from "next/router";
+import { cloneDeep } from "lodash";
 const Create = () => {
+  const router = useRouter()
+  const [values, setValues] = useState({
+    title: "",
+    ratePerHour: 0,
+    description: "",
+    images: [],
+    image:null,
+    file:null
+  });
+ 
+
+  const onChange = (imageList, addUpdatedIndex) => {
+    console.log(imageList[0].file.type, addUpdatedIndex);
+   
+    setValues({...values,image:cloneDeep(imageList[0]),file:imageList[0].file})
+    console.log(values)
+  };
+
+  const [ user, loading, error ] = useAuthState(auth);
+
+
+  const handleChange = (name) => (event) => {
+    if(name === 'ratePerHour'){
+      setValues({ ...values, [name]: +event.target.value });
+    }else{
+
+      setValues({ ...values, [name]: event.target.value });
+    }
+    
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log(values)
+      const result = await fetch(
+        `http://localhost:3000/api/service/by/${user.uid}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+      router.push(`http://localhost:3000/my-account/${user.uid}`)
+      console.log(result)
+    } catch (err) {
+      console.log(err)
+    }
+  };
   return (
     <>
       <NavBar />
@@ -63,7 +119,7 @@ const Create = () => {
             id="title"
             label="Title"
             placeholder="Cleaning Service"
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleChange("title")}
           />
           <TextField
             sx={{
@@ -78,7 +134,7 @@ const Create = () => {
             id="ratePerHour"
             label="Rate Per Hour"
             placeholder="$50"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleChange("ratePerHour")}
           />
           <TextField
             sx={{
@@ -92,7 +148,7 @@ const Create = () => {
             required
             id="description"
             label="Description"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleChange("description")}
             multiline
             rows={4}
           />
@@ -107,7 +163,7 @@ const Create = () => {
         </Box>
         <Divider variant="fullWidth" />
 
-        <Card
+        {/* <Card
           sx={{
             marginTop: 5,
             width: "30%",
@@ -115,26 +171,48 @@ const Create = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            border:2,
-            height:'15vh'
+            border: 2,
+            height: "15vh",
           }}
-        elevation={0}>
-          <CardActionArea sx={{width:"100%",height:'100%',display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",}}>
-           <CardContent>
-          
-              <AddIcon fontSize="large"/>
-           
-           </CardContent>
+          elevation={0}
+        >
+          <CardActionArea
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            
+          >
+            <CardContent>
+              <AddIcon fontSize="large" />
+            </CardContent>
           </CardActionArea>
-        </Card>
-
-        <Button variant="contained" color="secondary" sx={{width:"10%", marginTop:10}} >Create</Button>
+        </Card> */}
+        <Media onChange={onChange} image={values.image}/>
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ width: "10%", marginTop: 10 }}
+          onClick={handleSubmit}
+        >
+          Create
+        </Button>
       </Paper>
     </>
   );
 };
+
+export const config = {
+  api: {
+      bodyParser: {
+          sizeLimit: '4mb' // Set desired value here
+      }
+  }
+}
+
 
 export default Create;

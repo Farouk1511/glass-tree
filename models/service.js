@@ -11,6 +11,10 @@ const ServiceSchema = new Schema({
        
         
     }],
+    image:{
+        data:Buffer,
+        contentType:String
+    },
     description:{
         type:String,
         required:"A description is required",
@@ -35,4 +39,4 @@ const ServiceSchema = new Schema({
 
 const Service = models.Service || model("Service",ServiceSchema)
 
-export default Service
+export default Service 

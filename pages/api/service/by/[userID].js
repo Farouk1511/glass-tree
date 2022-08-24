@@ -25,6 +25,12 @@ const handler = async (req, res) => {
 
     const service = new Service(req.body);
     service.user = user;
+
+    if(req.body.image){
+      service.image.data = req.body.image.data_url
+      service.image.contentType = 'image/png'
+    }
+
     const result = await service.save();
     return res.json({ result });
   } catch (err) {
