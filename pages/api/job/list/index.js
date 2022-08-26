@@ -8,7 +8,7 @@ const handler = async (req,res) => {
         await connectMongo()
         console.log("Connected to DB")
 
-        const jobs = await Job.find({}).populate({path:'user',model:User})
+        const jobs = await Job.find({}).select('-image').populate({path:'user',model:User})
 
         return await res.json({message:'Successful',jobs})
     }catch(err){

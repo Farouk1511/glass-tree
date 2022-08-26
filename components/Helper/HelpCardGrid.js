@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import PostShape from "./PostShape";
 
 const HelpCardGrid = ({ postings, marginTop, marginLeft, marginRight }) => {
+
+  console.log(postings)
   return (
     <Paper
       elevation={0}

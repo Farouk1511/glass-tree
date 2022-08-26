@@ -20,40 +20,42 @@ import Media from "../../../components/Media";
 import { useRouter } from "next/router";
 import { cloneDeep } from "lodash";
 const Create = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [values, setValues] = useState({
     title: "",
     ratePerHour: 0,
     description: "",
     images: [],
-    image:null,
-    file:null
   });
- 
+  const [image, setImage] = useState(null);
 
   const onChange = (imageList, addUpdatedIndex) => {
-    console.log(imageList[0].file.type, addUpdatedIndex);
-   
-    setValues({...values,image:cloneDeep(imageList[0]),file:imageList[0].file})
-    console.log(values)
+    try {
+      console.log(imageList, addUpdatedIndex);
+
+      setImage(imageList[0]);
+    } catch (err) {
+      console.log(err);
+    } // console.log(values)
   };
 
-  const [ user, loading, error ] = useAuthState(auth);
+  const  onImageRemove  = () => {
+    setImage(null)
+  }
 
+  const [user, loading, error] = useAuthState(auth);
 
   const handleChange = (name) => (event) => {
-    if(name === 'ratePerHour'){
+    if (name === "ratePerHour") {
       setValues({ ...values, [name]: +event.target.value });
-    }else{
-
+    } else {
       setValues({ ...values, [name]: event.target.value });
     }
-    
   };
 
   const handleSubmit = async () => {
     try {
-      console.log(values)
+      // console.log(values)
       const result = await fetch(
         `http://localhost:3000/api/service/by/${user.uid}`,
         {
@@ -62,13 +64,13 @@ const Create = () => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify({ ...values, image }),
         }
       );
-      router.push(`http://localhost:3000/my-account/${user.uid}`)
-      console.log(result)
+      await router.push(`http://localhost:3000/my-account/${user.uid}`);
+      console.log(result);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
   return (
@@ -192,7 +194,7 @@ const Create = () => {
             </CardContent>
           </CardActionArea>
         </Card> */}
-        <Media onChange={onChange} image={values.image}/>
+        <Media onChange={onChange} image={image}  onImageRemove={onImageRemove } />
         <Button
           variant="contained"
           color="secondary"
@@ -208,11 +210,10 @@ const Create = () => {
 
 export const config = {
   api: {
-      bodyParser: {
-          sizeLimit: '4mb' // Set desired value here
-      }
-  }
-}
-
+    bodyParser: {
+      sizeLimit: "4mb", // Set desired value here
+    },
+  },
+};
 
 export default Create;

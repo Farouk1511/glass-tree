@@ -81,7 +81,7 @@ const NavBar = () => {
           {/* <Avatar sx={{ backgroundColor: "secondary.main" }}>
             {user ? user.email.split("")[0].toLocaleUpperCase() : "F"}
           </Avatar> */}
-          {user && <ProfileAvatar name={user.email?user.email: 'J'}/>}
+          {user && <ProfileAvatar name={user.email?user.email: 'J'} userID={user.uid}/>}
         </Toolbar>
       </AppBar>
     </>

@@ -16,13 +16,14 @@ const HelpCard = ({ post }) => {
   
   return (
     <Grid lg={3} item>
-      <Card sx={{ maxWidth: 350, marginBottom: 5 }} elevation={1}>
+      <Card sx={{ maxWidth: 350,marginBottom: 5 }} elevation={1}>
         <CardActionArea href={`/seller/${post._id}`}>
           <CardMedia
             component={"img"}
             alt="image"
             height={"150"}
-            image="https://picsum.photos/400/150"
+            sx={{}}
+            image={`http://localhost:3000/api/service/image/${post._id}`}
           />
         </CardActionArea>
         <CardContent>

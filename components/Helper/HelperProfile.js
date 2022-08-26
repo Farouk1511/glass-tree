@@ -52,7 +52,7 @@ const PostDetails = ({post}) => {
             <CardMedia
               component={"img"}
               height="500"
-              image="https://picsum.photos/750/550"
+              image={`http://localhost:3000/api/service/image/${post._id}`}
             />
 
             <CardContent>

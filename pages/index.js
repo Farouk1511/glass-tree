@@ -26,7 +26,7 @@ export async function getStaticProps() {
   await connectMongo();
   console.log("Succesfully connected DB");
 
-  const services = await Service.find({}).populate({
+  const services = await Service.find({}).select('-image').populate({
     path: "user",
     model: User,
   }).limit(4).exec();

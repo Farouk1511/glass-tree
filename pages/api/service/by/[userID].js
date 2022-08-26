@@ -2,18 +2,30 @@ import Service from "../../../../models/service";
 import User from "../../../../models/user";
 import connectMongo from "../../../../utils/connectMongo";
 
-
-
-
 const handler = async (req, res) => {
+  await connectMongo();
+  switch (req.method) {
+    case "POST":
+      create(req, res);
+      break;
+    case "GET":
+      getServiceby(req, res);
+      break;
+
+    default:
+      create(req, res);
+      break;
+  }
+};
+
+const create = async (req, res) => {
   try {
     console.log("Connecting to DB");
-    await connectMongo();
+    
     console.log("Connected to DB");
 
     console.log("Registering....");
     const { userID } = req.query;
-  
 
     if (!userID) return;
 
@@ -26,9 +38,9 @@ const handler = async (req, res) => {
     const service = new Service(req.body);
     service.user = user;
 
-    if(req.body.image){
-      service.image.data = req.body.image.data_url
-      service.image.contentType = 'image/png'
+    if (req.body.image) {
+      service.image.data = req.body.image.data_url;
+      service.image.contentType = "image/png";
     }
 
     const result = await service.save();
@@ -39,6 +51,26 @@ const handler = async (req, res) => {
   }
 };
 
+const getServiceby = async (req, res) => {
+  try {
+    
 
+    const { userID } = req.query;
+    if (!userID) return;
+    console.log(userID)
+
+    const user = await User.findOne({ uid: userID });
+    console.log(user)
+    const user_objID = user._id;
+    console.log(user_objID)
+
+    const services = await Service.find({ user: user_objID }).select('-image').populate({path:'user',model:User});
+
+    // console.log(services)
+    return await res.json(services);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export default handler;

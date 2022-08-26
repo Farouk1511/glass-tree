@@ -1,4 +1,5 @@
 import { Box, CircularProgress, Paper, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import HelpCardGrid from "../../components/Helper/HelpCardGrid";
 import Categories from "../../components/Navigation/Categories";
@@ -7,10 +8,33 @@ import Tab from "../../components/Tabs/Tab";
 
 const MyAcount = () => {
   const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState([]);
+  const router = useRouter();
+  // const {userID} = router.query
+  // console.log(userID)
+  useEffect(() => {
+   
+    const getPosts = async () => {
+      if (!router.isReady) return;
+      const { userID } = router.query;
+      console.log(userID);
 
-  useEffect (() => {
-    setTimeout(()=>setLoading(false),1000)
-  },[])
+      const result = await fetch(
+        `http://localhost:3000/api/service/by/${userID}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      setPost(await result.json());
+      setLoading(false);
+    };
+
+    getPosts();
+  }, [router.isReady, router.query]);
   return (
     <>
       <NavBar />
@@ -27,7 +51,7 @@ const MyAcount = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+
           alignItems: "center",
           marginTop: 5,
           width: "100%",
@@ -39,22 +63,24 @@ const MyAcount = () => {
           Manage Postings
         </Typography>
         <Tab />
-        <Box
+      {loading && (
+        <CircularProgress
           sx={{
-            color: "#000",
-            overflowY: "hidden",
-            width: "80%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
             marginTop: 5,
+           
           }}
-        >
-          {loading && <CircularProgress />}
-         {!loading && <HelpCardGrid />}
-        </Box>
+        />
+      )}
       </Paper>
+
+      {!loading && (
+        <HelpCardGrid
+          postings={post}
+          marginLeft={20}
+          marginRight={20}
+          marginTop={5}
+        />
+      )}
     </>
   );
 };

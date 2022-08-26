@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     await connectMongo();
     console.log("Succesfully connected DB");
 
-    const services = await Service.find({}).populate('user');
+    const services = await Service.find({}).select('-image').populate('user');
     res.json(services);
   } catch (err) {
     res.json(err);

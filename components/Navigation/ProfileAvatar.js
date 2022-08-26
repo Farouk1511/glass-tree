@@ -12,7 +12,7 @@ import Logout from "@mui/icons-material/Logout";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-const ProfileAvatar = ({ name }) => {
+const ProfileAvatar = ({ name,userID }) => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -94,7 +94,7 @@ const ProfileAvatar = ({ name }) => {
 
         <MenuItem
         
-          onClick={() => router.push("http://localhost:3000/my-account/ssa")}
+          onClick={() => router.push(`http://localhost:3000/my-account/${userID}`)}
         >
           <Avatar /> My account
         </MenuItem>
