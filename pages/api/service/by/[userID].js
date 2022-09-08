@@ -60,6 +60,7 @@ const getServiceby = async (req, res) => {
     console.log(userID)
 
     const user = await User.findOne({ uid: userID });
+    if(!user) throw new Error("No User Found")
     console.log(user)
     const user_objID = user._id;
     console.log(user_objID)
@@ -69,6 +70,7 @@ const getServiceby = async (req, res) => {
     // console.log(services)
     return await res.json(services);
   } catch (err) {
+    res.json({Message:"Error",err})
     console.log(err);
   }
 };

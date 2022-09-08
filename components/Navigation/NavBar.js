@@ -16,8 +16,9 @@ import ProfileAvatar from "./ProfileAvatar";
 
 const NavBar = () => {
   const [user, loading, error] = useAuthState(auth);
-
+  
   return (
+    
     <>
   
       <AppBar

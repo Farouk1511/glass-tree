@@ -11,8 +11,8 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-
-const ProfileAvatar = ({ name,userID }) => {
+import { signout } from "../../firbase/utilities";
+const ProfileAvatar = ({ name, userID }) => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -20,6 +20,19 @@ const ProfileAvatar = ({ name,userID }) => {
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
+
+  const logout = async () => {
+    //redirection
+    try {
+      await signout();
+      console.log('Signed out successfully')
+    } catch (err) {
+      console.log(err);
+    } finally {
+      router.push("http://localhost:3000/");
+    }
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -84,17 +97,22 @@ const ProfileAvatar = ({ name,userID }) => {
               color: "#fff",
             },
           }}
-          onClick={() => router.push("http://localhost:3000/posting/service/create")}
+          onClick={() =>
+            router.push("http://localhost:3000/posting/service/create")
+          }
         >
           Create Service
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() =>
+            router.push(`http://localhost:3000/profile/${userID}`)
+          }>
           <Avatar /> Profile
         </MenuItem>
 
         <MenuItem
-        
-          onClick={() => router.push(`http://localhost:3000/my-account/${userID}`)}
+          onClick={() =>
+            router.push(`http://localhost:3000/my-account/${userID}`)
+          }
         >
           <Avatar /> My account
         </MenuItem>
@@ -106,7 +124,7 @@ const ProfileAvatar = ({ name,userID }) => {
           Settings
         </MenuItem>
 
-        <MenuItem>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

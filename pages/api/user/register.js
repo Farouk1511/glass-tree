@@ -1,5 +1,5 @@
-import User from '../../models/user'
-import connectMongo from './../../utils/connectMongo'
+import User from '../../../models/user'
+import connectMongo from '../../../utils/connectMongo'
 
 const register = async(req,res) => {
     try{

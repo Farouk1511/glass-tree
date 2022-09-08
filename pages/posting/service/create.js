@@ -1,24 +1,20 @@
 import {
   Box,
   Button,
-  Card,
-  CardActionArea,
-  CardContent,
   Divider,
   FormControl,
-  IconButton,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import NavBar from "../../../components/Navigation/NavBar";
-import AddIcon from "@mui/icons-material/Add";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firbase/utilities";
 import Media from "../../../components/Media";
 import { useRouter } from "next/router";
-import { cloneDeep } from "lodash";
+
 const Create = () => {
   const router = useRouter();
   const [values, setValues] = useState({
@@ -39,9 +35,9 @@ const Create = () => {
     } // console.log(values)
   };
 
-  const  onImageRemove  = () => {
-    setImage(null)
-  }
+  const onImageRemove = () => {
+    setImage(null);
+  };
 
   const [user, loading, error] = useAuthState(auth);
 
@@ -194,7 +190,11 @@ const Create = () => {
             </CardContent>
           </CardActionArea>
         </Card> */}
-        <Media onChange={onChange} image={image}  onImageRemove={onImageRemove } />
+        <Media
+          onChange={onChange}
+          image={image}
+          onImageRemove={onImageRemove}
+        />
         <Button
           variant="contained"
           color="secondary"

@@ -12,6 +12,7 @@ const MyAcount = () => {
   const router = useRouter();
   // const {userID} = router.query
   // console.log(userID)
+  //https://stackoverflow.com/questions/70492512/next-js-userouter-not-returning-variable-inside-useeffect
   useEffect(() => {
    
     const getPosts = async () => {
@@ -74,6 +75,7 @@ const MyAcount = () => {
       </Paper>
 
       {!loading && (
+        
         <HelpCardGrid
           postings={post}
           marginLeft={20}
@@ -81,6 +83,11 @@ const MyAcount = () => {
           marginTop={5}
         />
       )}
+
+      {post.length < 1 && <Typography sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>No Services Created</Typography>
+      //to be dynamic with jobs
+      } 
+      
     </>
   );
 };

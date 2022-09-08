@@ -29,7 +29,7 @@ const Register = () => {
         username,
         uid: firebase_user.user.uid,
       };
-      const response = await fetch("http://localhost:3000/api/register", {
+      const response = await fetch("http://localhost:3000/api/user/register", {
         method: "POST",
         headers: {
           Accept: "application/json",
