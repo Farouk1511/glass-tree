@@ -38,9 +38,10 @@ const UserSchema = new Schema({
         type: Number
     },
     image:{
-        type:Buffer,
-        contentType:String
-    }
+        data:Buffer,
+        contentType:String,
+        // default:0
+    },
    
 })
 

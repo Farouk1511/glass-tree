@@ -1,11 +1,13 @@
 
 import User from "../../../../models/user";
+import connectMongo from "../../../../utils/connectMongo";
 
 const handler = async (req, res) => {
   try {
+    await connectMongo()
     const { userID } = req.query;
 
-    const user = await User.findOne({ uid: userID }).select('-image');
+    const user = await User.findOne({ uid: userID }).select('-image')
     
 
     return res.json({ user });

@@ -54,8 +54,8 @@ const Media = ({ onChange, image, onImageRemove  }) => {
               src={image.data_url}
               alt=""
               layout="intrinsic"
-              width={600}
-              height={500}
+              width={300}
+              height={300}
               onClick={onImageUpload}
             />
           )}
