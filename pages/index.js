@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import HelpCardGrid from "../components/Helper/HelpCardGrid";
+import PostCardGrid from "../components/Helper/PostCardGrid";
 import { useState } from "react";
 import Service from "../models/service";
 import connectMongo from "../utils/connectMongo";
@@ -29,7 +29,7 @@ export async function getStaticProps() {
   const services = await Service.find({}).select('-image').populate({
     path: "user",
     model: User,
-  }).limit(4).exec();
+  }).sort({created: -1}).limit(4).exec();
 
   return {
     props: {
@@ -39,7 +39,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ postings }) {
-  console.log(postings);
+  // console.log(postings);
 
   return (
     <div>
@@ -199,7 +199,7 @@ export default function Home({ postings }) {
           ))}
         </Paper> */}
 
-        <HelpCardGrid marginTop={5} postings={postings} />
+        <PostCardGrid marginTop={5} postings={postings} type={'service'}/>
       </Paper>
     </div>
   );

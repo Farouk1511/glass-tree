@@ -1,11 +1,11 @@
 import User from '../../../models/user'
 import connectMongo from '../../../utils/connectMongo'
 
-const register = async(req,res) => {
+const handler = async(req,res) => {
     try{
-        console.log('Connecting to DB')
-        await connectMongo()
-        console.log('Connected to DB')
+        // console.log('Connecting to DB')
+        // await connectMongo()
+        // console.log('Connected to DB')
 
         console.log('Registering....')
         const user = await User.create(req.body)
@@ -17,4 +17,4 @@ const register = async(req,res) => {
     }
 }
 
-export default register
+export default connectDB(handler);

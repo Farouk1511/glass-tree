@@ -1,3 +1,4 @@
+import connectDB from "../../../../middleware/connectDB"
 import Job from "../../../../models/job"
 import User from "../../../../models/user"
 import connectMongo from "../../../../utils/connectMongo"
@@ -7,9 +8,9 @@ import connectMongo from "../../../../utils/connectMongo"
 const handler = async (req,res) => {
 
     try{
-        console.log('Connecting to Databse')
-        await connectMongo()
-        console.log('Db is connected')
+        // console.log('Connecting to Databse')
+        // await connectMongo()
+        // console.log('Db is connected')
 
         const {jobID} = req.query
 

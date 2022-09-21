@@ -1,12 +1,13 @@
 import { extend } from "lodash";
+import connectDB from "../../../../middleware/connectDB";
 import Service from "../../../../models/service";
 import connectMongo from "../../../../utils/connectMongo";
 
 const handler = async (req, res) => {
   try {
-    console.log("Connecting to DB");
-    await connectMongo();
-    console.log("Succesfully connected DB");
+    // console.log("Connecting to DB");
+    // await connectMongo();
+    // console.log("Succesfully connected DB");
 
     const { shopID } = req.query;
 
@@ -18,4 +19,4 @@ const handler = async (req, res) => {
     res.json(err);
   }
 };
-export default handler;
+export default connectDB(handler);

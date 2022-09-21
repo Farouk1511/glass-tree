@@ -1,12 +1,12 @@
 import { Grid, Paper } from "@mui/material";
 import React from "react";
-import HelpCard from "./HelpCard";
+import PostCard from "./PostCard";
 import PropTypes from "prop-types";
 import PostShape from "./PostShape";
 
-const HelpCardGrid = ({ postings, marginTop, marginLeft, marginRight }) => {
+const PostCardGrid = ({ postings, marginTop, marginLeft, marginRight,type }) => {
 
-  console.log(postings)
+  // console.log(postings)
   return (
     <Paper
       elevation={0}
@@ -18,22 +18,22 @@ const HelpCardGrid = ({ postings, marginTop, marginLeft, marginRight }) => {
     >
       <Grid container>
         {postings.map((post) => {
-          console.log(post)
-         return <HelpCard key={post._id} post={post} />
+          {/* console.log(post) */}
+         return <PostCard key={post._id} post={post} type={type}/>
         })}
       </Grid>
     </Paper>
   );
 };
 
-HelpCardGrid.propTypes = {
+PostCardGrid.propTypes = {
   postings: PropTypes.arrayOf(PropTypes.objectOf(PostShape)).isRequired,
   marginLeft: PropTypes.number,
   marginRight: PropTypes.number,
   marginTop: PropTypes.number,
 };
 
-HelpCardGrid.defaultProps = {
+PostCardGrid.defaultProps = {
   postings: [
     {
       _id: "dsjhdksdjs",
@@ -119,4 +119,4 @@ HelpCardGrid.defaultProps = {
   ],
 };
 
-export default HelpCardGrid;
+export default PostCardGrid;

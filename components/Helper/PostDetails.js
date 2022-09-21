@@ -16,7 +16,7 @@ import {
 import PostShape from "./PostShape";
 
 
-const PostDetails = ({post}) => {
+const PostDetails = ({post,type = 'service'}) => {
 
     return (
         <Paper
@@ -52,7 +52,7 @@ const PostDetails = ({post}) => {
             <CardMedia
               component={"img"}
               height="500"
-              image={`http://localhost:3000/api/service/image/${post._id}`}
+              image={`http://localhost:3000/api/${type}/image/${post._id}`}
             />
 
             <CardContent>

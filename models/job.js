@@ -24,9 +24,13 @@ const jobSchema = new Schema({
         type:Date,
         default:Date.now
     },
-    updated:Date
+    updated:Date,
+    image:{
+        data:Buffer,
+        contentType:String
+    },
 })
 
 const Job = models.Job || model("Job",jobSchema)
 
-export default Job
+export default Job 

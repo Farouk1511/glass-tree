@@ -5,9 +5,9 @@ import connectMongo from "../../../../utils/connectMongo"
 const handler = async(req,res) => {
 
     try{
-        console.log("Connecting to DB")
-        await connectMongo()
-        console.log("Succesfully connected DB")
+        // console.log("Connecting to DB")
+        // await connectMongo()
+        // console.log("Succesfully connected DB")
 
         const {shopID} = req.query
 
@@ -25,4 +25,4 @@ const handler = async(req,res) => {
     }
 }
 
-export default handler
+export default connectDB(handler);

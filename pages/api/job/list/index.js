@@ -1,12 +1,13 @@
+import connectDB from "../../../../middleware/connectDB"
 import Job from "../../../../models/job"
 import User from "../../../../models/user"
 import connectMongo from "../../../../utils/connectMongo"
 
 const handler = async (req,res) => {
     try{
-        console.log("Connecting to Database.... ")
-        await connectMongo()
-        console.log("Connected to DB")
+        // console.log("Connecting to Database.... ")
+        // await connectMongo()
+        // console.log("Connected to DB")
 
         const jobs = await Job.find({}).select('-image').populate({path:'user',model:User})
 
@@ -16,4 +17,4 @@ const handler = async (req,res) => {
     }
 }
 
-export default handler
+export default connectDB(handler);

@@ -25,7 +25,7 @@ const Profile = () => {
 
   const onChange = (imageList, addUpdatedIndex) => {
     try {
-      console.log(imageList, addUpdatedIndex);
+      // console.log(imageList, addUpdatedIndex);
 
       setImage(imageList[0]);
     } catch (err) {
@@ -52,7 +52,8 @@ const Profile = () => {
         }
       );
 
-      console.log(await result.json());
+    await result.json()
+      router.push(`http://localhost:3000/my-account/${userID}`)
     } catch (err) {
       console.log(err);
     }

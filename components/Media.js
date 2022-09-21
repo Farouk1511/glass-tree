@@ -62,7 +62,7 @@ const Media = ({ onChange, image, onImageRemove  }) => {
 
           {image && (
             <Button variant="contained" onClick={() => {
-              console.log(imageList)
+              // console.log(imageList)
               onImageRemove()}} sx={{marginTop:1}}>
               Remove Image
             </Button>

@@ -1,6 +1,7 @@
 import Job from "../../../../models/job";
 import connectMongo from "../../../../utils/connectMongo";
 import User from "../../../../models/user";
+import connectDB from "../../../../middleware/connectDB";
 
 /**
  * Creates job posting
@@ -32,9 +33,9 @@ const handler = async (req, res) => {
 
 const create = async (req,res) => {
    try {
-      console.log("connecting to DB....");
-      await connectMongo();
-      console.log("connected to DB");
+      // console.log("connecting to DB....");
+      // await connectMongo();
+      // console.log("connected to DB");
   
       const { userID } = req.query;
   
@@ -44,7 +45,11 @@ const create = async (req,res) => {
   
       const job = new Job(req.body);
       job.user = user;
-  
+      
+      if (req.body.image) {
+         job.image.data = req.body.image.data_url;
+         job.image.contentType = "image/png";
+       }
       const result = await job.save();
   
      return await res.json( result );
@@ -55,9 +60,9 @@ const create = async (req,res) => {
 
 const listJobsbyUser = async(req,res) => {
    try{
-      console.log("connecting to DB....");
-      await connectMongo();
-      console.log("connected to DB");
+      // console.log("connecting to DB....");
+      // await connectMongo();
+      // console.log("connected to DB");
 
       const { userID } = req.query;
   
@@ -67,7 +72,7 @@ const listJobsbyUser = async(req,res) => {
 
       const user_objID = user._id
 
-      const jobs = await Job.find({user:user_objID})
+      const jobs = await Job.find({user:user_objID}).select('-image')
 
       return await res.json(jobs)
   
@@ -77,4 +82,4 @@ const listJobsbyUser = async(req,res) => {
       console.log(err)
    }
 }
-export default handler;
+export default connectDB(handler);

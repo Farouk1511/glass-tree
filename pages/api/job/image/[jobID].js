@@ -1,5 +1,5 @@
 import connectDB from "../../../../middleware/connectDB";
-import User from "../../../../models/user";
+import Job from "../../../../models/job";
 import connectMongo from "../../../../utils/connectMongo";
 
 const handler = async (req, res) => {
@@ -8,19 +8,19 @@ const handler = async (req, res) => {
     // await connectMongo();
     // console.log("Succesfully connected DB");
 
-    const { userID } = req.query;
+    const { jobID } = req.query;
 
-    if (!userID) return;
+    if (!jobID) return;
 
-    let user = await User.findById(userID);
+    let job = await Job.findById(jobID);
 
-    // console.log(user.image.data)
+    // console.log(job.image.data)
     //  https://stackoverflow.com/questions/67457513/rendering-image-from-api-response-in-nextjs-just-downloads-base64-file
-    if (user.image.data) {
-      const decoded = user.image.data
+    if (job.image.data) {
+      const decoded = job.image.data
         .toString()
         .replace("data:image/png;base64,", "")
-        .replace("data:image/jpeg;base64,", "");
+        .replace("data:image/jpeg;base64,", "")
       const imageResp = Buffer.from(decoded, "base64");
 
       res.writeHead(200, {
@@ -30,7 +30,7 @@ const handler = async (req, res) => {
       res.end(imageResp);
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.json({ err });
   }
 };

@@ -12,6 +12,7 @@ import Logout from "@mui/icons-material/Logout";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { signout } from "../../firbase/utilities";
+
 const ProfileAvatar = ({ name, userID }) => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,7 +26,7 @@ const ProfileAvatar = ({ name, userID }) => {
     //redirection
     try {
       await signout();
-      console.log('Signed out successfully')
+      // console.log('Signed out successfully')
     } catch (err) {
       console.log(err);
     } finally {
@@ -102,6 +103,21 @@ const ProfileAvatar = ({ name, userID }) => {
           }
         >
           Create Service
+        </MenuItem>
+        <MenuItem
+          sx={{
+            bgcolor: "primary.main",
+            color: "#fff",
+            "&:hover": {
+              bgcolor: "primary.main",
+              color: "#fff",
+            },
+          }}
+          onClick={() =>
+            router.push("http://localhost:3000/posting/job/create")
+          }
+        >
+          Post a Job
         </MenuItem>
         <MenuItem onClick={() =>
             router.push(`http://localhost:3000/profile/${userID}`)

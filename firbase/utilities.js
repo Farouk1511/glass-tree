@@ -11,6 +11,6 @@ const signin = (email,password) => {
 }
 
 const signout = () => {
-    return signOut()
+    return signOut(auth)
 } 
 export  {signup,signin,auth,signout}

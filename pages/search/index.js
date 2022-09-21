@@ -1,12 +1,11 @@
 import React from "react";
 import { Typography, Paper } from "@mui/material";
-
-import HelpCardGrid from "../../components/Helper/HelpCardGrid";
 import NavBar from "../../components/Navigation/NavBar";
 import Categories from "../../components/Navigation/Categories";
 import Service from "../../models/service";
 import connectMongo from "../../utils/connectMongo";
 import User from "../../models/user";
+import PostCardGrid from "../../components/Helper/PostCardGrid";
 
 const pages = [
   { name: "Register", href: "/register" },
@@ -41,7 +40,7 @@ export async function getStaticProps() {
       // console.log(services)
     return {
       props: {
-        postings: JSON.parse(JSON.stringify(services)),
+        postings: JSON.parse(JSON.stringify(services)).reverse(),
       },
     };
   
@@ -70,7 +69,7 @@ const SearchPage = ({ postings }) => {
         </Typography>
       </Paper>
 
-      <HelpCardGrid marginLeft={20} marginRight={20} marginTop={5} postings={postings} />
+      <PostCardGrid marginLeft={20} marginRight={20} marginTop={5} postings={postings} type={'service'}/>
     </>
   );
 };

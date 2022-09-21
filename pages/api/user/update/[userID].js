@@ -1,9 +1,11 @@
 import { extend } from "lodash";
+import connectDB from "../../../../middleware/connectDB";
 import User from "../../../../models/user";
 import connectMongo from "../../../../utils/connectMongo";
+
 const handler = async (req, res) => {
   try {
-    await connectMongo();
+    // await connectMongo();
     const { userID } = req.query;
 
     // console.log(typeof req.body);
@@ -32,4 +34,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+export default connectDB(handler);

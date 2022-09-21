@@ -52,7 +52,7 @@ export async function getStaticProps(context){
 
     // console.log("Params",params)
 
-    const post = await Service.findById(params.postID).populate({path:'user',model:User})
+    const post = await Service.findById(params.postID).populate({path:'user',model:User}).select('-image')
     // console.log(post)
 
     return {

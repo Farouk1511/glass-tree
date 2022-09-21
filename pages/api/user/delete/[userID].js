@@ -1,5 +1,6 @@
 
 import auth from "../../../../lib/firebase";
+import connectDB from "../../../../middleware/connectDB";
 import Service from "../../../../models/service";
 import User from "../../../../models/user";
 
@@ -16,7 +17,7 @@ const handler = async (req, res) => {
 
     //Delete all Postings by User
     const user_objID = user._id;
-    console.log(user_objID);
+    // console.log(user_objID);
 
     const services = await Service.findAndDelete({ user: user_objID });
     res.json({ message: "Succesful", user,services });
@@ -26,4 +27,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+export default connectDB(handler);

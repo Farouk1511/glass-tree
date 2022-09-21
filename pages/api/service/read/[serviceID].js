@@ -1,12 +1,12 @@
+import connectDB from "../../../../middleware/connectDB"
 import Service from "../../../../models/service"
 import connectMongo from "../../../../utils/connectMongo"
-
 const handler = async (req,res) => {
 
     try{
-        console.log('Connecting to DB')
-        await connectMongo()
-        console.log('Connected to DB')
+        // console.log('Connecting to DB')
+        // await connectMongo()
+        // console.log('Connected to DB')
 
         const { serviceID} = req.query
 
@@ -23,4 +23,4 @@ const handler = async (req,res) => {
     }
 }
 
-export default handler
+export default connectDB(handler);

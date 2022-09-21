@@ -1,9 +1,10 @@
+import connectDB from "../../../../middleware/connectDB";
 import Service from "../../../../models/service";
 import User from "../../../../models/user";
 import connectMongo from "../../../../utils/connectMongo";
 
 const handler = async (req, res) => {
-  await connectMongo();
+  // await connectMongo();
   switch (req.method) {
     case "POST":
       create(req, res);
@@ -20,11 +21,11 @@ const handler = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    console.log("Connecting to DB");
+    // console.log("Connecting to DB");
     
-    console.log("Connected to DB");
+    // console.log("Connected to DB");
 
-    console.log("Registering....");
+    // console.log("Registering....");
     const { userID } = req.query;
 
     if (!userID) return;
@@ -57,22 +58,22 @@ const getServiceby = async (req, res) => {
 
     const { userID } = req.query;
     if (!userID) return;
-    console.log(userID)
+    // console.log(userID)
 
     const user = await User.findOne({ uid: userID });
     if(!user) throw new Error("No User Found")
-    console.log(user)
+    // console.log(user)
     const user_objID = user._id;
-    console.log(user_objID)
+    // console.log(user_objID)
 
     const services = await Service.find({ user: user_objID }).select('-image').populate({path:'user',model:User});
 
     // console.log(services)
-    return await res.json(services);
+    return res.json(services);
   } catch (err) {
     res.json({Message:"Error",err})
     console.log(err);
   }
 };
 
-export default handler;
+export default connectDB(handler);
