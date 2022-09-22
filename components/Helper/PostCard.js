@@ -7,15 +7,17 @@ import {
   CardMedia,
   Divider,
   Grid,
+  IconButton,
   Rating,
   Typography,
 } from "@mui/material";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PostShape from "./PostShape";
 
-const PostCard = ({ post, type }) => {
+const PostCard = ({ post, type }) => { 
   return (
     <Grid lg={3} item>
-      <Card sx={{ maxWidth: 350, marginBottom: 5 }} elevation={1}>
+      <Card sx={{ maxWidth: 350, marginBottom: 5,height:450 }} elevation={3}>
         <CardActionArea href={`/posting/${type}/${post._id}`}>
           <CardMedia
             component={"img"}
@@ -41,9 +43,9 @@ const PostCard = ({ post, type }) => {
           <Typography
             id="postTitle"
             gutterBottom
-            variant="body2"
+            variant="h7"
             component="span"
-            sx={{ fontFamily: "rockwell", fontWeight: 200 }}
+            sx={{ fontFamily: "rockwell", fontWeight: 700 }}
             inputprops={{
               "data-testid": "post-card-title",
             }}
@@ -51,7 +53,7 @@ const PostCard = ({ post, type }) => {
             {post.title}
           </Typography>
         </CardContent>
-        <CardContent sx={{ margin: 0, paddingTop: 0 }}>
+        <CardContent sx={{ margin: 0, paddingTop: 0,paddingBottom: 0,height:100 }}>
           <Typography
             id="postDescription"
             variant="body2"
@@ -89,6 +91,20 @@ const PostCard = ({ post, type }) => {
           </Typography>
         </CardContent>
         <Divider />
+        <CardContent  sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent:'space-between',
+            padding: 0,
+          }}>
+        <CardContent>
+        <IconButton>
+
+            <FavoriteBorderIcon/>
+        </IconButton>
+       
+        </CardContent>
         <CardContent
           sx={{
             display: "flex",
@@ -108,26 +124,28 @@ const PostCard = ({ post, type }) => {
             CA${post.ratePerHour || post.pay}/hr
           </Typography>
         </CardContent>
+        </CardContent>
+       
       </Card>
     </Grid>
   );
 };
 
-PostCard.propTypes = {
-  post: PropTypes.objectOf(PostShape).isRequired,
-};
+// PostCard.propTypes = {
+//   post: PropTypes.objectOf(PostShape).isRequired,
+// };
 
-PostCard.defaultProps = {
-  post: {
-    _id: "dsjhdksdjs",
-    name: "John Doe",
-    description:
-      "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-    title: "job/help title",
-    averageRating: 4.5,
-    totalRatings: 50,
-    ratePerHour: 40,
-  },
-};
+// PostCard.defaultProps = {
+//   post: {
+//     _id: "dsjhdksdjs",
+//     name: "John Doe",
+//     description:
+//       "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//     title: "job/help title",
+//     averageRating: 4.5,
+//     totalRatings: 50,
+//     ratePerHour: 40,
+//   },
+// };
 
 export default PostCard;

@@ -47,7 +47,7 @@ const NavBar = () => {
             }}
             variant="h3"
             component="a"
-            href="/"
+            href="/search"
             color="primary"
           >
             GlassTree

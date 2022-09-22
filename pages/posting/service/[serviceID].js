@@ -19,13 +19,12 @@ const sections = [
 ];
 
 export async function getStaticPaths() {
-  console.log("Connecting to DB");
   await connectMongo();
-  console.log("Succesfully connected DB");
 
   const services = await Service.find({}).populate({
     path: "user",
     model: User,
+    select: "-image",
   });
 
   //   console.log(services)
@@ -35,21 +34,17 @@ export async function getStaticPaths() {
   //   console.log(ids)
   return {
     paths: ids,
-    fallback: false,       
+    fallback: false,
   };
 }
 
 export async function getStaticProps(context) {
   const { params } = context;
-
-  console.log("Connecting to DB");
   await connectMongo();
-  console.log("Succesfully connected DB");
-
   // console.log("Params",params)
 
   const post = await Service.findById(params.serviceID)
-    .populate({ path: "user", model: User })
+    .populate({ path: "user", model: User, select: "-image" })
     .select("-image");
   // console.log(post)
 

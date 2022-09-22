@@ -22,10 +22,10 @@ const MyAcount = () => {
   //https://stackoverflow.com/questions/70492512/next-js-userouter-not-returning-variable-inside-useeffect
   useEffect(() => {
     const getPosts = async () => {
-      setLoading(true)
+      setLoading(true);
       if (!router.isReady) return;
       const { userID } = router.query;
-      console.log(userID);
+      // console.log(userID);
 
       const result = await fetch(
         `http://localhost:3000/api/${type}/by/${userID}`,
@@ -38,7 +38,7 @@ const MyAcount = () => {
       );
 
       setPost(await result.json());
-      console.log(result)
+      // console.log(result)
       setLoading(false);
     };
 
@@ -72,7 +72,7 @@ const MyAcount = () => {
         </Typography>
 
         <Tab onTabChange={onTabChange} />
-        
+
         {loading && (
           <CircularProgress
             sx={{

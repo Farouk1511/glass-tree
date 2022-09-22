@@ -27,14 +27,15 @@ const sections = [
 
 export async function getStaticProps() {
   
-    console.log("Connecting to DB");
+    
     await connectMongo();
-    console.log("Succesfully connected DB");
+    
 
     const services = await Service.find({}).select('-image')
       .populate({
         path: "user",
         model: User,
+        select:'-image'
       })
 
       // console.log(services)

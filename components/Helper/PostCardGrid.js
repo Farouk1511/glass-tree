@@ -26,97 +26,97 @@ const PostCardGrid = ({ postings, marginTop, marginLeft, marginRight,type }) => 
   );
 };
 
-PostCardGrid.propTypes = {
-  postings: PropTypes.arrayOf(PropTypes.objectOf(PostShape)).isRequired,
-  marginLeft: PropTypes.number,
-  marginRight: PropTypes.number,
-  marginTop: PropTypes.number,
-};
+// PostCardGrid.propTypes = {
+//   postings: PropTypes.arrayOf(PropTypes.objectOf(PostShape)).isRequired,
+//   marginLeft: PropTypes.number,
+//   marginRight: PropTypes.number,
+//   marginTop: PropTypes.number,
+// };
 
-PostCardGrid.defaultProps = {
-  postings: [
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
-    {
-      _id: "dsjhdksdjs",
-      name: "John Doe",
-      description:
-        "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-      title: "job/help title",
-      averageRating: 4.5,
-      totalRatings: 50,
-      ratePerHour: 40,
-    },
+// PostCardGrid.defaultProps = {
+//   postings: [
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
+//     {
+//       _id: "dsjhdksdjs",
+//       name: "John Doe",
+//       description:
+//         "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
+//       title: "job/help title",
+//       averageRating: 4.5,
+//       totalRatings: 50,
+//       ratePerHour: 40,
+//     },
    
-  ],
-};
+//   ],
+// };
 
 export default PostCardGrid;

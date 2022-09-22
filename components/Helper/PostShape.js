@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
  const PostShape = PropTypes.shape({
-    _id:PropTypes.string.isRequired,
+    id:PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
