@@ -45,6 +45,16 @@ const UserSchema = new Schema({
         contentType:String,
         // default:0
     },
+    favoriteJob:{
+        type:Map,
+        of:Schema.Types.ObjectId,
+        default:{}
+    },
+    favoriteService:{
+        type:Map,
+        of:Schema.Types.ObjectId,
+        default:{}
+    }
    
 })
 

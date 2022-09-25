@@ -1,5 +1,5 @@
+import connectDB from '../../../middleware/connectDB'
 import User from '../../../models/user'
-import connectMongo from '../../../utils/connectMongo'
 
 const handler = async(req,res) => {
     try{
