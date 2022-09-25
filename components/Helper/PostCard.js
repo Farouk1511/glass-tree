@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Card,
@@ -11,13 +11,41 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PostShape from "./PostShape";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteModal from "../DeleteModal";
+import { useRouter } from "next/router";
 
-const PostCard = ({ post, type }) => { 
+const PostCard = ({ post, type, isOwner, editPost }) => {
+  const [open, setOpen] = useState(false);
+  const router = useRouter()
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+       await fetch(`/api/${type}/delete/${post._id}`, {
+        method: "DELETE",
+      });
+      handleClose()
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEdit = async() =>{
+    router.push(`http://localhost:3000/posting/${type}/edit/${post._id}`)
+  }
+
   return (
     <Grid lg={3} item>
-      <Card sx={{ maxWidth: 350, marginBottom: 5,height:450 }} elevation={3}>
+      <Card sx={{ maxWidth: 350, marginBottom: 5, height: 450 }} elevation={3}>
         <CardActionArea href={`/posting/${type}/${post._id}`}>
           <CardMedia
             component={"img"}
@@ -53,7 +81,9 @@ const PostCard = ({ post, type }) => {
             {post.title}
           </Typography>
         </CardContent>
-        <CardContent sx={{ margin: 0, paddingTop: 0,paddingBottom: 0,height:100 }}>
+        <CardContent
+          sx={{ margin: 0, paddingTop: 0, paddingBottom: 0, height: 100 }}
+        >
           <Typography
             id="postDescription"
             variant="body2"
@@ -91,42 +121,58 @@ const PostCard = ({ post, type }) => {
           </Typography>
         </CardContent>
         <Divider />
-        <CardContent  sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent:'space-between',
-            padding: 0,
-          }}>
-        <CardContent>
-        <IconButton>
-
-            <FavoriteBorderIcon/>
-        </IconButton>
-       
-        </CardContent>
         <CardContent
           sx={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            paddingBottom: 0,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: 0,
           }}
         >
-          <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
-          <Typography
-            id="postHourlyRate"
-            sx={{ fontFamily: "rockwell", fontWeight: 700 }}
-            inputprops={{
-              "data-testid": "post-card-hourlyRate",
+          <CardContent>
+            {!isOwner && (
+              <IconButton>
+                <FavoriteBorderIcon />
+              </IconButton>
+            )}
+            {isOwner && (
+              <>
+                <IconButton onClick={handleClickOpen}>
+                  <DeleteOutlineIcon />
+                </IconButton>
+                <IconButton onClick={handleEdit}>
+                  <EditIcon />
+                </IconButton>
+              </>
+            )}
+          </CardContent>
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-end",
+              paddingBottom: 0,
             }}
           >
-            CA${post.ratePerHour || post.pay}/hr
-          </Typography>
+            <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
+            <Typography
+              id="postHourlyRate"
+              sx={{ fontFamily: "rockwell", fontWeight: 700 }}
+              inputprops={{
+                "data-testid": "post-card-hourlyRate",
+              }}
+            >
+              CA${post.ratePerHour || post.pay}/hr
+            </Typography>
+          </CardContent>
         </CardContent>
-        </CardContent>
-       
       </Card>
+      <DeleteModal
+        handleClose={handleClose}
+        open={open}
+        handleDelete={handleDelete}
+      />
     </Grid>
   );
 };

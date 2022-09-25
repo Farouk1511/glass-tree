@@ -27,7 +27,7 @@ const handler = async (req, res) => {
 
     await user.save();
 
-    return res.json({ user });
+    return res.json({ message:'Success' });
   } catch (err) {
     console.log(err);
     res.json(err.message);

@@ -1,7 +1,6 @@
 import { extend } from "lodash"
 import Service from "../../../../models/service"
-import connectMongo from "../../../../utils/connectMongo"
-
+import connectDB from "../../../../middleware/connectDB"
 const handler = async(req,res) => {
 
     try{
@@ -16,8 +15,15 @@ const handler = async(req,res) => {
         let service = await Service.findById(shopID)
         service = extend(service,req.body)
 
-        let result = await service.save()
-        res.json(result)
+        if(req.body.image){
+      
+            service.image.data = req.body.image.data_url;
+            service.image.contentType = req.body.image.file.type;
+          }
+          service.updated = Date.now();
+         await service.save()
+      
+        res.json({Message:"Success"})
 
 
     }catch(err){

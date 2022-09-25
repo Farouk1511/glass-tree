@@ -12,6 +12,8 @@ import Logout from "@mui/icons-material/Logout";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { signout } from "../../firbase/utilities";
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
 
 const ProfileAvatar = ({ name, userID }) => {
   const router = useRouter();
@@ -122,7 +124,7 @@ const ProfileAvatar = ({ name, userID }) => {
         <MenuItem onClick={() =>
             router.push(`http://localhost:3000/profile/${userID}`)
           }>
-          <Avatar /> Profile
+          <ContentPasteOutlinedIcon sx={{marginRight:1}} /> Profile
         </MenuItem>
 
         <MenuItem
@@ -130,7 +132,7 @@ const ProfileAvatar = ({ name, userID }) => {
             router.push(`http://localhost:3000/my-account/${userID}`)
           }
         >
-          <Avatar /> My account
+          <ManageAccountsOutlinedIcon sx={{marginRight:1}}/> My account
         </MenuItem>
         <Divider />
         <MenuItem>

@@ -4,7 +4,7 @@ import PostCard from "./PostCard";
 import PropTypes from "prop-types";
 import PostShape from "./PostShape";
 
-const PostCardGrid = ({ postings, marginTop, marginLeft, marginRight,type }) => {
+const PostCardGrid = ({ postings, marginTop, marginLeft, marginRight,type,isOwner }) => {
 
   // console.log(postings)
   return (
@@ -19,7 +19,7 @@ const PostCardGrid = ({ postings, marginTop, marginLeft, marginRight,type }) => 
       <Grid container>
         {postings.map((post) => {
           {/* console.log(post) */}
-         return <PostCard key={post._id} post={post} type={type}/>
+         return <PostCard key={post._id} post={post} type={type} isOwner={isOwner}/>
         })}
       </Grid>
     </Paper>

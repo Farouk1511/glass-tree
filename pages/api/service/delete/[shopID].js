@@ -1,7 +1,5 @@
-import { extend } from "lodash";
 import connectDB from "../../../../middleware/connectDB";
 import Service from "../../../../models/service";
-import connectMongo from "../../../../utils/connectMongo";
 
 const handler = async (req, res) => {
   try {
@@ -14,7 +12,7 @@ const handler = async (req, res) => {
     if (!shopID) return;
 
     const service = await Service.findByIdAndDelete(shopID);
-    res.json({ service, message: "service deleted" });
+    await res.json({ service, message: "service deleted" });
   } catch (err) {
     res.json(err);
   }

@@ -103,7 +103,7 @@ const Profile = () => {
           marginTop: 5,
         }}
       >
-        <Typography>Profile</Typography>
+        <Typography variant="h3">Update Profile</Typography>
         <FormControl
           sx={{
             marginTop: 5,

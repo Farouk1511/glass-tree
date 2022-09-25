@@ -10,76 +10,72 @@ import connectDB from "../../../../middleware/connectDB";
  * @returns
  */
 const handler = async (req, res) => {
+  switch (req.method) {
+    case "POST":
+      create(req, res);
+      break;
 
-   switch(req.method){
-      case 'POST':
-         create(req,res)
-         break
-      
-         case 'GET':
-            listJobsbyUser(req,res)
-            break
-         
-         default:
-            create(req,res)
-      
-   }
+    case "GET":
+      listJobsbyUser(req, res);
+      break;
 
-   // if(req.method === 'POST'){
-   //    create(req,res)
-   // }
-  
+    default:
+      create(req, res);
+  }
+
+  // if(req.method === 'POST'){
+  //    create(req,res)
+  // }
 };
 
-const create = async (req,res) => {
-   try {
-      // console.log("connecting to DB....");
-      // await connectMongo();
-      // console.log("connected to DB");
-  
-      const { userID } = req.query;
-  
-      if (!userID) return;
-  
-      const user = await User.findOne({ uid: userID });
-  
-      const job = new Job(req.body);
-      job.user = user;
-      
-      if (req.body.image) {
-         job.image.data = req.body.image.data_url;
-         job.image.contentType = "image/png";
-       }
-      const result = await job.save();
-  
-     return await res.json( result );
-    } catch (err) {
-     console.log(err)
+const create = async (req, res) => {
+  try {
+    // console.log("connecting to DB....");
+    // await connectMongo();
+    // console.log("connected to DB");
+
+    const { userID } = req.query;
+
+    if (!userID) return;
+
+    const user = await User.findOne({ uid: userID });
+
+    const job = new Job(req.body);
+    job.user = user;
+
+    if (req.body.image) {
+      job.image.data = req.body.image.data_url;
+      job.image.contentType = "image/png";
     }
-}
+    const result = await job.save();
 
-const listJobsbyUser = async(req,res) => {
-   try{
-      // console.log("connecting to DB....");
-      // await connectMongo();
-      // console.log("connected to DB");
+    return await res.json(result);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-      const { userID } = req.query;
-  
-      if (!userID) return;
+const listJobsbyUser = async (req, res) => {
+  try {
+    // console.log("connecting to DB....");
+    // await connectMongo();
+    // console.log("connected to DB");
 
-      const user = await User.findOne({uid:userID})
+    const { userID } = req.query;
 
-      const user_objID = user._id
+    if (!userID) return;
 
-      const jobs = await Job.find({user:user_objID}).select('-image')
+    const user = await User.findOne({ uid: userID });
 
-      return await res.json(jobs)
-  
+    const user_objID = user._id;
 
-   }catch(err){
+    const jobs = await Job.find({ user: user_objID })
+      .select("-image")
+      .populate({ path: "user", model: User, select: "-image" });
 
-      console.log(err)
-   }
-}
+    return await res.json(jobs);
+  } catch (err) {
+    console.log(err);
+  }
+};
 export default connectDB(handler);

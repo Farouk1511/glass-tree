@@ -1,5 +1,8 @@
 import {Schema,model,models} from 'mongoose'
 
+// https://stackoverflow.com/questions/55878704/mongo-db-design-for-user-favourites-pros-and-cons
+// 
+
 const UserSchema = new Schema({
     uid:{
         type:String,

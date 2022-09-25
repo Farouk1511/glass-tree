@@ -29,6 +29,7 @@ export async function getStaticProps() {
   const services = await Service.find({}).select('-image').populate({
     path: "user",
     model: User,
+    select:"-image"
   }).sort({created: -1}).limit(4).exec();
 
   return {

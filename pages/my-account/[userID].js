@@ -89,6 +89,7 @@ const MyAcount = () => {
           marginRight={20}
           marginTop={5}
           type={type}
+          isOwner = {true}
         />
       )}
 
@@ -101,7 +102,7 @@ const MyAcount = () => {
               justifyContent: "center",
             }}
           >
-            No Services Created
+           {` No ${type==='service'?'Service':'Jobs'} Created`}
           </Typography>
         )
         //to be dynamic with jobs
