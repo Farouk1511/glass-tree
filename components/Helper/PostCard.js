@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Card,
@@ -12,15 +12,15 @@ import {
   Typography,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PostShape from "./PostShape";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteModal from "../DeleteModal";
 import { useRouter } from "next/router";
 
-const PostCard = ({ post, type, isOwner, editPost }) => {
+const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
   const [open, setOpen] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const handleClose = () => {
     setOpen(false);
   };
@@ -30,21 +30,43 @@ const PostCard = ({ post, type, isOwner, editPost }) => {
 
   const handleDelete = async () => {
     try {
-       await fetch(`/api/${type}/delete/${post._id}`, {
+      await fetch(`/api/${type}/delete/${post._id}`, {
         method: "DELETE",
       });
-      handleClose()
+      handleClose();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleEdit = async() =>{
-    router.push(`http://localhost:3000/posting/${type}/edit/${post._id}`)
-  }
+  // const handleFavorite = async () => {
+  //   try {
+  //     console.log(post)
+  //     const { _id } = post;
+  //     const {uid} = user
+  //     const result = await fetch(
+  //       `http://localhost:3000/api/user/${uid}/${type}/${favorite?'favorite':'unfavorite'}/${_id}`,
+  //       {
+  //         method: "PUT",
+  //       }
+  //     );
+
+  //     console.log(result);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }finally{
+  //    setFavorite(!favorite)
+
+  //   }
+  // };
+
+  const handleEdit = async () => {
+    router.push(`http://localhost:3000/posting/${type}/edit/${post._id}`);
+  };
 
   return (
     <Grid lg={3} item>
+      {/* {console.log(post)} */}
       <Card sx={{ maxWidth: 350, marginBottom: 5, height: 450 }} elevation={3}>
         <CardActionArea href={`/posting/${type}/${post._id}`}>
           <CardMedia
@@ -132,8 +154,14 @@ const PostCard = ({ post, type, isOwner, editPost }) => {
         >
           <CardContent>
             {!isOwner && (
-              <IconButton>
-                <FavoriteBorderIcon />
+              <IconButton
+                onClick={() => {
+                  handleFavorite(post, !isFavorite);
+                }}
+              >
+                {/* {console.log(favorite)} */}
+                {!isFavorite && <FavoriteBorderIcon />}
+                {isFavorite && <FavoriteOutlinedIcon />}
               </IconButton>
             )}
             {isOwner && (

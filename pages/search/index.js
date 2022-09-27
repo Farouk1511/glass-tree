@@ -6,6 +6,8 @@ import Service from "../../models/service";
 import connectMongo from "../../utils/connectMongo";
 import User from "../../models/user";
 import PostCardGrid from "../../components/Helper/PostCardGrid";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firbase/utilities";
 
 const pages = [
   { name: "Register", href: "/register" },
@@ -29,6 +31,12 @@ export async function getStaticProps() {
   
     
     await connectMongo();
+   
+    // Get user details
+
+    // get fav services
+    //chechk if value is true
+    // add new value to service object service.isFav = true 
     
 
     const services = await Service.find({}).select('-image')
@@ -37,6 +45,8 @@ export async function getStaticProps() {
         model: User,
         select:'-image'
       })
+
+      
 
       // console.log(services)
     return {

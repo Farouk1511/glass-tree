@@ -13,11 +13,16 @@ const handler = async (req, res) => {
 
     let result;
     if (post === "job") {
-      result = await User.findOne(ObjectId(userID), { favoriteJob: true });
-      //    console.log(Array.from(result.favoriteJob.keys()))
-      const favIDs = Array.from(result.favoriteJob.keys());
-      //   console.log(favIDs)
-      const favoriteJobs = await Job.find({ _id: { $in: favIDs } }).select(
+      result = await User.findOne(
+        { uid: userID },
+        { favoriteJob: true }
+      ).select("-image");
+      const { favoriteJob } = result;
+      // console.log(result);
+      let favIDs = Array.from(result.favoriteJob.keys());
+      const favJobs = favIDs.filter((id) => favoriteJob.get(id));
+
+      const favoriteJobs = await Job.find({ _id: { $in: favJobs } }).select(
         "-image"
       );
 
@@ -25,12 +30,18 @@ const handler = async (req, res) => {
     }
 
     if (post === "service") {
-      result = await User.findOne(ObjectId(userID), { favoriteService: true });
-      //    console.log(Array.from(result.favoriteJob.keys()))
+      result = await User.findOne(
+        { uid: userID },
+        { favoriteService: true }
+      ).select("-image");
+      const { favoriteService } = result;
+      // console.log(result);
       const favIDs = Array.from(result.favoriteService.keys());
+
+      const favServices = favIDs.filter((id) => favoriteService.get(id));
       //   console.log(favIDs)
       const favoriteServices = await Service.find({
-        _id: { $in: favIDs },
+        _id: { $in: favServices },
       }).select("-image");
 
       result = favoriteServices;

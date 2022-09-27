@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Paper,
-  Avatar,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Paper, Avatar } from "@mui/material";
 
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,14 +7,14 @@ import InputBase from "@mui/material/InputBase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firbase/utilities";
 import ProfileAvatar from "./ProfileAvatar";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { useRouter } from "next/router";
 
 const NavBar = () => {
   const [user, loading, error] = useAuthState(auth);
-  
+  const router = useRouter();
   return (
-    
     <>
-  
       <AppBar
         position="sticky"
         elevation={0}
@@ -82,11 +76,27 @@ const NavBar = () => {
           {/* <Avatar sx={{ backgroundColor: "secondary.main" }}>
             {user ? user.email.split("")[0].toLocaleUpperCase() : "F"}
           </Avatar> */}
-          {user && <ProfileAvatar name={user.email?user.email: 'J'} userID={user.uid}/>}
+          <IconButton
+            onClick={() =>
+              router.push(`http://localhost:3000/favorites/${user.uid}`)
+            }
+          >
+            <FavoriteBorderOutlinedIcon
+              sx={{ color: "#000" }}
+              fontSize={"large"}
+            />
+          </IconButton>
+
+          {user && (
+            <ProfileAvatar
+              name={user.email ? user.email : "J"}
+              userID={user.uid}
+            />
+          )}
         </Toolbar>
       </AppBar>
     </>
   );
 };
 
-export default NavBar
+export default NavBar;

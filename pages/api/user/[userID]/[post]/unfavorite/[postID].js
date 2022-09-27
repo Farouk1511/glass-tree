@@ -8,7 +8,7 @@ const handler = async (req, res) => {
 
     const { userID, post, postID } = req.query;
 
-    const user = await User.findById(userID).select("-image");
+    const user = await User.findOne({uid:userID}).select("-image");
 
     if (post === "job") {
       user.favoriteJob.set(postID, false);
