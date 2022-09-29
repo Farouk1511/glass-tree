@@ -101,11 +101,11 @@ const PostCardGrid = ({
         {postings.map((post) => {
           let isFavorite = false;
           if (type === "job" && currentUser) {
-            const favoriteJobs = currentUser.favoriteJob;
+            const favoriteJobs = currentUser.favoriteJob || [];
             isFavorite = favoriteJobs[post._id];
           }
           if (type === "service" && currentUser) {
-            const favoriteServices = currentUser.favoriteService;
+            const favoriteServices = currentUser.favoriteService || [];
             isFavorite = favoriteServices[post._id];
           }
           {

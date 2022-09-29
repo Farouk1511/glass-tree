@@ -42,6 +42,8 @@ export async function getStaticProps() {
 export default function Home({ postings }) {
   // console.log(postings);
 
+  const [query,setQuery] = useState("")
+
   return (
     <div>
       <Head>
@@ -90,13 +92,12 @@ export default function Home({ postings }) {
         }}
         elevation={0}
       >
-        <IconButton disabled>
-          <SearchIcon />
-        </IconButton>
+        
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder='Try "paint my fence"'
           inputProps={{ "aria-label": "search google maps" }}
+          onChange = {(e) => setQuery(e.target.value)}
         />
         <Button
           variant="contained"
@@ -110,7 +111,7 @@ export default function Home({ postings }) {
             letterSpacing: 1,
           }}
           color="secondary"
-          href="/search"
+          href={`/search?searchQuery=${query}`}
         >
           Search
         </Button>
@@ -152,6 +153,7 @@ export default function Home({ postings }) {
                 minWidth: 80,
                 border: 2,
               }}
+              href={`/search?searchQuery=${link}`}
             >
               {link}
             </Button>

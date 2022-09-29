@@ -107,7 +107,7 @@ const Edit = () => {
   }, [router]);
   return (
     <>
-      {console.log(values)}
+      {/* {console.log(values)} */}
       <NavBar />
       <Paper
         elevation={0}

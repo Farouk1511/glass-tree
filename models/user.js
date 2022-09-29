@@ -32,10 +32,12 @@ const UserSchema = new Schema({
         unique:true
     },
     totalRatings:{
-        type:Number
+        type:Number,
+        default:0
     },
     averageRating:{
-        type:Number
+        type:Number,
+        default:3
     },
     ratingPerHour:{
         type: Number
