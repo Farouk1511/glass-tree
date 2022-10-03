@@ -53,80 +53,84 @@ export async function getStaticProps() {
 
 //Start changing all lists to posting instead of helperService or jobListing for componets
 const SearchPage = ({ postings }) => {
-const router = useRouter()
+  const router = useRouter();
 
-const [loading,setLoading] = useState(true)
-const [posts,setPosts] = useState(postings) 
-const [query,setQuery] = useState("")
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState(postings);
+  const [query, setQuery] = useState("");
 
   const handleSearch = (query) => {
+    const filteredPost = postings.filter((post) =>
+      post.title.toLowerCase().includes(query.toLowerCase())
+    );
 
-    const filteredPost = postings.filter(post => post.title.toLowerCase().includes(query.toLowerCase()))
+    setPosts(filteredPost);
+    setQuery(query);
+  };
 
-    setPosts(filteredPost)
-    setQuery(query)
-  }
-  
   useEffect(() => {
-    if(!router.isReady) return
-    
-    const {searchQuery} = router.query
-    console.log(query)
-    const filteredPost = postings.filter(post => post.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    if (!router.isReady) return;
 
-    setPosts(filteredPost)
-    setLoading(false)
-    
-  },[router,query,postings])
+    const { searchQuery } = router.query;
 
+    if (!searchQuery) {
+      setLoading(false);
+      return;
+    }
+    console.log(searchQuery);
+    const filteredPost = postings.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-
+    setPosts(filteredPost);
+    setLoading(false);
+  }, [router, query, postings]);
 
   return (
     <>
-    
       {/* Nav */}
-      <NavBar handleSearch ={handleSearch} />
+      <NavBar handleSearch={handleSearch} />
 
       {/* Categories */}
       <Categories sections={sections} />
 
-      {loading && 
-      <Container sx={{
-          display: "flex",
-          flex:1,
-          alignItems: "center",
-          justifyContent:'center'
-        }}>
-
-      <CircularProgress />
-      </Container> }
-
-      {!loading && <>
-        {/* Categories */}
-      <Paper elevation={0} sx={{ marginLeft: 25, marginTop: 5 }}>
-        <Typography variant="h4" sx={{ fontFamily: "rockwell" }}>
-          {query?`Results for "${query}"`:''}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontFamily: "rockwell", marginTop: 5, fontWeight: 700 }}
+      {loading && (
+        <Container
+          sx={{
+            display: "flex",
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-         {query?`${posts.length} services available`:''}
-         
-        </Typography>
-      </Paper>
+          <CircularProgress />
+        </Container>
+      )}
 
-      <PostCardGrid
-        marginLeft={20}
-        marginRight={20}
-        marginTop={5}
-        postings={posts}
-        type={"service"}
-      />
-      </>}
+      {!loading && (
+        <>
+          {/* Categories */}
+          <Paper elevation={0} sx={{ marginLeft: 25, marginTop: 5 }}>
+            <Typography variant="h4" sx={{ fontFamily: "rockwell" }}>
+              {query ? `Results for "${query}"` : ""}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ fontFamily: "rockwell", marginTop: 5, fontWeight: 700 }}
+            >
+              {query ? `${posts.length} services available` : ""}
+            </Typography>
+          </Paper>
 
-      
+          <PostCardGrid
+            marginLeft={20}
+            marginRight={20}
+            marginTop={5}
+            postings={posts}
+            type={"service"}
+          />
+        </>
+      )}
     </>
   );
 };

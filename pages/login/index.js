@@ -22,7 +22,7 @@ const Login = () => {
   const handleSubmit = async () => {
     try {
       await signin(values.email, values.password);
-      router.push("/search");
+      router.push("/search?searchQuery=");
     } catch (err) {
       // console.log(err);
       setError(err.message);

@@ -48,11 +48,11 @@ const Categories = ({ sections }) => {
 };
 
 Categories.propTypes = {
-  section: PropTypes.array.isRequired,
+  sections: PropTypes.array.isRequired,
 };
 
 Categories.defaultProps = {
-  section: [
+  sections: [
     { title: "Technology", url: "#" },
     { title: "Design", url: "#" },
     { title: "Culture", url: "#" },
