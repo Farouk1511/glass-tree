@@ -1,25 +1,195 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  Container,
-  Divider,
-  Paper,
-  Typography,
-  IconButton,
-  InputBase,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
+import { Paper, Typography } from "@mui/material";
+import React, { useState } from "react";
 import NavBar from "../../components/Navigation/NavBar";
-import SendIcon from "@mui/icons-material/Send";
 import Categories from "../../components/Navigation/Categories";
+import SideBar from "../../components/Messaging/SideBar";
+import ActiveChatContainer from "../../components/Messaging/ActiveChatContainer";
+
+const CONVOS = [
+  {
+    conversationId: "6335e4a3b7149666a8b461ef",
+    messages: [
+      {
+        seen: false,
+        _id: "6335ea5e3ba280bc8758f5b9",
+        sender: {
+          _id: "631e97e9d587f83f24ca5c78",
+          uid: "cB4HgYTZrAN7njW5Ngg2HpurLmp2",
+          name: "Farouk Kazeem",
+        },
+        content: "Hello Dubem",
+        conversationId: "6335e4a3b7149666a8b461ef",
+        createdAt: "2022-09-29T18:56:30.876Z",
+        __v: 0,
+        isSender: true,
+      },
+      {
+        seen: false,
+        _id: "6335f0143ba280bc8758f5bf",
+        sender: {
+          _id: "631e97e9d587f83f24ca5c78",
+          uid: "cB4HgYTZrAN7njW5Ngg2HpurLmp2",
+          name: "Farouk Kazeem",
+        },
+        content: "Hello Dubem",
+        conversationId: "6335e4a3b7149666a8b461ef",
+        createdAt: "2022-09-29T19:20:52.066Z",
+        __v: 0,
+        isSender: true,
+      },
+      {
+        _id: "633759aa72c7224d2a9a4a0a",
+        sender: {
+          _id: "631e97e9d587f83f24ca5c78",
+          uid: "cB4HgYTZrAN7njW5Ngg2HpurLmp2",
+          name: "Farouk Kazeem",
+        },
+        content: "Hello World",
+        conversationId: "6335e4a3b7149666a8b461ef",
+        seen: false,
+        createdAt: "2022-09-30T21:03:38.434Z",
+        __v: 0,
+        isSender: true,
+      },
+      {
+        _id: "633759cb72c7224d2a9a4a10",
+        sender: {
+          _id: "633491709a0d29123689d0bc",
+          uid: "YpDaWLEOkDNfj5wiGvCJRmGKsqR2",
+          name: "Dubem Udobi",
+        },
+        content: "Hello World",
+        conversationId: "6335e4a3b7149666a8b461ef",
+        seen: false,
+        createdAt: "2022-09-30T21:04:11.523Z",
+        __v: 0,
+        isSender: false,
+      },
+    ],
+    otherUser: "Dubem Udobi",
+  },
+  {
+    conversationId: "63375a4372c7224d2a9a4a16",
+    messages: [
+      {
+        _id: "63375a4372c7224d2a9a4a18",
+        sender: {
+          _id: "633492759a0d29123689d0f0",
+          uid: "8Acq9U2mV2Xpo1rR1bE3aipYe1H3",
+          name: "Udume Okotie",
+        },
+        content: "Hello mumu",
+        conversationId: "63375a4372c7224d2a9a4a16",
+        seen: false,
+        createdAt: "2022-09-30T21:06:11.193Z",
+        __v: 0,
+        isSender: false,
+      },
+      {
+        _id: "63375bb672c7224d2a9a4a30",
+        sender: {
+          _id: "631e97e9d587f83f24ca5c78",
+          uid: "cB4HgYTZrAN7njW5Ngg2HpurLmp2",
+          name: "Farouk Kazeem",
+        },
+        content: "Hello mumu - Farouk",
+        conversationId: "63375a4372c7224d2a9a4a16",
+        seen: false,
+        createdAt: "2022-09-30T21:12:22.552Z",
+        __v: 0,
+        isSender: true,
+      },
+    ],
+    otherUser: "Udume Okotie",
+  },
+  {
+    conversationId: "63375c4d72c7224d2a9a4a38",
+    messages: [
+      {
+        _id: "63375c4d72c7224d2a9a4a3a", //not needed
+        sender: {
+          _id: "631e97e9d587f83f24ca5c78",
+          uid: "cB4HgYTZrAN7njW5Ngg2HpurLmp2",
+          name: "Farouk Kazeem",
+        }, //decided what u need here
+        content: "Hello mumu - Farouk", //keep
+        conversationId: "63375c4d72c7224d2a9a4a38",//not important
+        seen: false,//keep
+        createdAt: "2022-09-30T21:14:53.085Z",//keep
+        __v: 0,//not imporatant
+        isSender: true,// keep
+      },
+      {
+        _id: "63375c7e72c7224d2a9a4a3c",
+        sender: {
+          _id: "6334952b73da167ac4eeaf89",
+          uid: "sMyC87ZcpKhEe57BXNt8GMS3sHm2",
+          name: "Jesse Uliem",
+        },
+        content: "Hello mumu - Jesse",
+        conversationId: "63375c4d72c7224d2a9a4a38",
+        seen: false,
+        createdAt: "2022-09-30T21:15:42.193Z",
+        __v: 0,
+        isSender: false,
+      },
+    ],
+    otherUser: "Jesse Uliem",
+  },
+];
 
 const Chat = () => {
+
+  const [activeConversation,setActiveConversation] = useState(CONVOS[0])
+  const [conversations,setConversations] = useState(CONVOS)
+ 
+  const setActiveChat = (index) => {
+    setActiveConversation(conversations[index])
+  }
+
+  const addMessageToConvo = (convoID,content) => {
+    const messageToAdd = {
+      content,
+      isSender:true
+    }
+
+    const newConvo = conversations.map((convo) => {
+      if(convo.conversationId === convoID){
+        const convoCopy = {...convo}
+        convoCopy.messages.push(messageToAdd)
+        
+        return convoCopy
+      }else{
+        return convo
+      }
+
+    
+    })
+
+    setConversations(newConvo)
+  }
   return (
     <>
       <NavBar />
       <Categories />
+      <Typography
+        sx={{
+          fontFamily: "rockwell",
+          fontWeight: 700,
+          textDecoration: "none",
+          display: "flex",
+
+          marginLeft: 33,
+
+          alignItems: "center",
+        }}
+        variant="h4"
+        component="a"
+        href="/search"
+        color="primary"
+      >
+        Messages
+      </Typography>
       <Paper
         elevation={0}
         sx={{
@@ -28,455 +198,14 @@ const Chat = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "auto",
-        //   backgroundColor: "#e0e0e0",
+          // backgroundColor: "#e0e0e0",
           padding: 1,
           paddingLeft: 30,
           paddingRight: 30,
-         
         }}
       >
-        <Paper
-          sx={{
-            width: "20%",
-            height: "80vh",
-            borderRadius: 0,
-            padding: 2,
-          }}
-          elevation={0}
-        >
-          {/* side Chats */}
-          <Paper
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              padding: 1,
-              borderRadius: 0,
-              borderBottom: 1,
-              borderColor: "#e0e0e0",
-            }}
-            elevation={0}
-          >
-            <Badge color="secondary" badgeContent=" " variant="dot">
-              <Avatar />
-            </Badge>
-            <Box sx={{ marginLeft: 2 }}>
-              <Typography variant="body2" fontWeight={"700"}>
-                Name
-              </Typography>
-              <Typography variant="body2" fontWeight={"200"}>
-                Recent Message
-              </Typography>
-            </Box>
-          </Paper>
-          <Paper
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              padding: 1,
-              borderRadius: 0,
-              borderBottom: 1,
-              borderColor: "#e0e0e0",
-            }}
-            elevation={0}
-          >
-            <Badge color="secondary" badgeContent=" " variant="dot">
-              <Avatar />
-            </Badge>
-            <Box sx={{ marginLeft: 2 }}>
-              <Typography variant="body2" fontWeight={"700"}>
-                Name
-              </Typography>
-              <Typography variant="body2" fontWeight={"200"}>
-                Recent Message
-              </Typography>
-            </Box>
-          </Paper>
-          <Paper
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              padding: 1,
-              borderRadius: 0,
-              borderBottom: 1,
-              borderColor: "#e0e0e0",
-            }}
-            elevation={0}
-          >
-            <Badge color="secondary" badgeContent=" " variant="dot">
-              <Avatar />
-            </Badge>
-            <Box sx={{ marginLeft: 2 }}>
-              <Typography variant="body2" fontWeight={"700"}>
-                Name
-              </Typography>
-              <Typography variant="body2" fontWeight={"200"}>
-                Recent Message
-              </Typography>
-            </Box>
-          </Paper>
-          <Paper
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              padding: 1,
-              borderRadius: 0,
-              borderBottom: 1,
-              borderColor: "#e0e0e0",
-            }}
-            elevation={0}
-          >
-            <Badge color="secondary" badgeContent=" " variant="dot">
-              <Avatar />
-            </Badge>
-            <Box sx={{ marginLeft: 2 }}>
-              <Typography variant="body2" fontWeight={"700"}>
-                Name
-              </Typography>
-              <Typography variant="body2" fontWeight={"200"}>
-                Recent Message
-              </Typography>
-            </Box>
-          </Paper>
-        </Paper>
-        <Divider orientation="vertical" flexItem />
-
-        <Paper
-          sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1 }}
-          elevation={0}
-        >
-          <Paper
-            elevation={0}
-            sx={{
-              padding: 1,
-              marginBottom: 2,
-              borderBottom: 1,
-              borderRadius: 0,
-              borderColor: "#e0e0e0",
-            }}
-          >
-            <Paper
-              sx={{
-                display: "flex",
-                flexDirection: "reverse",
-                alignItems: "center",
-              }}
-              elevation={0}
-            >
-              <Badge color="secondary" badgeContent=" " variant="dot">
-                <Avatar />
-              </Badge>
-              <Box sx={{ marginLeft: 2 }}>
-                <Typography variant="body2" fontWeight={"700"}>
-                  Name
-                </Typography>
-                <Typography variant="body2" fontWeight={"200"}>
-                  Recent Message
-                </Typography>
-                <Typography variant="body2" fontWeight={"200"}>
-                  Last seen 12/10/2022
-                </Typography>
-              </Box>
-            </Paper>
-          </Paper>
-          {/* Chatsss */}
-
-          <Paper
-            elevation={0}
-            sx={{
-              height: "85%",
-              overflowY: "auto",
-              "&::-webkit-scrollbar": {
-                width: 0,
-              },
-              padding:3
-            }}
-          >
-            <Paper
-              sx={{ display: "flex", flexDirection: "row", marginBottom: 2 }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginRight: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "secondary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                marginBottom: 2,
-              }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginLeft: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "primary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{ display: "flex", flexDirection: "row", marginBottom: 2 }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginRight: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "secondary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                hello everyone
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                marginBottom: 2,
-              }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginLeft: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "primary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{ display: "flex", flexDirection: "row", marginBottom: 2 }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginRight: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "secondary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                marginBottom: 2,
-              }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginLeft: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "primary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{ display: "flex", flexDirection: "row", marginBottom: 2 }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginRight: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "secondary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                marginBottom: 2,
-              }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginLeft: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "primary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{ display: "flex", flexDirection: "row", marginBottom: 2 }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginRight: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "secondary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-            <Paper
-              sx={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                marginBottom: 2,
-              }}
-              elevation={0}
-            >
-              <Avatar sx={{ marginLeft: 2 }} />
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: "primary.main",
-                  display: "flex",
-                  alignItems: "center",
-                  maxWidth: "80%",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={"200"}
-                  padding={1}
-                  color={"#e0e0e0"}
-                >
-                  Hello World
-                </Typography>
-              </Paper>
-            </Paper>
-          </Paper>
-
-          <Paper
-            sx={{
-              borderColor: "primary",
-              width: "100%",
-              border: 1,
-              borderRadius: 0,
-              display: "flex",
-              marginTop: 2,
-            }}
-            component={"form"}
-            elevation={0}
-          >
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Say Hi" />
-            <IconButton
-              sx={{
-                borderRadius: 0,
-                backgroundColor: "primary.main",
-                color: "#fff",
-              }}
-            >
-              <SendIcon />
-            </IconButton>
-          </Paper>
-        </Paper>
+        <SideBar conversations={conversations} setActiveChat={setActiveChat}/>
+        <ActiveChatContainer conversation={activeConversation} addMessageToConvo={addMessageToConvo} />
       </Paper>
     </>
   );
