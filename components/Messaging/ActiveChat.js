@@ -17,11 +17,11 @@ const ActiveChat = ({ conversation }) => {
       }}
     >
      
-      {conversation.messages.map((message) =>
+      {conversation.messages.map((message,i) =>
         message.isSender ? (
-          <SenderBubble message={message.content} />
+          <SenderBubble message={message.content} key={i} />
         ) : (
-          <OtherUserBubble message={message.content} />
+          <OtherUserBubble message={message.content} key={i}/>
         )
       )}
     </Paper>

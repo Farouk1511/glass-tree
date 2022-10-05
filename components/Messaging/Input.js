@@ -1,7 +1,7 @@
 import { IconButton, InputBase, Paper, TextareaAutosize } from "@mui/material";
 import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-const Input = ({ addMessageToConvo, conversationId }) => {
+const Input = ({ addMessageToConvo, conversationId,sendMessage,userId}) => {
   const [content, setContent] = useState("");
 
   const handleChange = (event) => {
@@ -10,13 +10,15 @@ const Input = ({ addMessageToConvo, conversationId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addMessageToConvo(conversationId, content);
+    if(!content) return
+    sendMessage({convoID:conversationId,content})
+    addMessageToConvo(conversationId, content,userId);
     setContent("");
   };
 
   const keyPress = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault();
+     
      handleSubmit(e)
     }
   };

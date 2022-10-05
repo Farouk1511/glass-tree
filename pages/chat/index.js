@@ -1,9 +1,12 @@
 import { Paper, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import NavBar from "../../components/Navigation/NavBar";
 import Categories from "../../components/Navigation/Categories";
 import SideBar from "../../components/Messaging/SideBar";
 import ActiveChatContainer from "../../components/Messaging/ActiveChatContainer";
+import io from "socket.io-client";
+import { useAuthState } from "react-firebase-hooks/auth";
+import {auth} from '../../firbase/utilities'
 
 const CONVOS = [
   {
@@ -67,6 +70,7 @@ const CONVOS = [
       },
     ],
     otherUser: "Dubem Udobi",
+    otherUserId: "YpDaWLEOkDNfj5wiGvCJRmGKsqR2"
   },
   {
     conversationId: "63375a4372c7224d2a9a4a16",
@@ -113,11 +117,11 @@ const CONVOS = [
           name: "Farouk Kazeem",
         }, //decided what u need here
         content: "Hello mumu - Farouk", //keep
-        conversationId: "63375c4d72c7224d2a9a4a38",//not important
-        seen: false,//keep
-        createdAt: "2022-09-30T21:14:53.085Z",//keep
-        __v: 0,//not imporatant
-        isSender: true,// keep
+        conversationId: "63375c4d72c7224d2a9a4a38", //not important
+        seen: false, //keep
+        createdAt: "2022-09-30T21:14:53.085Z", //keep
+        __v: 0, //not imporatant
+        isSender: true, // keep
       },
       {
         _id: "63375c7e72c7224d2a9a4a3c",
@@ -138,36 +142,101 @@ const CONVOS = [
   },
 ];
 
+//Sockets
+let socket;
+
 const Chat = () => {
+  const [activeConversation, setActiveConversation] = useState(CONVOS[0]);
+  const [conversations, setConversations] = useState(CONVOS);
+  const [user,error,isLoading] = useAuthState(auth)
+const [userId,setUserId] = useState("")
 
-  const [activeConversation,setActiveConversation] = useState(CONVOS[0])
-  const [conversations,setConversations] = useState(CONVOS)
- 
   const setActiveChat = (index) => {
-    setActiveConversation(conversations[index])
-  }
+    setActiveConversation(conversations[index]);
+  };
 
-  const addMessageToConvo = (convoID,content) => {
-    const messageToAdd = {
-      content,
-      isSender:true
-    }
+  const sendMessage = (data) => {
+    socket.emit("new-message", {
+      content: data.content,
+      convoID: data.convoID,
+      senderId:data.senderId
+    });
 
-    const newConvo = conversations.map((convo) => {
-      if(convo.conversationId === convoID){
-        const convoCopy = {...convo}
-        convoCopy.messages.push(messageToAdd)
-        
-        return convoCopy
-      }else{
-        return convo
-      }
+    console.log(data,"sendMEssage")
+  };
 
-    
+  const addMessageToConvo = useCallback(
+    (convoID, content,senderId) => {
+      const messageToAdd = {
+        content,
+       
+      };
+
+      const newConvo = conversations.map((convo) => {
+        if (convo.conversationId === convoID) {
+          const convoCopy = { ...convo };
+          console.log(user.uid,convo.otherUserId)
+          messageToAdd.isSender = user.uid === senderId  
+          convoCopy.messages.push(messageToAdd);
+
+          return convoCopy;
+        } else {
+          return convo;
+        }
+      });
+
+      setConversations(newConvo);
+    },
+    [conversations,user]
+  );
+
+  const socketInitializer =  async () => {
+    await fetch("/api/socket");
+
+    socket = io();
+
+    socket.on("new-incoming-message", (data) => {
+      console.log(data,"UseEFfect")
+      const { convoID, content ,senderId} = data;
+      addMessageToConvo(convoID, content,senderId);
+    });
+  };
+  
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      setUserId(user.uid)
+      CONVOS.map((convo) => {
+        if(convo.conversationId === '6335e4a3b7149666a8b461ef'){
+          const convoCopy = {...convo}
+          convoCopy.otherUserId = user.uid === 'cB4HgYTZrAN7njW5Ngg2HpurLmp2'?'cB4HgYTZrAN7njW5Ngg2HpurLmp2':'YpDaWLEOkDNfj5wiGvCJRmGKsqR2'
+          return convoCopy
+        }
+       })
     })
+  
+    socketInitializer();
+    
+  }, [user]);
+  // const socketInitializer = useCallback( async () => {
+  //   await fetch("/api/socket");
 
-    setConversations(newConvo)
-  }
+  //   socket = io();
+
+  //   socket.on("new-incoming-message", (data) => {
+  //     console.log(data,"UseEFfect")
+  //     const { convoID, content } = data;
+  //     addMessageToConvo(convoID, content);
+  //   });
+  // },[addMessageToConvo]);
+  
+  // useEffect(() => {
+    
+    
+  //   socketInitializer();
+    
+  // }, [socketInitializer]);
+  
+  
   return (
     <>
       <NavBar />
@@ -204,8 +273,13 @@ const Chat = () => {
           paddingRight: 30,
         }}
       >
-        <SideBar conversations={conversations} setActiveChat={setActiveChat}/>
-        <ActiveChatContainer conversation={activeConversation} addMessageToConvo={addMessageToConvo} />
+        <SideBar conversations={conversations} setActiveChat={setActiveChat} />
+        <ActiveChatContainer
+          conversation={activeConversation}
+          addMessageToConvo={addMessageToConvo}
+          sendMessage={sendMessage}
+          userId={userId}
+        />
       </Paper>
     </>
   );

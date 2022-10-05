@@ -104,7 +104,14 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
           </Typography>
         </CardContent>
         <CardContent
-          sx={{ margin: 0, paddingTop: 0, paddingBottom: 0, height: 100 }}
+          sx={{
+            margin: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            height: 100,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
         >
           <Typography
             id="postDescription"
