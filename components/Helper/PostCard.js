@@ -9,9 +9,11 @@ import {
   Grid,
   IconButton,
   Rating,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
@@ -38,27 +40,6 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
       console.log(err);
     }
   };
-
-  // const handleFavorite = async () => {
-  //   try {
-  //     console.log(post)
-  //     const { _id } = post;
-  //     const {uid} = user
-  //     const result = await fetch(
-  //       `http://localhost:3000/api/user/${uid}/${type}/${favorite?'favorite':'unfavorite'}/${_id}`,
-  //       {
-  //         method: "PUT",
-  //       }
-  //     );
-
-  //     console.log(result);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }finally{
-  //    setFavorite(!favorite)
-
-  //   }
-  // };
 
   const handleEdit = async () => {
     router.push(`http://localhost:3000/posting/${type}/edit/${post._id}`);
@@ -161,6 +142,8 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
         >
           <CardContent>
             {!isOwner && (
+              <Tooltip title={"Save me for later"}>
+
               <IconButton
                 onClick={() => {
                   handleFavorite(post, !isFavorite);
@@ -170,6 +153,7 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
                 {!isFavorite && <FavoriteBorderIcon />}
                 {isFavorite && <FavoriteOutlinedIcon />}
               </IconButton>
+              </Tooltip>
             )}
             {isOwner && (
               <>
@@ -181,6 +165,12 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
                 </IconButton>
               </>
             )}
+            <Tooltip title={"Message me"}>
+           
+              <IconButton href={`/chat?otherUserId=${post.user?.uid}&otherUserName=${post.user?.name}`}  >
+                <ChatBubbleOutlineIcon />
+              </IconButton>
+            </Tooltip>
           </CardContent>
           <CardContent
             sx={{

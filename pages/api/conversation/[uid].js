@@ -47,7 +47,7 @@ const handler = async (req, res) => {
 
   //   const messages = await Message.find({ conversationId: conversations });
 
- return await res.json(aggregatedConversation);
+ return  res.json(aggregatedConversation);
 
   //   console.log(aggregatedConversation);
 };

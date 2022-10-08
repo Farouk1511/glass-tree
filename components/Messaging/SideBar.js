@@ -15,7 +15,7 @@ const SideBar = ({conversations,setActiveChat}) => {
         }}
         elevation={0}
       >
-      
+      {console.log(conversations)}
        {conversations.map((conversation,index) => (
         <CardActionArea key={conversation.otherUser} onClick={()=> setActiveChat(index)}>
 

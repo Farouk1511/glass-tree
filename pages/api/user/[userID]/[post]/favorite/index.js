@@ -2,7 +2,6 @@ import connectDB from "../../../../../../middleware/connectDB";
 import User from "../../../../../../models/user";
 import Job from "../../../../../../models/job";
 import Service from "../../../../../../models/service";
-import { ObjectId } from "mongodb";
 
 //https://stackoverflow.com/questions/55878704/mongo-db-design-for-user-favourites-pros-and-cons
 const handler = async (req, res) => {
@@ -22,9 +21,9 @@ const handler = async (req, res) => {
       let favIDs = Array.from(result.favoriteJob.keys());
       const favJobs = favIDs.filter((id) => favoriteJob.get(id));
 
-      const favoriteJobs = await Job.find({ _id: { $in: favJobs } }).select(
-        "-image"
-      );
+      const favoriteJobs = await Job.find({ _id: { $in: favJobs } })
+        .select("-image")
+        .populate({ path: "user", model: User, select: "-image" });
 
       result = favoriteJobs;
     }
@@ -42,7 +41,9 @@ const handler = async (req, res) => {
       //   console.log(favIDs)
       const favoriteServices = await Service.find({
         _id: { $in: favServices },
-      }).select("-image");
+      })
+        .select("-image")
+        .populate({ path: "user", model: User, select: "-image" });
 
       result = favoriteServices;
     }

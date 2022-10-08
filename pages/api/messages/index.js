@@ -2,15 +2,19 @@ import { ObjectId } from "mongodb";
 import connectDB from "../../../middleware/connectDB";
 import Conversation from "../../../models/conversation";
 import Message from "../../../models/message";
+import User from "../../../models/user";
 
 const handler = async (req, res) => {
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method not Allowed" });
 
-  const { senderId, recieverId, conversationId, content } = req.body;
+  const { senderUID, recieverUID, conversationId, content } = req.body;
 
   let conversation;
   let message;
+
+  const senderId = await User.findOne({uid:senderUID}).select('_id')
+  const recieverId = await User.findOne({uid:recieverUID}).select('_id')
 
   //if no conversation create it then create new message
   if (!conversationId) {

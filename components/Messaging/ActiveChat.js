@@ -3,7 +3,8 @@ import { Paper } from "@mui/material";
 import SenderBubble from "./SenderBubble";
 import OtherUserBubble from "./OtherUserBubble";
 
-const ActiveChat = ({ conversation }) => {
+
+const ActiveChat = ({ conversation,userId }) => {
   return (
     <Paper
       elevation={0}
@@ -17,8 +18,8 @@ const ActiveChat = ({ conversation }) => {
       }}
     >
      
-      {conversation.messages.map((message,i) =>
-        message.isSender ? (
+      {conversation.messages.length > 0 && conversation.messages.map((message,i) =>
+        message.sender.uid === userId ? (
           <SenderBubble message={message.content} key={i} />
         ) : (
           <OtherUserBubble message={message.content} key={i}/>

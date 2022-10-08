@@ -28,7 +28,7 @@ const Chat = ({conversation}) => {
         </Typography>
         <Typography variant="body2" fontWeight={"200"}>
         
-          {conversation.messages[conversation.messages.length -1].content}
+          {conversation.messages[conversation.messages.length -1]?.content}
         </Typography>
       </Box>
     </Paper>

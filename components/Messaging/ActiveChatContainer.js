@@ -16,7 +16,7 @@ const ActiveChatContainer = ({
       elevation={0}
     >
       <CurrentUser otherUser={conversation.otherUser} />
-      <ActiveChat conversation={conversation} />
+      <ActiveChat conversation={conversation} userId={userId} />
       <Input
         addMessageToConvo={addMessageToConvo}
         conversationId={conversation.conversationId}
