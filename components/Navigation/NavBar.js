@@ -29,8 +29,7 @@ const NavBar = ({ handleSearch }) => {
         position="sticky"
         elevation={0}
         style={{
-          paddingLeft: 200,
-          paddingRight: 200,
+         
           zIndex: 1000,
           backgroundColor: "#fff",
         }}

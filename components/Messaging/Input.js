@@ -11,8 +11,8 @@ const Input = ({ addMessageToConvo, conversationId,sendMessage,userId}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(!content) return
-    sendMessage({convoID:conversationId,content})
-    addMessageToConvo(conversationId, content,userId);
+    addMessageToConvo({conversationId, content,senderUID:userId});
+    // sendMessage({convoID:conversationId,content,senderId:userId})
     setContent("");
   };
 

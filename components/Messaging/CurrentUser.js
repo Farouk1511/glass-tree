@@ -24,7 +24,8 @@ const CurrentUser = ({otherUser}) => {
           </Badge>
           <Box sx={{ marginLeft: 2 }}>
             <Typography variant="body2" fontWeight={"700"}>
-              {otherUser}
+            {/* {console.log(otherUser)} */}
+              {otherUser?.name}
             </Typography>
             <Typography variant="body2" fontWeight={"200"}>
               Last seen 12/10/2022

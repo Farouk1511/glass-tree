@@ -5,6 +5,7 @@ const Chat = ({conversation}) => {
   return (
     <Paper
       sx={{
+        backgroundColor:'#D8E2DC',
         display: "flex",
         alignItems: "center",
         padding: 1,
@@ -24,7 +25,7 @@ const Chat = ({conversation}) => {
 
       <Box sx={{ marginLeft: 2 }}>
         <Typography variant="body2" fontWeight={"700"}>
-          {conversation.otherUser}
+          {conversation.otherUser.name}
         </Typography>
         <Typography variant="body2" fontWeight={"200"}>
         

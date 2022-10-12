@@ -13,7 +13,7 @@ const Categories = ({ sections }) => {
           sx={{
             justifyContent: "space-between",
             overflowX: "auto",
-            margin: 25,
+           
             marginTop: 0,
             marginBottom: 0,
           }}

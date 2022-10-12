@@ -9,20 +9,29 @@ const ActiveChatContainer = ({
   addMessageToConvo,
   sendMessage,
   userId,
+  conversations
 }) => {
+console.log(conversation,"activecontainer")
+  const activeConversation = conversations && conversation
+    ? conversations.find(
+        (convo) => convo.otherUser.name === conversation.otherUser.name
+      )
+    : {};
   return (
     <Paper
       sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1 }}
       elevation={0}
     >
-      <CurrentUser otherUser={conversation.otherUser} />
-      <ActiveChat conversation={conversation} userId={userId} />
+    {activeConversation && 
+     <> <CurrentUser otherUser={activeConversation?.otherUser} />
+      <ActiveChat conversation={activeConversation} userId={userId} />
       <Input
         addMessageToConvo={addMessageToConvo}
-        conversationId={conversation.conversationId}
+        conversationId={activeConversation?.conversationId}
         sendMessage={sendMessage}
         userId={userId}
-      />
+      /></>
+    }
     </Paper>
   );
 };

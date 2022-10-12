@@ -30,16 +30,23 @@ const handler = async (req, res) => {
       sender: senderId,
       content,
       conversationId: _id,
-    });
+    })
+
+    message = await message.populate({path:'sender',model:User,select:'id uid name email'})
+    
 
    return res.json({ message });
   }
+
+  
 
   message = await Message.create({
     sender: senderId,
     content,
     conversationId,
   });
+
+  message = await message.populate({path:'sender',model:User,select:'id uid name email'})
 
   return res.json({ message });
 };
