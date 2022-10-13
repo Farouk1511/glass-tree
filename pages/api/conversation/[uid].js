@@ -22,7 +22,7 @@ const handler = async (req, res) => {
 
   const conversations = await Conversation.find({
     $or: [{ sender: userID }, { reciever: userID }],
-  }).select("_id");
+  });
   //  const conversations = await Conversation.find({})
 
   //   console.log(conversations);
@@ -36,12 +36,21 @@ const handler = async (req, res) => {
   let aggregatedConversation = await Promise.all(
     conversations.map(async (convo) => {
       const conversationId = convo._id;
+
+      let otherUser
+      console.log(userID,convo.sender)
+      if(userID.toString() === convo.sender.toString()){
+        otherUser = await User.findById(convo.reciever).select('uid _id name')
+      }else{
+        otherUser = await User.findById(convo.sender).select('uid _id name')
+      }
+
       const messages = await Message.find({ conversationId }).populate({
         path: "sender",
         model: User,
         select: "name _id uid",
       });
-      return { conversationId, messages };
+      return { conversationId, messages,otherUser };
     })
   );
 

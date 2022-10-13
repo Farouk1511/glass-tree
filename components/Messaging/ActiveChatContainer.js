@@ -11,12 +11,13 @@ const ActiveChatContainer = ({
   userId,
   conversations
 }) => {
+  {console.log(conversations,"activecontainer")}
 console.log(conversation,"activecontainer")
   const activeConversation = conversations && conversation
     ? conversations.find(
         (convo) => convo.otherUser.name === conversation.otherUser.name
       )
-    : {};
+    : null;
   return (
     <Paper
       sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1 }}

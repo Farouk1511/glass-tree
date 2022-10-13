@@ -50,6 +50,7 @@ const ActiveChat = ({ conversation,userId }) => {
         padding: 3,
       }}
     >
+   
      
       {conversation?.messages?.map((message,i) =>
         message.sender.uid ===userId ? (
