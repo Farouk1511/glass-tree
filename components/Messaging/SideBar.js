@@ -2,7 +2,7 @@ import { CardActionArea, Paper, Typography } from "@mui/material";
 import React from "react";
 import Chat from "./Chat";
 
-const SideBar = ({conversations,setActiveChat}) => {
+const SideBar = ({conversations,userId}) => {
 
     return (
         <Paper
@@ -17,11 +17,18 @@ const SideBar = ({conversations,setActiveChat}) => {
       >
       {/* {console.log(conversations)} */}
        {conversations.map((conversation,index) => (
-        <CardActionArea key={index} onClick={()=> setActiveChat(conversation)}>
+        <CardActionArea key={index} href={`/chat/${userId}/${conversation.otherUser.uid}`}>
 
         <Chat  conversation={conversation}/>
         </CardActionArea>
        ))}
+      {/* {console.log(conversations)}
+       {conversations.map((conversation,index) => (
+        <CardActionArea key={index} onClick={()=> setActiveChat(conversation)}>
+
+        <Chat  conversation={conversation}/>
+        </CardActionArea>
+       ))} */}
             
       </Paper>
     )

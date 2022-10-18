@@ -1,7 +1,7 @@
 import { IconButton, InputBase, Paper, TextareaAutosize } from "@mui/material";
 import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-const Input = ({ addMessageToConvo, conversationId,sendMessage,userId}) => {
+const Input = ({ addMessageToConvo, conversationId,userId}) => {
   const [content, setContent] = useState("");
 
   const handleChange = (event) => {

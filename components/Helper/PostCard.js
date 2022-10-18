@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
+  Avatar,
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -19,9 +21,12 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteModal from "../DeleteModal";
 import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firbase/utilities";
 
 const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
   const [open, setOpen] = useState(false);
+  const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
   const handleClose = () => {
     setOpen(false);
@@ -47,8 +52,11 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
 
   return (
     <Grid lg={3} item>
-      {/* {console.log(post)} */}
-      <Card sx={{ maxWidth: 350, marginBottom: 5, height: 450 }} elevation={3}>
+      {console.log(post)}
+      <Card
+        sx={{ maxWidth: 350, marginBottom: 5, height: "auto", minHeight: 400 }}
+        elevation={6}
+      >
         <CardActionArea href={`/posting/${type}/${post._id}`}>
           <CardMedia
             component={"img"}
@@ -59,18 +67,6 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
           />
         </CardActionArea>
         <CardContent>
-          <Typography
-            id="postName"
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ fontFamily: "rockwell", margin: 0 }}
-            inputprops={{
-              "data-testid": "post-card-name",
-            }}
-          >
-            {post.name}
-          </Typography>
           <Typography
             id="postTitle"
             gutterBottom
@@ -104,31 +100,68 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
             {post.description}
           </Typography>
         </CardContent>
-        <CardContent>
-          <Rating
-            id="postAverageRating"
-            readOnly
-            max={5}
-            defaultValue={post.user?.averageRating || 5}
-            inputprops={{
-              "data-testid": "post-card-averageRating",
-            }}
-          />
+        <CardContent
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box>
+            <Rating
+              id="postAverageRating"
+              readOnly
+              max={1}
+              defaultValue={post.user?.averageRating || 5}
+              inputprops={{
+                "data-testid": "post-card-averageRating",
+              }}
+              sx={{
+                color: "secondary.main",
+              }}
+            />
 
-          <Typography
-            id="postTotalRatings"
+            <Typography
+              id="postTotalRatings"
+              sx={{
+                display: "inline-block",
+                fontFamily: "rockwell",
+                fontWeight: 700,
+              }}
+              variant="caption"
+              inputprops={{
+                "data-testid": "post-card-totalRatings",
+              }}
+            >
+              {post.user?.totalRatings}K
+            </Typography>
+          </Box>
+
+          <Box
             sx={{
-              display: "inline-block",
-              fontFamily: "rockwell",
-              fontWeight: 700,
-            }}
-            variant="caption"
-            inputprops={{
-              "data-testid": "post-card-totalRatings",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            {post.user?.totalRatings}K
-          </Typography>
+          {/* {post.user?<Avatar  src={`/api/user/image/${post.user?._id}`} />:<Avatar />} */}
+            <Avatar/>
+            <Typography
+              id="postName"
+              gutterBottom
+              variant="body2"
+              component="div"
+              sx={{
+                fontFamily: "rockwell",
+                margin: 0,
+                marginLeft: 1,
+                fontWeight: 700,
+              }}
+              inputprops={{
+                "data-testid": "post-card-name",
+              }}
+            >
+              {post.user?.name}
+            </Typography>
+          </Box>
         </CardContent>
         <Divider />
         <CardContent
@@ -137,22 +170,26 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: 0,
+            padding:2,
+            margin:0
           }}
         >
-          <CardContent>
+          <Box
+            sx={{
+              paddingBottom: 0,
+            }}
+          >
             {!isOwner && (
               <Tooltip title={"Save me for later"}>
-
-              <IconButton
-                onClick={() => {
-                  handleFavorite(post, !isFavorite);
-                }}
-              >
-                {/* {console.log(favorite)} */}
-                {!isFavorite && <FavoriteBorderIcon />}
-                {isFavorite && <FavoriteOutlinedIcon />}
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleFavorite(post, !isFavorite);
+                  }}
+                >
+                  {/* {console.log(favorite)} */}
+                  {!isFavorite && <FavoriteBorderIcon />}
+                  {isFavorite && <FavoriteOutlinedIcon />}
+                </IconButton>
               </Tooltip>
             )}
             {isOwner && (
@@ -166,18 +203,19 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
               </>
             )}
             <Tooltip title={"Message me"}>
-           
-              <IconButton href={`/chat?otherUserId=${post.user?.uid}&otherUserName=${post.user?.name}`}  >
+              <IconButton
+                href={`/chat/${user?.uid}/${post.user?.uid}`}
+              >
                 <ChatBubbleOutlineIcon />
               </IconButton>
             </Tooltip>
-          </CardContent>
-          <CardContent
+          </Box>
+          <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-end",
-              paddingBottom: 0,
+             
             }}
           >
             <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
@@ -190,7 +228,7 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
             >
               CA${post.ratePerHour || post.pay}/hr
             </Typography>
-          </CardContent>
+          </Box>
         </CardContent>
       </Card>
       <DeleteModal

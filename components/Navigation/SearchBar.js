@@ -8,6 +8,7 @@ const SearchBar = ({ handleSearch }) => {
   const handleChange = (e) => {
     e.preventDefault();
     setQuery(e.target.value);
+    handleSearch(query);
   };
 
   const keyPress = (e) => {

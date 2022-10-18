@@ -53,7 +53,7 @@ const ActiveChat = ({ conversation,userId }) => {
    
      
       {conversation?.messages?.map((message,i) =>
-        message.sender.uid ===userId ? (
+        message.sender?.uid ===userId ? (
           <SenderBubble message={message.content} key={i} />
         ) : (
           <OtherUserBubble message={message.content} key={i}/>

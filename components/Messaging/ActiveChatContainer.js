@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import React from "react";
 import ActiveChat from "./ActiveChat";
 import CurrentUser from "./CurrentUser";
@@ -7,20 +7,20 @@ import Input from "./Input";
 const ActiveChatContainer = ({
   conversation,
   addMessageToConvo,
-  sendMessage,
   userId,
   conversations
 }) => {
-  {console.log(conversations,"activecontainer")}
-console.log(conversation,"activecontainer")
+//   {console.log(conversations,"activecontainer")}
+// console.log(conversation,"activecontainer")
   const activeConversation = conversations && conversation
     ? conversations.find(
         (convo) => convo.otherUser.name === conversation.otherUser.name
       )
     : null;
   return (
+  
     <Paper
-      sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1 }}
+      sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1,backgroundColor:'#7D7D7D' }}
       elevation={0}
     >
     {activeConversation && 
@@ -29,10 +29,11 @@ console.log(conversation,"activecontainer")
       <Input
         addMessageToConvo={addMessageToConvo}
         conversationId={activeConversation?.conversationId}
-        sendMessage={sendMessage}
         userId={userId}
       /></>
     }
+
+    {!activeConversation && <Typography>Select a conversation</Typography>}
     </Paper>
   );
 };
