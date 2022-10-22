@@ -4,7 +4,7 @@ import Categories from "../../../components/Navigation/Categories";
 import Service from "../../../models/service";
 import connectMongo from "../../../utils/connectMongo";
 import User from "../../../models/user";
-import PostDetails from "../../../components/Helper/PostDetails";
+import PostDetails from "../../../components/Post/PostDetails";
 const sections = [
   { title: "Technology", url: "#" },
   { title: "Design", url: "#" },

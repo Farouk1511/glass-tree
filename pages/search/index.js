@@ -5,15 +5,10 @@ import Categories from "../../components/Navigation/Categories";
 import Service from "../../models/service";
 import connectMongo from "../../utils/connectMongo";
 import User from "../../models/user";
-import PostCardGrid from "../../components/Helper/PostCardGrid";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firbase/utilities";
+import PostCardGrid from "../../components/Post/PostCardGrid";
 import { useRouter } from "next/router";
-
-const pages = [
-  { name: "Register", href: "/register" },
-  { name: " Login", href: "/login" },
-];
+import Header from "../../components/Navigation/Header";
+import SearchInfo from "../../components/Navigation/SearchInfo";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -60,12 +55,18 @@ const SearchPage = ({ postings }) => {
   const [query, setQuery] = useState("");
 
   const handleSearch = (query) => {
-    const filteredPost = postings.filter((post) =>
-      post.title.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredPost = filter(postings, query);
 
     setPosts(filteredPost);
     setQuery(query);
+  };
+
+  const filter = (arr, query) => {
+    const filteredPost = arr.filter((post) =>
+      post.title.toLowerCase().includes(query.toLowerCase())
+    );
+
+    return filteredPost;
   };
 
   useEffect(() => {
@@ -77,22 +78,16 @@ const SearchPage = ({ postings }) => {
       setLoading(false);
       return;
     }
-    console.log(searchQuery);
-    const filteredPost = postings.filter((post) =>
-      post.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // console.log(searchQuery);
+    const filteredPost = filter(postings, searchQuery);
 
     setPosts(filteredPost);
     setLoading(false);
   }, [router, query, postings]);
 
   return (
-    <>
-      {/* Nav */}
-      <NavBar handleSearch={handleSearch} />
-
-      {/* Categories */}
-      <Categories sections={sections} />
+    <Paper elevation={0}>
+      <Header handleSearch={handleSearch} sections={sections} />
 
       {loading && (
         <Container
@@ -109,29 +104,57 @@ const SearchPage = ({ postings }) => {
 
       {!loading && (
         <>
-          {/* Categories */}
-          <Paper elevation={0} sx={{ marginLeft: 25, marginTop: 5 }}>
-            <Typography variant="h4" sx={{ fontFamily: "rockwell" }}>
-              {query ? `Results for "${query}"` : ""}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontFamily: "rockwell", marginTop: 5, fontWeight: 700 }}
-            >
-              {query ? `${posts.length} services available` : ""}
-            </Typography>
-          </Paper>
+          <SearchInfo query={query} posts={posts} />
 
-          <PostCardGrid
-            marginLeft={20}
-            marginRight={20}
-            marginTop={5}
-            postings={posts}
-            type={"service"}
-          />
+          <PostCardGrid postings={posts} type={"service"} />
         </>
       )}
-    </>
+    </Paper>
+    // <>
+    //   <Header handleSearch={handleSearch} sections={sections} />
+
+    // {loading && (
+    //   <Container
+    //     sx={{
+    //       display: "flex",
+    //       flex: 1,
+    //       alignItems: "center",
+    //       justifyContent: "center",
+    //     }}
+    //   >
+    //     <CircularProgress />
+    //   </Container>
+    // )}
+
+    // {!loading && (
+    //   <>
+    //     {/* Categories */}
+    //     <Paper elevation={0} sx={{ marginLeft: 25, marginTop: 5 }}>
+    //       {query && (
+    //         <Typography variant="h4" sx={{ fontFamily: "rockwell" }}>
+    //           {`Results for "${query}"`}
+    //         </Typography>
+    //       )}
+    //       {query && (
+    //         <Typography
+    //           variant="body2"
+    //           sx={{ fontFamily: "rockwell", marginTop: 5, fontWeight: 700 }}
+    //         >
+    //           {`${posts.length} services available`}
+    //         </Typography>
+    //       )}
+    //     </Paper>
+
+    //     <PostCardGrid
+    //       marginLeft={20}
+    //       marginRight={20}
+    //       marginTop={5}
+    //       postings={posts}
+    //       type={"service"}
+    //     />
+    //   </>
+    // )}
+    // </>
   );
 };
 

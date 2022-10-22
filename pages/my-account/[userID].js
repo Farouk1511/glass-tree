@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import PostCardGrid from "../../components/Helper/PostCardGrid";
+import PostCardGrid from "../../components/Post/PostCardGrid";
 import Categories from "../../components/Navigation/Categories";
 import NavBar from "../../components/Navigation/NavBar";
 import Tab from "../../components/Tabs/Tab";

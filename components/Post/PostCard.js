@@ -23,6 +23,7 @@ import DeleteModal from "../DeleteModal";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firbase/utilities";
+import Image from "next/image";
 
 const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
   const [open, setOpen] = useState(false);
@@ -57,14 +58,18 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
         sx={{ maxWidth: 350, marginBottom: 5, height: "auto", minHeight: 400 }}
         elevation={6}
       >
-        <CardActionArea href={`/posting/${type}/${post._id}`}>
-          <CardMedia
-            component={"img"}
-            alt="image"
-            height={"150"}
-            sx={{}}
-            image={`http://localhost:3000/api/${type}/image/${post._id}`}
-          />
+        <CardActionArea
+          href={`/posting/${type}/${post._id}`}
+          sx={{ height: 150 }}
+        >
+          <CardMedia>
+            <Image
+              alt={`${post.title}`}
+              src={`http://localhost:3000/api/${type}/image/${post._id}`}
+              layout="fill"
+              objectFit="cover" // or objectFit="cover"
+            />
+          </CardMedia>
         </CardActionArea>
         <CardContent>
           <Typography
@@ -142,8 +147,8 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
               alignItems: "center",
             }}
           >
-          {/* {post.user?<Avatar  src={`/api/user/image/${post.user?._id}`} />:<Avatar />} */}
-            <Avatar/>
+            {/* {post.user?<Avatar  src={`/api/user/image/${post.user?._id}`} />:<Avatar />} */}
+            <Avatar />
             <Typography
               id="postName"
               gutterBottom
@@ -170,8 +175,8 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            padding:2,
-            margin:0
+            padding: 2,
+            margin: 0,
           }}
         >
           <Box
@@ -203,9 +208,7 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
               </>
             )}
             <Tooltip title={"Message me"}>
-              <IconButton
-                href={`/chat/${user?.uid}/${post.user?.uid}`}
-              >
+              <IconButton href={`/chat/${user?.uid}/${post.user?.uid}`}>
                 <ChatBubbleOutlineIcon />
               </IconButton>
             </Tooltip>
@@ -215,7 +218,6 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-end",
-             
             }}
           >
             <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>

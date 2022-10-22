@@ -26,7 +26,7 @@ const NavBar = ({ handleSearch }) => {
   return (
     <>
       <AppBar
-        position="sticky"
+        position="relative"
         elevation={0}
         style={{
          

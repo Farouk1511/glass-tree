@@ -11,7 +11,6 @@ const PostCardGrid = ({
   type,
   isOwner,
 }) => {
- 
   const [currentUser, setCurrentUser] = useState(null);
 
   const handleFavorite = async (post, favorite) => {
@@ -50,7 +49,7 @@ const PostCardGrid = ({
       // console.log(result);
     } catch (err) {
       console.log(err);
-    } 
+    }
   };
 
   //https://www.reddit.com/r/Firebase/comments/mghedt/on_a_page_refresh_my_app_gives_me_a_typeerror_uid/
@@ -72,7 +71,7 @@ const PostCardGrid = ({
             }
           );
           const resultUser = await result.json();
-          setCurrentUser({...resultUser.user});
+          setCurrentUser({ ...resultUser.user });
         }
       });
       // Get user details
@@ -90,9 +89,12 @@ const PostCardGrid = ({
     <Paper
       elevation={0}
       sx={{
-        marginLeft: marginLeft,
-        marginRight: marginRight,
-        marginTop: marginTop,
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        padding: 10,
+        paddingLeft: 20,
+        paddingTop: 2,
       }}
     >
       {/* {console.log(currentUser)} */}
