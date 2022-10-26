@@ -1,34 +1,25 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import {
-  Avatar,
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  IconButton,
-  Rating,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import EditIcon from "@mui/icons-material/Edit";
+import React, { useState } from "react";
+import { Card, CardContent, Divider, Grid, Paper } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import DeleteModal from "../DeleteModal";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firbase/utilities";
-import Image from "next/image";
+import PostImageCard from "./PostImageCard";
+import PostCardTitle from "./PostCardTitle";
+import PostCardDescription from "./PostCardDescription";
+import PostCardRatings from "./PostRatings";
+import PostCardUserProfile from "./PostCardUserProfile";
+import PostCardIcon from "./PostCardIcons";
+import PostCardPrice from "./PostCardPrice";
+
+// investigate: the favorite button can be interactive with having a use Effect inside post card causing a render
 
 const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
   const [open, setOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -52,121 +43,35 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
   };
 
   return (
-    <Grid lg={3} item>
-      {console.log(post)}
-      <Card
-        sx={{ maxWidth: 350, marginBottom: 5, height: "auto", minHeight: 400 }}
-        elevation={6}
-      >
-        <CardActionArea
-          href={`/posting/${type}/${post._id}`}
-          sx={{ height: 150 }}
-        >
-          <CardMedia>
-            <Image
-              alt={`${post.title}`}
-              src={`http://localhost:3000/api/${type}/image/${post._id}`}
-              layout="fill"
-              objectFit="cover" // or objectFit="cover"
-            />
-          </CardMedia>
-        </CardActionArea>
-        <CardContent>
-          <Typography
-            id="postTitle"
-            gutterBottom
-            variant="h7"
-            component="span"
-            sx={{ fontFamily: "rockwell", fontWeight: 700 }}
-            inputprops={{
-              "data-testid": "post-card-title",
-            }}
-          >
-            {post.title}
-          </Typography>
-        </CardContent>
-        <CardContent
-          sx={{
-            margin: 0,
-            paddingTop: 0,
-            paddingBottom: 0,
-            height: 100,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          <Typography
-            id="postDescription"
-            variant="body2"
-            inputprops={{
-              "data-testid": "post-card-description",
-            }}
-          >
-            {post.description}
-          </Typography>
-        </CardContent>
+    <Grid2
+      sm={1}
+      md={2}
+      lg={3}
+      xl={3}
+      sx={{
+        marginBottom: 5,
+        height: "auto",
+        minHeight: 400,
+        minWidth: 300,
+        maxWidth: 400,
+      }}
+    >
+      <Card sx={{ border: 2, borderColor: "#cdcdcd" }} elevation={0}>
+        <PostImageCard id={post._id} altTitle={post.title} type={type} />
+        <PostCardTitle title={post.title} />
+        <PostCardDescription description={post.description} />
+
         <CardContent
           sx={{
             display: "flex",
             justifyContent: "space-between",
           }}
         >
-          <Box>
-            <Rating
-              id="postAverageRating"
-              readOnly
-              max={1}
-              defaultValue={post.user?.averageRating || 5}
-              inputprops={{
-                "data-testid": "post-card-averageRating",
-              }}
-              sx={{
-                color: "secondary.main",
-              }}
-            />
-
-            <Typography
-              id="postTotalRatings"
-              sx={{
-                display: "inline-block",
-                fontFamily: "rockwell",
-                fontWeight: 700,
-              }}
-              variant="caption"
-              inputprops={{
-                "data-testid": "post-card-totalRatings",
-              }}
-            >
-              {post.user?.totalRatings}K
-            </Typography>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            {/* {post.user?<Avatar  src={`/api/user/image/${post.user?._id}`} />:<Avatar />} */}
-            <Avatar />
-            <Typography
-              id="postName"
-              gutterBottom
-              variant="body2"
-              component="div"
-              sx={{
-                fontFamily: "rockwell",
-                margin: 0,
-                marginLeft: 1,
-                fontWeight: 700,
-              }}
-              inputprops={{
-                "data-testid": "post-card-name",
-              }}
-            >
-              {post.user?.name}
-            </Typography>
-          </Box>
+          <PostCardRatings
+            averageRating={post.user?.averageRating || 5}
+            totalRatings={post.user?.totalRatings}
+          />
+          <PostCardUserProfile name={post.user?.name} />
         </CardContent>
         <Divider />
         <CardContent
@@ -179,84 +84,36 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
             margin: 0,
           }}
         >
-          <Box
-            sx={{
-              paddingBottom: 0,
-            }}
-          >
-            {!isOwner && (
-              <Tooltip title={"Save me for later"}>
-                <IconButton
-                  onClick={() => {
-                    handleFavorite(post, !isFavorite);
-                  }}
-                >
-                  {/* {console.log(favorite)} */}
-                  {!isFavorite && <FavoriteBorderIcon />}
-                  {isFavorite && <FavoriteOutlinedIcon />}
-                </IconButton>
-              </Tooltip>
-            )}
-            {isOwner && (
-              <>
-                <IconButton onClick={handleClickOpen}>
-                  <DeleteOutlineIcon />
-                </IconButton>
-                <IconButton onClick={handleEdit}>
-                  <EditIcon />
-                </IconButton>
-              </>
-            )}
-            <Tooltip title={"Message me"}>
-              <IconButton href={`/chat/${user?.uid}/${post.user?.uid}`}>
-                <ChatBubbleOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography sx={{ fontFamily: "rockwell" }}>Starting at</Typography>
-            <Typography
-              id="postHourlyRate"
-              sx={{ fontFamily: "rockwell", fontWeight: 700 }}
-              inputprops={{
-                "data-testid": "post-card-hourlyRate",
-              }}
-            >
-              CA${post.ratePerHour || post.pay}/hr
-            </Typography>
-          </Box>
+          <PostCardIcon
+            isOwner={isOwner}
+            handleFavorite={handleFavorite}
+            isFavorite={isFavorite}
+            handleClickOpen={handleClickOpen}
+            handleEdit={handleEdit}
+            userUID={user?.uid}
+            postUID={post.user?.uid}
+            post={post}
+          />
+          <PostCardPrice
+            currency={"USD"}
+            price={post.ratePerHour || post.pay}
+          />
         </CardContent>
+        {/* <Card
+        sx={{ maxWidth: 350, marginBottom: 5, height: "auto", minHeight: 400 }}
+        elevation={6}
+      >
+       
+      </Card> */}
+        <DeleteModal
+          handleClose={handleClose}
+          open={open}
+          handleDelete={handleDelete}
+        />
       </Card>
-      <DeleteModal
-        handleClose={handleClose}
-        open={open}
-        handleDelete={handleDelete}
-      />
-    </Grid>
+      {/* {console.log(post)} */}
+    </Grid2>
   );
 };
-
-// PostCard.propTypes = {
-//   post: PropTypes.objectOf(PostShape).isRequired,
-// };
-
-// PostCard.defaultProps = {
-//   post: {
-//     _id: "dsjhdksdjs",
-//     name: "John Doe",
-//     description:
-//       "Currently booking new projects! Clean, efficient, quality work done at a fair price. Call/Text/Email today for your free, no obligation quote. Renovations, new residential builds, Commercial Builds, etc.",
-//     title: "job/help title",
-//     averageRating: 4.5,
-//     totalRatings: 50,
-//     ratePerHour: 40,
-//   },
-// };
 
 export default PostCard;

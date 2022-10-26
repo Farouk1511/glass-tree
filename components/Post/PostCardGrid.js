@@ -1,4 +1,5 @@
 import { Grid, Paper } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import React, { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 import { auth } from "../../firbase/utilities";
@@ -86,47 +87,34 @@ const PostCardGrid = ({
 
   // console.log(postings)
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        padding: 10,
-        paddingLeft: 20,
-        paddingTop: 2,
-      }}
-    >
-      {/* {console.log(currentUser)} */}
-      <Grid container>
-        {/* {console.log(favorites,'fgfgfg')} */}
-        {postings.map((post) => {
-          let isFavorite = false;
-          if (type === "job" && currentUser) {
-            const favoriteJobs = currentUser.favoriteJob || [];
-            isFavorite = favoriteJobs[post._id];
-          }
-          if (type === "service" && currentUser) {
-            const favoriteServices = currentUser.favoriteService || [];
-            isFavorite = favoriteServices[post._id];
-          }
-          {
-            /* console.log(post) */
-          }
+    <Grid2 container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+      {/* {console.log(favorites,'fgfgfg')} */}
+      {postings.map((post) => {
+        let isFavorite = false;
+        if (type === "job" && currentUser) {
+          const favoriteJobs = currentUser.favoriteJob || [];
+          isFavorite = favoriteJobs[post._id];
+        }
+        if (type === "service" && currentUser) {
+          const favoriteServices = currentUser.favoriteService || [];
+          isFavorite = favoriteServices[post._id];
+        }
+        {
+          /* console.log(post) */
+        }
 
-          return (
-            <PostCard
-              key={post._id}
-              post={post}
-              type={type}
-              isOwner={isOwner}
-              isFavorite={isFavorite}
-              handleFavorite={handleFavorite}
-            />
-          );
-        })}
-      </Grid>
-    </Paper>
+        return (
+          <PostCard
+            key={post._id}
+            post={post}
+            type={type}
+            isOwner={isOwner}
+            isFavorite={isFavorite}
+            handleFavorite={handleFavorite}
+          />
+        );
+      })}
+    </Grid2>
   );
 };
 

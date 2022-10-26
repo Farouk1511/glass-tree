@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Paper, CircularProgress, Container } from "@mui/material";
+import {
+  Typography,
+  Paper,
+  CircularProgress,
+  Container,
+  Box,
+} from "@mui/material";
 import NavBar from "../../components/Navigation/NavBar";
 import Categories from "../../components/Navigation/Categories";
 import Service from "../../models/service";
@@ -103,11 +109,19 @@ const SearchPage = ({ postings }) => {
       )}
 
       {!loading && (
-        <>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            marginRight: 15,
+            marginLeft: 15,
+          }}
+        >
           <SearchInfo query={query} posts={posts} />
 
           <PostCardGrid postings={posts} type={"service"} />
-        </>
+        </Box>
       )}
     </Paper>
     // <>

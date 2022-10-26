@@ -1,7 +1,7 @@
 import React from "react";
 import { Paper, Typography,Avatar } from "@mui/material";
 
-const OtherUserBubble = ({ message }) => {
+const OtherUserBubble = ({ message,time }) => {
   return (
     <Paper
     sx={{ display: "flex", flexDirection: "row", marginBottom: 2 }}
