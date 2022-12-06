@@ -4,7 +4,8 @@ import Categories from "../../../components/Navigation/Categories";
 import Job from "../../../models/job";
 import connectMongo from "../../../utils/connectMongo";
 import User from "../../../models/user";
-import PostDetails from "../../../components/Helper/PostDetails";
+import PostDetails from "../../../components/Post/PostDetails";
+import Footer from "../../../components/Footer/Footer";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -77,6 +78,8 @@ const Post = ({ post }) => {
       <Categories sections={sections} />
 
       <PostDetails post={post} type={"job"} />
+
+      <Footer/>
     </>
   );
 };

@@ -5,6 +5,7 @@ import PostCardGrid from "../../components/Post/PostCardGrid";
 import Categories from "../../components/Navigation/Categories";
 import NavBar from "../../components/Navigation/NavBar";
 import Tab from "../../components/Tabs/Tab";
+import { getToken } from "../../firbase/utilities";
 
 const MyAcount = () => {
   const [loading, setLoading] = useState(true);
@@ -27,12 +28,15 @@ const MyAcount = () => {
       const { userID } = router.query;
       // console.log(userID);
 
+      const token = getToken()
+
       const result = await fetch(
         `http://localhost:3000/api/${type}/by/${userID}`,
         {
           method: "GET",
           headers: {
             Accept: "application/json",
+            Authorization:"Bearer "+token
           },
         }
       );
@@ -68,7 +72,7 @@ const MyAcount = () => {
         elevation={0}
       >
         <Typography sx={{ fontSize: 40, fontFamily: "rockwell" }}>
-          Manage Postings
+         My Postings
         </Typography>
 
         <Tab onTabChange={onTabChange} />
@@ -82,31 +86,39 @@ const MyAcount = () => {
         )}
       </Paper>
 
-      {!loading && (
-        <PostCardGrid
-          postings={post}
-          marginLeft={20}
-          marginRight={20}
-          marginTop={5}
-          type={type}
-          isOwner = {true}
-        />
-      )}
+      <Paper
+        sx={{
+          padding: 15,
+          paddingTop: 2,
+        }}
+        elevation={0}
+      >
+        {!loading && (
+          <PostCardGrid
+            postings={post}
+            marginLeft={20}
+            marginRight={20}
+            marginTop={5}
+            type={type}
+            isOwner={true}
+          />
+        )}
 
-      {
-        post.length < 1 && (
-          <Typography
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-           {` No ${type==='service'?'Service':'Jobs'} Created`}
-          </Typography>
-        )
-        //to be dynamic with jobs
-      }
+        {
+          post.length < 1 && (
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {` No ${type === "service" ? "Service" : "Jobs"} Liked`}
+            </Typography>
+          )
+          //to be dynamic with jobs
+        }
+      </Paper>
     </>
   );
 };

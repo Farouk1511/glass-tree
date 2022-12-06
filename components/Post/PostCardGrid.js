@@ -1,17 +1,9 @@
-import { Grid, Paper } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import React, { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 import { auth } from "../../firbase/utilities";
 
-const PostCardGrid = ({
-  postings,
-  marginTop,
-  marginLeft,
-  marginRight,
-  type,
-  isOwner,
-}) => {
+const PostCardGrid = ({ postings, type }) => {
   const [currentUser, setCurrentUser] = useState(null);
 
   const handleFavorite = async (post, favorite) => {
@@ -88,8 +80,8 @@ const PostCardGrid = ({
   // console.log(postings)
   return (
     <Grid2 container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-      {/* {console.log(favorites,'fgfgfg')} */}
       {postings.map((post) => {
+
         let isFavorite = false;
         if (type === "job" && currentUser) {
           const favoriteJobs = currentUser.favoriteJob || [];
@@ -108,7 +100,6 @@ const PostCardGrid = ({
             key={post._id}
             post={post}
             type={type}
-            isOwner={isOwner}
             isFavorite={isFavorite}
             handleFavorite={handleFavorite}
           />

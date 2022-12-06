@@ -17,7 +17,6 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 const NavBar = () => {
-const [user,error,isLoading] = useAuthState(auth)
 
   return (
    <>

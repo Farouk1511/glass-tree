@@ -13,9 +13,10 @@ import PostCardUserProfile from "./PostCardUserProfile";
 import PostCardIcon from "./PostCardIcons";
 import PostCardPrice from "./PostCardPrice";
 
+
 // investigate: the favorite button can be interactive with having a use Effect inside post card causing a render
 
-const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
+const PostCard = ({ post, type,  isFavorite, handleFavorite }) => {
   const [open, setOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
@@ -51,12 +52,15 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
       sx={{
         marginBottom: 5,
         height: "auto",
-        minHeight: 400,
+        marginRight:1,
         minWidth: 300,
         maxWidth: 400,
+        border:1,
+        borderColor:'#3D3D3D'
+      //  bgcolor:'red'
       }}
     >
-      <Card sx={{ border: 2, borderColor: "#cdcdcd" }} elevation={0}>
+     
         <PostImageCard id={post._id} altTitle={post.title} type={type} />
         <PostCardTitle title={post.title} />
         <PostCardDescription description={post.description} />
@@ -85,7 +89,7 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
           }}
         >
           <PostCardIcon
-            isOwner={isOwner}
+            isOwner={post.user?.uid === user?.uid}
             handleFavorite={handleFavorite}
             isFavorite={isFavorite}
             handleClickOpen={handleClickOpen}
@@ -110,7 +114,8 @@ const PostCard = ({ post, type, isOwner, isFavorite, handleFavorite }) => {
           open={open}
           handleDelete={handleDelete}
         />
-      </Card>
+     
+
       {/* {console.log(post)} */}
     </Grid2>
   );

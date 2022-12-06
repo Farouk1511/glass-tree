@@ -8,15 +8,16 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Media from "../../components/Media";
-import Categories from "../../components/Navigation/Categories";
 import NavBar from "../../components/Navigation/NavBar";
-
+import { getToken } from "../../firbase/utilities";
+import Error from '../../components/Error/Error'
 const Profile = () => {
   const [values, setValues] = useState({
     name: "",
     email: "",
     username: "",
   });
+  const [error, setError] = useState("")
   const router = useRouter();
 
   const { userID } = router.query;
@@ -40,6 +41,9 @@ const Profile = () => {
   const handleUpdate = async () => {
     try {
       // console.log(values);
+
+      let token = getToken();
+
       const result = await fetch(
         `http://localhost:3000/api/user/update/${userID}`,
         {
@@ -47,13 +51,16 @@ const Profile = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
-          body: JSON.stringify({...values,image}),
+          body: JSON.stringify({ ...values, image }),
         }
       );
 
-    await result.json()
-      router.push(`http://localhost:3000/my-account/${userID}`)
+   await result.json();
+
+     
+      router.push(`http://localhost:3000/my-account/${userID}`);
     } catch (err) {
       console.log(err);
     }
@@ -62,6 +69,9 @@ const Profile = () => {
   useEffect(() => {
     if (!router.isReady) return;
     // const { userID } = router.query;
+
+    let token = getToken();
+
     const getUserInfo = async () => {
       const result = await fetch(
         `http://localhost:3000/api/user/read/${userID}`,
@@ -70,12 +80,22 @@ const Profile = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
         }
       );
-      const { user } = await result.json();
-      setValues(user);
-      console.log(user);
+
+      let data = await result.json();
+
+      if(data.err){
+       setError(data.err)
+      }else{
+        let {user} = data
+        setValues(user)
+      }
+
+        
+     
     };
 
     getUserInfo();
@@ -88,11 +108,19 @@ const Profile = () => {
       setValues({ ...values, [name]: event.target.value });
     }
   };
+
+  if(error){
+    return (
+      <>
+      <NavBar />
+      <Error message={error}/>
+
+      </>
+    )
+  }
   return (
     <>
       <NavBar />
-
-      {console.log(values)}
       <Paper
         elevation={0}
         sx={{

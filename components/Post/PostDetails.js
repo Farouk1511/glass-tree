@@ -44,12 +44,12 @@ const PostDetails = ({ post, type = "service" }) => {
       >
         <Card elevation={0} sx={{ width: 750 }}>
           <CardHeader
-            avatar={<Avatar>{post.user.name.split("")[0]}</Avatar>}
+            avatar={<Avatar>{post?.user?.name.split("")[0]}</Avatar>}
             title={post.title}
             subheader={
               <Rating
                 readOnly
-                value={post.user.averageRating ? post.user.averageRating : 4}
+                value={post.user?.averageRating ? post.user.averageRating : 4}
               />
             }
           />
@@ -108,8 +108,8 @@ const PostDetails = ({ post, type = "service" }) => {
       <Card sx={{ border: 2, borderRadius: 3, width: 350, marginBottom: 5 }}>
         <CardHeader
           sx={{ margin: 0, marginLeft: 2, marginTop: 1, padding: 0 }}
-          title={post.user.name}
-          avatar={<Avatar>{post.user.name.split("")[0]}</Avatar>}
+          title={post.user?.name}
+          avatar={<Avatar>{post.user?.name.split("")[0]}</Avatar>}
         />
         <CardContent sx={{ margin: 0, marginLeft: 9, padding: 0 }}>
           <Typography

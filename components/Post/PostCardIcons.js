@@ -14,6 +14,7 @@ const PostCardIcon = ({isOwner,handleFavorite,isFavorite,handleClickOpen,handleE
         }}
       >
         {!isOwner && (
+          <>
           <Tooltip title={"Save me for later"}>
             <IconButton
               onClick={() => {
@@ -25,6 +26,12 @@ const PostCardIcon = ({isOwner,handleFavorite,isFavorite,handleClickOpen,handleE
               {isFavorite && <FavoriteOutlinedIcon />}
             </IconButton>
           </Tooltip>
+        <Tooltip title={"Message me"}>
+          <IconButton href={`/#`}>
+            <ChatBubbleOutlineIcon />
+          </IconButton>
+        </Tooltip>
+          </>
         )}
         {isOwner && (
           <>
@@ -36,11 +43,6 @@ const PostCardIcon = ({isOwner,handleFavorite,isFavorite,handleClickOpen,handleE
             </IconButton>
           </>
         )}
-        <Tooltip title={"Message me"}>
-          <IconButton href={`/chat/${userUID}/${postUID}`}>
-            <ChatBubbleOutlineIcon />
-          </IconButton>
-        </Tooltip>
       </Box>
     )
 }

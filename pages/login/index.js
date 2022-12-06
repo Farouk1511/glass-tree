@@ -19,6 +19,7 @@ const Login = () => {
   const handleSubmit = async () => {
     try {
       await signin(values.email, values.password);
+     
       router.push("/search");
     } catch (err) {
       // console.log(err);

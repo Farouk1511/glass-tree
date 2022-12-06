@@ -14,6 +14,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../firbase/utilities";
 import Media from "../../../../components/Media";
 import { useRouter } from "next/router";
+import Footer from "../../../../components/Footer/Footer";
 
 const Edit = () => {
   const router = useRouter();
@@ -238,6 +239,7 @@ const Edit = () => {
           Update
         </Button>
       </Paper>
+      <Footer/>
     </>
   );
 };

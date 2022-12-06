@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  Typography,
   Paper,
   CircularProgress,
   Container,
   Box,
 } from "@mui/material";
-import NavBar from "../../components/Navigation/NavBar";
-import Categories from "../../components/Navigation/Categories";
+
 import Service from "../../models/service";
 import connectMongo from "../../utils/connectMongo";
 import User from "../../models/user";
@@ -15,6 +13,7 @@ import PostCardGrid from "../../components/Post/PostCardGrid";
 import { useRouter } from "next/router";
 import Header from "../../components/Navigation/Header";
 import SearchInfo from "../../components/Navigation/SearchInfo";
+import Footer from "../../components/Footer/Footer";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -49,6 +48,7 @@ export async function getStaticProps() {
     props: {
       postings: JSON.parse(JSON.stringify(services)).reverse(),
     },
+    revalidate: 10 // 10 seconds 
   };
 }
 
@@ -123,6 +123,7 @@ const SearchPage = ({ postings }) => {
           <PostCardGrid postings={posts} type={"service"} />
         </Box>
       )}
+      <Footer/>
     </Paper>
     // <>
     //   <Header handleSearch={handleSearch} sections={sections} />

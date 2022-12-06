@@ -2,13 +2,38 @@ import connectDB from "../../../../../../middleware/connectDB";
 import User from "../../../../../../models/user";
 import Job from "../../../../../../models/job";
 import Service from "../../../../../../models/service";
+import {firebaseAdmin} from '../../../../../../firbase/firebaseAdmin'
 
 //https://stackoverflow.com/questions/55878704/mongo-db-design-for-user-favourites-pros-and-cons
+
+
+
+
+// admin.initializeApp({
+//   credential:admin.credential.cert(serviceAccount)
+// })
+
+
 const handler = async (req, res) => {
   try {
     if (req.method !== "GET") return;
 
     const { userID, post } = req.query;
+
+    const authorization = req.headers.authorization
+    const token = authorization.split(' ')[1]
+    // console.log(token)
+
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(token)
+   
+
+   const {uid} = decodedToken
+
+   if(uid !== userID){
+    return res.json({err:'Not Authorized'})
+   }
+   
+    
 
     let result;
     if (post === "job") {
@@ -51,7 +76,7 @@ const handler = async (req, res) => {
     res.json(result);
   } catch (err) {
     console.log(err);
-    res.json({ err });
+    return res.json({ err:'Please sign in' });
   }
 };
 
