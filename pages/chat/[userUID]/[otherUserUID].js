@@ -32,9 +32,9 @@ const Chat = ({ data, oUserUID, uUID }) => {
 
   // Functions
   const sendMessage = (data) => {
-    socket.emit("new-message", {data,otherUserUID});
+    socket.emit("new-message", data);
 
-    // console.log(data, "sendMEssage");
+    console.log(data, "sendMEssage");
   };
 
   // ----------------------Messaging Feature-------------------------
@@ -77,18 +77,18 @@ const Chat = ({ data, oUserUID, uUID }) => {
     // console.log(convoObject, "convoObject");
 
     if (convoObject) {
-      addMessageToConversation(message);
+      addMessageToConversation({ message });
     } else {
-      createAndAddNewConversation(message);
+      createAndAddNewConversation({ message });
     }
 
     // console.log(conversations);
 
     // const data = {...message,recipient:}
-    sendMessage(message);
+    sendMessage({ message, otherUserUID });
   };
 
-  const createAndAddNewConversation = (message) => {
+  const createAndAddNewConversation = ({ message }) => {
     console.log(message, "create message");
     const conversationToAdd = {
       conversationId: message.conversationId ? message.conversationId : null,
@@ -106,14 +106,20 @@ const Chat = ({ data, oUserUID, uUID }) => {
     return conversationToAdd;
   };
 
-  const addMessageToConversation = (message) => {
+  const addMessageToConversation = ({ message, otherUserUID }) => {
     //creating new array of conversation to trigger state change
     console.log(message, "addmessage");
-    console.log(conversations, "add MEssage");
+    console.log(conversations, "add Message");
 
-    const result = conversations.find(convo => convo.conversationId === message.conversationId)
+    const result = conversations.find(
+      (convo) => convo.conversationId === message.conversationId
+    );
 
-      
+    if (!result && userUID === otherUserUID) {
+      createAndAddNewConversation({message,otherUserUID});
+    }
+
+    if (result) {
       setConversations((prev) =>
         prev.map((convo) => {
           if (
@@ -130,8 +136,7 @@ const Chat = ({ data, oUserUID, uUID }) => {
           }
         })
       );
-    
-
+    }
   };
 
   const socketInitializer = async (id) => {
@@ -139,17 +144,16 @@ const Chat = ({ data, oUserUID, uUID }) => {
 
     socket = io();
 
-    socket.on("new-incoming-message", (data) => {
+    socket.on("new-incoming-message", ({ message, otherUserUID }) => {
       console.log(data, id, "UseEffect socketInitliazer");
-      if (data.sender.uid !== id) {
-        addMessageToConversation(data);
+      if (message.sender.uid !== id) {
+        addMessageToConversation({ message, otherUserUID });
       }
     });
 
     socket.on("disconnect", function () {
       socket.removeAllListeners("new-incoming-message");
       socket.removeAllListeners("disconnect");
-    
     });
   };
 
@@ -165,12 +169,14 @@ const Chat = ({ data, oUserUID, uUID }) => {
     if (result) {
       setActiveConversation(result);
     } else {
-      createAndAddNewConversation({
+      let newMessage = {
         sender: {
           name: "New conversation",
           uid: otherUserUID,
         },
-      });
+        conversationsId:null
+      };
+      createAndAddNewConversation({ message:newMessage, otherUserUID });
     }
   }, [conversations, otherUserUID]);
 

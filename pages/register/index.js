@@ -1,16 +1,16 @@
 import {
-  Button,
   FormControl,
   FormControlLabel,
-  Paper,
-  TextField,
-  Typography,
   Checkbox,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { signup } from "../../firbase/utilities";
-import Error from "../../components/Error/Error";
+import Title from "../../components/Form/Title";
+import Input from "../../components/Form/Input";
+import ActionButton from "../../components/Form/ActionButton";
+import FormPageLayout from "../../layouts/FormPageLayout";
+import { signupMongoDb } from "../../utils/helper/apis";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -23,210 +23,71 @@ const Register = () => {
   const handleSubmit = async () => {
     try {
       const firebase_user = await signup(email, password);
-      const user = {
+      await signupMongoDb({
         name,
         email,
         username,
         uid: firebase_user.user.uid,
-      };
-      const response = await fetch("http://localhost:3000/api/user/register", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      console.log(response.json());
+      })
       router.push("/login");
     } catch (err) {
-      console.log(err);
       setError(err.message);
     }
   };
   return (
-    <>
-      {error && <Error message={error} closeFunc={() => setError("")} />}
-      <Paper
-        sx={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          borderRadius: 0,
-        }}
-        elevation={0}
-      >
-        <Paper
+    
+      <FormPageLayout error={error} setError={setError}>
+      
+        <Title title={"Register"} />
+
+        <FormControl
           sx={{
-            width: "50%",
-            backgroundColor: "primary.main",
+            width: "100%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            borderRadius: 0,
           }}
         >
-          <Typography
-            sx={{
-              color: "#fff",
-              fontFamily: "rockwell",
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-            variant="h1"
-            component="a"
-            href="/"
-            color="primary"
-            margin={"dense"}
-          >
-            GlassTree
-          </Typography>
-          <Typography
-            sx={{
-              color: "#fff",
-              fontFamily: "rockwell",
-              fontWeight: 400,
-              textDecoration: "none",
-            }}
-            variant="h4"
-            component="a"
-            href="/"
-            color="primary"
-            margin={"dense"}
-          >
-            Ottawas First Service MarketPlace
-          </Typography>
-        </Paper>
-        <Paper
-          sx={{
-            width: "50%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 0,
-          }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: "rockwell",
-              fontSize: 35,
-              fontWeight: 600,
-              marginBottom: 10,
-            }}
-          >
-            Register
-          </Typography>
+          <Input
+            id="name"
+            label="Name"
+            placeholder="John Doe"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            id="username"
+            label="Username"
+            placeholder="erenyaeger00"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            id="email"
+            label="Email"
+            placeholder="joe@email.com"
+            onChange={(e) => setEmail(e.target.value)}
+            type={"email"}
+          />
+          <Input
+            id="password"
+            label="Password"
+            placeholder="Enter Password"
+            onChange={(e) => setPassword(e.target.value)}
+            type={"password"}
+          />
 
-          <FormControl
-            sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TextField
-              sx={{
-                width: "60%",
-                marginBottom: 5,
-                borderWidth: 3,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { border: 2, borderRadius: 0 },
-                },
-              }}
-              required
-              id="name"
-              label="Name"
-              placeholder="John Doe"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <TextField
-              sx={{
-                width: "60%",
-                marginBottom: 5,
-                borderWidth: 3,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { border: 2, borderRadius: 0 },
-                },
-              }}
-              required
-              id="username"
-              label="Username"
-              placeholder="erenyaeger00"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-              sx={{
-                width: "60%",
-                marginBottom: 5,
-                borderWidth: 3,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { border: 2, borderRadius: 0 },
-                },
-              }}
-              required
-              id="email"
-              label="Email"
-              placeholder="joe@email.com"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              sx={{
-                width: "60%",
-                marginBottom: 5,
-                borderWidth: 3,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { border: 2, borderRadius: 0 },
-                },
-              }}
-              required
-              id="password"
-              label="Password"
-              placeholder="Enter Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <TextField
-              sx={{
-                width: "60%",
-                marginBottom: 5,
-                borderWidth: 3,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { border: 2, borderRadius: 0 },
-                },
-              }}
-              required
-              id="confirm-password"
-              label="Confirm Password"
-              placeholder="Re-type Password"
-            />
+          <FormControlLabel
+            label="By joining I agree to receive emails from GlassTree"
+            control={<Checkbox />}
+          />
 
-            <FormControlLabel
-              label="By joining I agree to receive emails from GlassTree"
-              control={<Checkbox />}
-            />
-
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                width: "60%",
-                fontWeight: 600,
-                fontFamily: "rockwell",
-                borderRadius: 0,
-              }}
-              onClick={handleSubmit}
-            >
-              Create Account
-            </Button>
-          </FormControl>
-        </Paper>
-      </Paper>
-    </>
+          <ActionButton
+            handleSubmit={handleSubmit}
+            actionName="Create Account"
+          />
+        </FormControl>
+      </FormPageLayout>
+    
   );
 };
 export default Register;

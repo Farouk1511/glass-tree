@@ -20,7 +20,7 @@ const ActiveChatContainer = ({
   return (
   
     <Paper
-      sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1,backgroundColor:'#7D7D7D' }}
+      sx={{ width: "70%", height: "80vh", borderRadius: 0, padding: 1,backgroundColor:'' }}
       elevation={0}
     >
     {activeConversation && 

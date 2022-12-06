@@ -1,12 +1,19 @@
 
 import connectDB from "../../../../middleware/connectDB";
 import User from "../../../../models/user";
-import connectMongo from "../../../../utils/connectMongo";
-
 const handler = async (req, res) => {
   try {
     // await connectMongo()
     const { userID } = req.query;
+
+    
+
+  
+  
+
+
+
+
 
     const user = await User.findOne({ uid: userID }).select('-image')
     
@@ -14,7 +21,7 @@ const handler = async (req, res) => {
     return res.json({ user });
   } catch (err) {
     console.log(err);
-    res.json(err.message);
+    res.json({err:err.message});
   }
 };
 

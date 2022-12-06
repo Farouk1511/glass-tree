@@ -4,22 +4,14 @@ import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import MainNav from "../components/Navigation/MainNav";
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import PostCardGrid from "../components/Helper/PostCardGrid";
+import PostCardGrid from "../components/Post/PostCardGrid";
 import { useState } from "react";
 import Service from "../models/service";
 import connectMongo from "../utils/connectMongo";
 import User from "../models/user";
+import Footer from "../components/Footer/Footer";
 const links = ["Moving", "Lawn", "Plumbing", "Carpenter"];
-
-const sections = [
-  { title: "Technology", url: "#" },
-  { title: "Design", url: "#" },
-  { title: "Culture", url: "#" },
-  { title: "Business", url: "#" },
-];
 
 export async function getStaticProps() {
   console.log("Connecting to DB");
@@ -30,7 +22,7 @@ export async function getStaticProps() {
     path: "user",
     model: User,
     select:"-image"
-  }).sort({created: -1}).limit(4).exec();
+  }).sort({created: -1}).limit(4)
 
   return {
     props: {
@@ -204,6 +196,7 @@ export default function Home({ postings }) {
 
         <PostCardGrid marginTop={5} postings={postings} type={'service'}/>
       </Paper>
+      <Footer/>
     </div>
   );
 }

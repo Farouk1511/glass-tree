@@ -7,7 +7,7 @@ const SearchBar = ({ handleSearch }) => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setQuery(e.target.value);
+    setQuery( e.target.value);
     handleSearch(query);
   };
 
