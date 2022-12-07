@@ -49,9 +49,12 @@ const create = async (req, res) => {
     }
     const result = await job.save();
 
-    return await res.json(result);
+    res.json(result);
+    res.status(200).end();
   } catch (err) {
     console.log(err);
+    res.json(err);
+    res.status(405).end();
   }
 };
 
@@ -73,9 +76,12 @@ const listJobsbyUser = async (req, res) => {
       .select("-image")
       .populate({ path: "user", model: User, select: "-image" });
 
-    return await res.json(jobs);
+    res.json(jobs);
+    res.status(200).end();
   } catch (err) {
     console.log(err);
+    res.json(err);
+    res.status(405).end();
   }
 };
 export default connectDB(handler);

@@ -10,28 +10,48 @@ import React, { useEffect, useState } from "react";
 import Media from "../../components/Media";
 import NavBar from "../../components/Navigation/NavBar";
 import { getToken } from "../../firbase/utilities";
-import Error from '../../components/Error/Error'
-const Profile = () => {
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    username: "",
-  });
-  const [error, setError] = useState("")
+import Error from "../../components/Error/Error";
+import User from "../../models/user";
+//this can be statically pre-rendered because it will rearely change
+
+export async function getServerSideProps(context) {
+  try {
+    const { userID } = context.query;
+
+    const user = await User.findOne({ uid: userID }).select(
+      "username name email"
+    );
+    return {
+      props: {
+        user: JSON.parse(JSON.stringify(user)),
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        user: null,
+        err: JSON.parse(JSON.stringify(err.message)),
+      },
+    };
+  }
+}
+
+const Profile = ({ user, err }) => {
+  // console.log(user,err)
+  const [values, setValues] = useState(user);
+  const [error, setError] = useState(err);
+  const [image, setImage] = useState(user?.image);
+
   const router = useRouter();
-
   const { userID } = router.query;
-
-  const [image, setImage] = useState(null);
 
   const onChange = (imageList, addUpdatedIndex) => {
     try {
-      // console.log(imageList, addUpdatedIndex);
-
       setImage(imageList[0]);
     } catch (err) {
+      setError(err.message);
       console.log(err);
-    } // console.log(values)
+    }
   };
 
   const onImageRemove = () => {
@@ -40,8 +60,6 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     try {
-      // console.log(values);
-
       let token = getToken();
 
       const result = await fetch(
@@ -57,49 +75,14 @@ const Profile = () => {
         }
       );
 
-   await result.json();
+      await result.json();
 
-     
       router.push(`http://localhost:3000/my-account/${userID}`);
     } catch (err) {
+      setError(err.message);
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    if (!router.isReady) return;
-    // const { userID } = router.query;
-
-    let token = getToken();
-
-    const getUserInfo = async () => {
-      const result = await fetch(
-        `http://localhost:3000/api/user/read/${userID}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      let data = await result.json();
-
-      if(data.err){
-       setError(data.err)
-      }else{
-        let {user} = data
-        setValues(user)
-      }
-
-        
-     
-    };
-
-    getUserInfo();
-  }, [router.isReady, userID]);
 
   const handleChange = (name) => (event) => {
     if (name === "ratePerHour") {
@@ -109,14 +92,13 @@ const Profile = () => {
     }
   };
 
-  if(error){
+  if (error) {
     return (
       <>
-      <NavBar />
-      <Error message={error}/>
-
+        <NavBar />
+        <Error message={error} />
       </>
-    )
+    );
   }
   return (
     <>

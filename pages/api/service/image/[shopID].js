@@ -30,7 +30,7 @@ const handler = async (req, res) => {
       res.end(imageResp);
     }
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     res.json({ err });
   }
 };

@@ -15,19 +15,36 @@ import { auth } from "../../../../firbase/utilities";
 import Media from "../../../../components/Media";
 import { useRouter } from "next/router";
 import Footer from "../../../../components/Footer/Footer";
+import Job from "../../../../models/job";
+import connectMongo from "../../../../utils/connectMongo";
 
-const Edit = () => {
+
+export async function getServerSideProps(context) {
+  try {
+    const { jobID } = context.query;
+    await connectMongo();
+
+    const job = await Job.findById(jobID).select(
+      "title pay description _id "
+    );
+
+    return {
+      props: {
+        job: JSON.parse(JSON.stringify(job)),
+      },
+    };
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const Edit = ({job}) => {
   const router = useRouter();
-  const [values, setValues] = useState({
-    title: "",
-    pay: "",
-    description: "",
-  });
+  const [values, setValues] = useState(job);
   const [image, setImage] = useState(null);
 
   const onChange = (imageList, addUpdatedIndex) => {
     try {
-      console.log(imageList, addUpdatedIndex);
 
       setImage(imageList[0]);
     } catch (err) {
@@ -51,7 +68,7 @@ const Edit = () => {
 
   const handleSubmit = async () => {
     try {
-       console.log(image)
+      console.log(image);
       const result = await fetch(
         `http://localhost:3000/api/job/update/${values._id}`,
         {
@@ -72,39 +89,8 @@ const Edit = () => {
     }
   };
 
-  useEffect(() => {
-    const getJob = async () => {
-      // get postid
-      if (!router.isReady) return;
-
-      const { jobID } = router.query;
-      // fetch details or get it locally
-      try {
-        let job = await fetch(`http://localhost:3000/api/job/read/${jobID}`, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-
-        job = await job.json();
-        console.log(job);
-        //sanitize
-        const { title, pay, description, _id } = job.job;
-
-        //setState
-        setValues({ title, pay, description, _id });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getJob();
-  }, [router]);
   return (
     <>
-      {console.log(values)}
       <NavBar />
       <Paper
         elevation={0}
@@ -239,7 +225,7 @@ const Edit = () => {
           Update
         </Button>
       </Paper>
-      <Footer/>
+      <Footer />
     </>
   );
 };

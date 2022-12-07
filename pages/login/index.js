@@ -18,8 +18,18 @@ const Login = () => {
 
   const handleSubmit = async () => {
     try {
-      await signin(values.email, values.password);
-     
+      const token = await signin(values.email, values.password);
+      // auth.onIdTokenChanged(async (user) => {
+      //   if (user) {
+      //     localStorage.removeItem("user_token");
+      //     let token = await user.getIdToken(true);
+
+      if (token) {
+        localStorage.setItem("user_token", token);
+      }
+
+      //   }
+      // });
       router.push("/search");
     } catch (err) {
       // console.log(err);

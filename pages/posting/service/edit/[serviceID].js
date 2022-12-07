@@ -9,25 +9,39 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import NavBar from "../../../../components/Navigation/NavBar";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../firbase/utilities";
 import Media from "../../../../components/Media";
 import { useRouter } from "next/router";
+import Service from "../../../../models/service";
+import connectMongo from "../../../../utils/connectMongo";
 
-const Edit = () => {
+export async function getServerSideProps(context) {
+  try {
+    const { serviceID } = context.query;
+    await connectMongo();
+
+    const service = await Service.findById(serviceID).select(
+      "_id title ratePerHour description"
+    );
+
+    return {
+      props: {
+        post: JSON.parse(JSON.stringify(service)),
+      },
+    };
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const Edit = ({ post }) => {
   const router = useRouter();
-  const [values, setValues] = useState({
-    title: "",
-    ratePerHour: "",
-    description: "",
-  });
+  const [values, setValues] = useState(post);
   const [image, setImage] = useState(null);
 
   const onChange = (imageList, addUpdatedIndex) => {
     try {
-      console.log(imageList, addUpdatedIndex);
-
       setImage(imageList[0]);
     } catch (err) {
       console.log(err);
@@ -50,7 +64,6 @@ const Edit = () => {
 
   const handleSubmit = async () => {
     try {
-      // console.log(values)
       const result = await fetch(
         `http://localhost:3000/api/service/update/${values._id}`,
         {
@@ -64,47 +77,13 @@ const Edit = () => {
             : JSON.stringify({ ...values }),
         }
       );
-      await result.json()
+      await result.json();
       await router.push(`http://localhost:3000/my-account/${user.uid}`);
-      
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    const getService = async () => {
-      // get postid
-      if (!router.isReady) return;
-
-      const { serviceID } = router.query;
-      // fetch details or get it locally
-      try {
-        let service = await fetch(
-          `http://localhost:3000/api/service/read/${serviceID}`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        service = await service.json();
-        console.log(service);
-        //sanitize
-        const { title, ratePerHour, description,_id } = service.service;
-
-        //setState
-        setValues({ title, ratePerHour, description,_id });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getService();
-  }, [router]);
   return (
     <>
       {/* {console.log(values)} */}

@@ -8,7 +8,7 @@ const connectDB = handler => async(req,res) => {
     }
 
     console.log('Connecting to db....')
-    await mongoose.connect(process.env.MONGO_URI)
+     mongoose.connect(process.env.MONGO_URI)
     console.log('Connected to DB')
     return handler(req,res)
 }

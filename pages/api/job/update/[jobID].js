@@ -13,7 +13,7 @@ const handler = async (req, res) => {
     if (!jobID) return;
 
     let job = await Job.findById(jobID);
-    console.log(req.body.image.file.name)
+    // console.log(req.body)
     job = extend(job, req.body);
 
     if (req.body.image) {
@@ -24,8 +24,11 @@ const handler = async (req, res) => {
 
     const result = await job.save();
 
-    return await res.json(result);
-  } catch (err) {}
+     res.json(result);
+  } catch (err) {
+    console.log(err)
+    res.json(err.message)
+  }
 };
 
 export default connectDB(handler);

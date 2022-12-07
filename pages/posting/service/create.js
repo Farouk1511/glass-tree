@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import NavBar from "../../../components/Navigation/NavBar";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firbase/utilities";
 import Media from "../../../components/Media";

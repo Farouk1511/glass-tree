@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@mui/system";
 import { createTheme } from "@mui/material/styles";
 import "../styles/globals.css";
-import { UserProvider } from "@auth0/nextjs-auth0";
+
 
 const theme = createTheme({
   palette: {

@@ -40,15 +40,18 @@ const create = async (req, res) => {
     service.user = user;
 
     if (req.body.image) {
+      // console.log(req.body.image)
       service.image.data = req.body.image.data_url;
       service.image.contentType = "image/png";
     }
 
     const result = await service.save();
-    await res.json({ result });
+    res.json({ result });
+    res.status(200).end();
   } catch (err) {
     console.log(err);
-    res.jso(err);
+    res.json(err);
+    res.status(405).end();
   }
 };
 
@@ -66,13 +69,15 @@ const getServiceby = async (req, res) => {
 
     const services = await Service.find({ user: user_objID })
       .select("-image")
-      .populate({ path: "user", model: User ,select:'-image'});
+      .populate({ path: "user", model: User, select: "-image" });
 
     // console.log(services)
-    await res.json(services);
+    res.json(services);
+    res.status(200).end();
   } catch (err) {
-    res.json({ Message: "Error", err });
     console.log(err);
+    res.json(err);
+    res.status(405).end();
   }
 };
 

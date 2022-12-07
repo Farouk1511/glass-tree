@@ -6,48 +6,67 @@ import Categories from "../../components/Navigation/Categories";
 import NavBar from "../../components/Navigation/NavBar";
 import Tab from "../../components/Tabs/Tab";
 import { getToken } from "../../firbase/utilities";
+import User from "../../models/user";
+import Job from "../../models/job";
+import connectMongo from "../../utils/connectMongo";
+import Service from "../../models/service";
 
-const MyAcount = () => {
-  const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState([]);
+export async function getServerSideProps(context) {
+  try {
+    await connectMongo();
+    const { userID } = context.query;
+    const user = await User.findOne({ uid: userID }).select("_id");
+    const user_objID = user._id;
+
+    const jobs = await Job.find({ user: user_objID })
+      .select("-image")
+      .populate({
+        path: "user",
+        model: User,
+        select: "_id uid name email username averageRating totalRating",
+      });
+    const services = await Service.find({ user: user_objID })
+      .select("-image")
+      .populate({
+        path: "user",
+        model: User,
+        select: "_id uid name email username averageRating totalRating",
+      });
+    return {
+      props: {
+        jobs: JSON.parse(JSON.stringify(jobs)),
+        services: JSON.parse(JSON.stringify(services)),
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {
+        jobs: [],
+        services: [],
+      },
+    };
+  }
+}
+
+const MyAcount = ({ jobs, services }) => {
+  const [posts, setPosts] = useState({
+    job: jobs,
+    service: services,
+  });
+  const [loading, setLoading] = useState(false);
+  const [post, setPost] = useState(services);
   const [type, setType] = useState("service");
-  const router = useRouter();
 
   const onTabChange = (tab) => {
+    setPost(posts[tab]);
     setType(tab);
-    // console.log(tab);
-    // console.log("Hello");
   };
-  // const {userID} = router.query
-  // console.log(userID)
+
   //https://stackoverflow.com/questions/70492512/next-js-userouter-not-returning-variable-inside-useeffect
-  useEffect(() => {
-    const getPosts = async () => {
-      setLoading(true);
-      if (!router.isReady) return;
-      const { userID } = router.query;
-      // console.log(userID);
 
-      const token = getToken()
+  // !imporatant : https://stackoverflow.com/questions/60755316/nextjs-getserversideprops-show-loading/60756105#60756105
 
-      const result = await fetch(
-        `http://localhost:3000/api/${type}/by/${userID}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            Authorization:"Bearer "+token
-          },
-        }
-      );
-
-      setPost(await result.json());
-      // console.log(result)
-      setLoading(false);
-    };
-
-    getPosts();
-  }, [router.isReady, router.query, type]);
   return (
     <>
       <NavBar />
@@ -72,7 +91,7 @@ const MyAcount = () => {
         elevation={0}
       >
         <Typography sx={{ fontSize: 40, fontFamily: "rockwell" }}>
-         My Postings
+          My Postings
         </Typography>
 
         <Tab onTabChange={onTabChange} />

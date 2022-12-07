@@ -33,7 +33,7 @@ const ServiceSchema = new Schema({
     ratePerHour:{
         type:Number,
         required:"Rate is required"
-    }
+    } 
     
 })
 

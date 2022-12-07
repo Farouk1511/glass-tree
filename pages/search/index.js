@@ -28,11 +28,10 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await connectMongo();
 
   // Get user details
-
   // get fav services
   //chechk if value is true
   // add new value to service object service.isFav = true
@@ -48,7 +47,6 @@ export async function getStaticProps() {
     props: {
       postings: JSON.parse(JSON.stringify(services)).reverse(),
     },
-    revalidate: 10 // 10 seconds 
   };
 }
 

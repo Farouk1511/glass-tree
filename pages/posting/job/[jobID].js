@@ -21,19 +21,10 @@ const sections = [
 ];
 
 export async function getStaticPaths() {
-  console.log("Connecting to DB");
+ 
   await connectMongo();
-  console.log("Succesfully connected DB");
-
-  const jobs = await Job.find({})
-    .populate({
-      path: "user",
-      model: User,
-    })
-    .select("-image")
-    .exec();
-
-  //   console.log(jobs)
+ 
+  const jobs = await Job.find({}).select("_id")
 
   let ids = JSON.parse(JSON.stringify(jobs));
   ids = ids.map((job) => ({ params: { jobID: job._id } }));
@@ -47,20 +38,15 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const { params } = context;
 
-  console.log("Connecting to DB");
   await connectMongo();
-  console.log("Succesfully connected DB");
-
-  // console.log("Params",params)
-
   const post = await Job.findById(params.jobID)
     .select("-image")
     .populate({
       path: "user",
       model: User,
+      select:"_id uid name email username averageRating totalRating"
     })
-    .exec();
-  // console.log(post,"here");
+ 
 
   return {
     props: {

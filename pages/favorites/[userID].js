@@ -8,75 +8,70 @@ import Tab from "../../components/Tabs/Tab";
 import Footer from "../../components/Footer/Footer";
 import { getToken } from "../../firbase/utilities";
 import Error from "../../components/Error/Error";
+import User from "../../models/user";
+import Job from "../../models/job";
+import connectMongo from "../../utils/connectMongo";
+import Service from "../../models/service";
 
+export async function getServerSideProps(context) {
+  try {
+    await connectMongo();
+    const { userID } = context.query;
 
-const Favorites = () => {
-  const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState([]);
+    let results = await User.findOne(
+      { uid: userID },
+      { favoriteJob: true, favoriteService: true }
+    ).select("favoriteJob,favoriteService");
+    const { favoriteJob, favoriteService } = results;
+    // console.log(result);
+    let favJobIDs = Array.from(results.favoriteJob.keys());
+    const favJobs = favJobIDs.filter((id) => favoriteJob.get(id));
+
+    const favoriteJobs = await Job.find({ _id: { $in: favJobs } })
+      .select("-image")
+      .populate({ path: "user", model: User, select: "-image" });
+
+    const favServiceIDs = Array.from(results.favoriteService.keys());
+    const favServices = favServiceIDs.filter((id) => favoriteService.get(id));
+    //   console.log(favIDs)
+    const favoriteServices = await Service.find({
+      _id: { $in: favServices },
+    })
+      .select("-image")
+      .populate({ path: "user", model: User, select: "-image" });
+
+    return {
+      props: {
+        jobs: JSON.parse(JSON.stringify(favoriteJobs)),
+        services: JSON.parse(JSON.stringify(favoriteServices)),
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {
+        jobs: [],
+        services: [],
+      },
+    };
+  }
+}
+
+const Favorites = ({ jobs, services }) => {
+  const [posts, setPosts] = useState({
+    job: jobs,
+    service: services,
+  });
+  const [loading, setLoading] = useState(false);
+  const [post, setPost] = useState(services);
   const [type, setType] = useState("service");
-  const [error,setError] = useState("")
-  const router = useRouter();
 
   const onTabChange = (tab) => {
+    setPost(posts[tab]);
     setType(tab);
-    // console.log(tab);
-
-    // console.log("Hello");
   };
-  // const {userID} = router.query
-  // console.log(userID)
-  //https://stackoverflow.com/questions/70492512/next-js-userouter-not-returning-variable-inside-useeffect
-  useEffect(() => {
-    const getPosts = async () => {
-      setLoading(true);
-      if (!router.isReady) return;
-      const { userID } = router.query;
-      // console.log(userID);
-      // const token = await JSON.parse(localStorage.getItem('user')).getIdToken(true)
-      const token = getToken();
+  if (loading) return <></>;
 
-      let result = await fetch(
-        `http://localhost:3000/api/user/${userID}/${type}/favorite`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      result = await result.json();
-
-      if (result.err) {
-          
-        setError(result.err)
-        setLoading(false);
-        
-      } else {
-        setPost(result);
-        // console.log(result)
-        setLoading(false);
-      }
-    };
-
-    getPosts();
-  }, [router, router.query, type]);
-
-  if(loading) return <></>
-  if(error) return (<>
-    <Error message={error}/>
-    <NavBar/>
-    <Categories
-        sections={[
-          { title: "Postings", url: "#" },
-          { title: "Account", url: "#" },
-          { title: "Settings", url: "#" },
-          { title: "Inbox", url: "#" },
-        ]}
-      />
-
-  </>)
   return (
     <>
       <NavBar />

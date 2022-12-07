@@ -19,13 +19,10 @@ const sections = [
 ];
 
 export async function getStaticPaths() {
+  //https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props
   await connectMongo();
 
-  const services = await Service.find({}).populate({
-    path: "user",
-    model: User,
-    select: "-image",
-  });
+  const services = await Service.find({}).select("_id");
 
   //   console.log(services)
 
@@ -44,8 +41,13 @@ export async function getStaticProps(context) {
   // console.log("Params",params)
 
   const post = await Service.findById(params.serviceID)
-    .populate({ path: "user", model: User, select: "-image" })
-    .select("-image");
+    .select("_id user title description ratePerHour")
+    .populate({
+      path: "user",
+      model: User,
+      select: "_id uid name email username averageRating totalRating",
+    });
+
   // console.log(post)
 
   return {
