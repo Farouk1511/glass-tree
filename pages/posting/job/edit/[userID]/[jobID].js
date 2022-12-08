@@ -8,36 +8,60 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import NavBar from "../../../../components/Navigation/NavBar";
+import NavBar from "../../../../../components/Navigation/NavBar";
+
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../../firbase/utilities";
-import Media from "../../../../components/Media";
+import { auth } from "../../../../../firbase/utilities";
+import Media from "../../../../../components/Media";
 import { useRouter } from "next/router";
-import Service from "../../../../models/service";
-import connectMongo from "../../../../utils/connectMongo";
+import Footer from "../../../../../components/Footer/Footer";
+import Job from "../../../../../models/job";
+import connectMongo from "../../../../../utils/connectMongo";
+import { getCookie } from "cookies-next";
+import { firebaseAdmin } from "../../../../../firbase/firebaseAdmin";
 
 export async function getServerSideProps(context) {
   try {
-    const { serviceID } = context.query;
+    const { jobID, userID } = context.query;
     await connectMongo();
 
-    const service = await Service.findById(serviceID).select(
-      "_id title ratePerHour description"
-    );
+    //Authentication and authoriaztion
+    const { req, res } = context;
+    const token = getCookie("token", { req, res });
+    // console.log(token)
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
+
+    const { uid } = decodedToken;
+
+    if (uid !== userID) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/restricted-page",
+        },
+      };
+    }
+
+    const job = await Job.findById(jobID).select("title pay description _id ");
 
     return {
       props: {
-        post: JSON.parse(JSON.stringify(service)),
+        job: JSON.parse(JSON.stringify(job)),
       },
     };
   } catch (err) {
-    console.log(err);
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/restricted-page",
+      },
+    };
   }
 }
 
-const Edit = ({ post }) => {
+const Edit = ({ job }) => {
   const router = useRouter();
-  const [values, setValues] = useState(post);
+  const [values, setValues] = useState(job);
   const [image, setImage] = useState(null);
 
   const onChange = (imageList, addUpdatedIndex) => {
@@ -55,7 +79,7 @@ const Edit = ({ post }) => {
   const [user, loading, error] = useAuthState(auth);
 
   const handleChange = (name) => (event) => {
-    if (name === "ratePerHour") {
+    if (name === "pay") {
       setValues({ ...values, [name]: +event.target.value });
     } else {
       setValues({ ...values, [name]: event.target.value });
@@ -64,8 +88,9 @@ const Edit = ({ post }) => {
 
   const handleSubmit = async () => {
     try {
+      console.log(image);
       const result = await fetch(
-        `http://localhost:3000/api/service/update/${values._id}`,
+        `http://localhost:3000/api/job/update/${values._id}`,
         {
           method: "POST",
           headers: {
@@ -86,7 +111,6 @@ const Edit = ({ post }) => {
 
   return (
     <>
-      {/* {console.log(values)} */}
       <NavBar />
       <Paper
         elevation={0}
@@ -99,14 +123,14 @@ const Edit = ({ post }) => {
         }}
       >
         <Typography sx={{ fontSize: 40, fontFamily: "rockwell" }}>
-          Create a Service
+          Update Job
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "flex-start", width: "80%" }}>
           <Typography
             sx={{ fontSize: 15, fontFamily: "rockwell", fontWeight: 600 }}
           >
-            Ad Details
+            Job Details
           </Typography>
         </Box>
         <Divider variant="fullWidth" />
@@ -147,8 +171,8 @@ const Edit = ({ post }) => {
             required
             id="ratePerHour"
             label="Rate Per Hour"
-            value={values ? values.ratePerHour : ""}
-            onChange={handleChange("ratePerHour")}
+            value={values ? values.pay : ""}
+            onChange={handleChange("pay")}
           />
           <TextField
             sx={{
@@ -179,34 +203,34 @@ const Edit = ({ post }) => {
         <Divider variant="fullWidth" />
 
         {/* <Card
-            sx={{
-              marginTop: 5,
-              width: "30%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              border: 2,
-              height: "15vh",
-            }}
-            elevation={0}
-          >
-            <CardActionArea
               sx={{
-                width: "100%",
-                height: "100%",
+                marginTop: 5,
+                width: "30%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                border: 2,
+                height: "15vh",
               }}
-              
+              elevation={0}
             >
-              <CardContent>
-                <AddIcon fontSize="large" />
-              </CardContent>
-            </CardActionArea>
-          </Card> */}
+              <CardActionArea
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                
+              >
+                <CardContent>
+                  <AddIcon fontSize="large" />
+                </CardContent>
+              </CardActionArea>
+            </Card> */}
         <Media
           onChange={onChange}
           image={image}
@@ -221,6 +245,7 @@ const Edit = ({ post }) => {
           Update
         </Button>
       </Paper>
+      <Footer />
     </>
   );
 };

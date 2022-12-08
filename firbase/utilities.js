@@ -10,6 +10,7 @@ const signup = (email,password) => {
 const signin = async (email,password) => {
     let user = await signInWithEmailAndPassword(auth,email,password)
     
+    // Check if its still necessay later
     let token = await auth.currentUser.getIdToken(true)
 
     

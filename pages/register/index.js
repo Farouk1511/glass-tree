@@ -2,6 +2,7 @@ import {
   FormControl,
   FormControlLabel,
   Checkbox,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
@@ -11,6 +12,7 @@ import Input from "../../components/Form/Input";
 import ActionButton from "../../components/Form/ActionButton";
 import FormPageLayout from "../../layouts/FormPageLayout";
 import { signupMongoDb } from "../../utils/helper/apis";
+import Link from "next/link";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -86,8 +88,33 @@ const Register = () => {
             actionName="Create Account"
           />
         </FormControl>
+
+        <Typography
+          variant="h7"
+          component="span"
+          sx={{ fontFamily: "rockwell", fontWeight: 700,marginTop:3 }}
+        >
+          Have an account?{" "}
+          <Link href={"/login"}>
+            <Typography
+              variant="h7"
+              component="span"
+              sx={{
+                fontFamily: "rockwell",
+                fontWeight: 700,
+                color: "secondary.main",
+                cursor:'pointer'
+              }}
+            >
+              Login here
+            </Typography>
+          </Link>{" "}
+        </Typography>
       </FormPageLayout>
     
   );
 };
+
+
+
 export default Register;

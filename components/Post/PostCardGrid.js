@@ -2,13 +2,18 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import React, { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 import { auth } from "../../firbase/utilities";
+import { useRouter } from "next/router";
 
 const PostCardGrid = ({ postings, type }) => {
   const [currentUser, setCurrentUser] = useState(null);
-
+  const router = useRouter()
   const handleFavorite = async (post, favorite) => {
     const { _id } = post;
     try {
+      if(!currentUser){
+        router.push("/login")
+        return
+      }
       const { uid } = currentUser;
       await fetch(
         `http://localhost:3000/api/user/${uid}/${type}/${

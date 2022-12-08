@@ -1,4 +1,5 @@
-import { FormControl } from "@mui/material";
+import { FormControl, Typography } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ActionButton from "../../components/Form/ActionButton";
@@ -6,6 +7,14 @@ import Input from "../../components/Form/Input";
 import Title from "../../components/Form/Title";
 import { signin } from "../../firbase/utilities";
 import FormPageLayout from "../../layouts/FormPageLayout";
+
+// export async function getServerSideProps(){
+//   return{
+//     props:{
+
+//     }
+//   }
+// }
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -70,7 +79,29 @@ const Login = () => {
         />
 
         <ActionButton actionName={"Login"} handleSubmit={handleSubmit} />
+
       </FormControl>
+        <Typography
+          variant="h7"
+          component="span"
+          sx={{ fontFamily: "rockwell", fontWeight: 700,marginTop:3 }}
+        >
+          Dont have an account?
+          <Link href={"/register"}>
+            <Typography
+              variant="h7"
+              component="span"
+              sx={{
+                fontFamily: "rockwell",
+                fontWeight: 700,
+                color: "secondary.main",
+                cursor:'pointer'
+              }}
+            >
+              Register here
+            </Typography>
+          </Link>{" "}
+        </Typography>
     </FormPageLayout>
   );
 };

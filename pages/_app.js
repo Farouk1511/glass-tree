@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@mui/system";
 import { createTheme } from "@mui/material/styles";
 import "../styles/globals.css";
-
+import { AuthProvider } from "../utils/helper/auth";
 
 const theme = createTheme({
   palette: {
@@ -16,13 +16,11 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-    
-      <ThemeProvider theme={theme}>
-     
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
         <Component {...pageProps} />
-        
-      </ThemeProvider>
-    
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

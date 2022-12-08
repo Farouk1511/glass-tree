@@ -85,16 +85,18 @@ const NavBar = ({ handleSearch }) => {
               />
             </Badge>
           </IconButton> */}
-          <IconButton
-            onClick={() =>
+         {user && <IconButton
+            onClick={() =>{
+             
               router.push(`http://localhost:3000/favorites/${user.uid}`)
+            }
             }
           >
             <FavoriteBorderOutlinedIcon
               sx={{ color: "#000" }}
               fontSize={"large"}
             />
-          </IconButton>
+          </IconButton>}
 
           {user && (
             <ProfileAvatar

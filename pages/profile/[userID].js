@@ -13,11 +13,26 @@ import { getToken } from "../../firbase/utilities";
 import Error from "../../components/Error/Error";
 import User from "../../models/user";
 //this can be statically pre-rendered because it will rearely change
-
+import { getCookie } from "cookies-next";
+import { firebaseAdmin } from "../../firbase/firebaseAdmin";
 export async function getServerSideProps(context) {
   try {
     const { userID } = context.query;
+    const { req, res } = context;
+    const token = getCookie("token", { req, res });
+    // console.log(token)
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
 
+    const { uid } = decodedToken;
+
+    if (uid !== userID) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/restricted-page",
+        },
+      };
+    }
     const user = await User.findOne({ uid: userID }).select(
       "username name email"
     );

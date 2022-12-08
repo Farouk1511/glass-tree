@@ -30,7 +30,7 @@ const PostCard = ({ post, type,  isFavorite, handleFavorite }) => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`/api/${type}/delete/${post._id}`, {
+      await fetch(`/api/${type}/delete/${user?.uid}/${post._id}`, {
         method: "DELETE",
       });
       handleClose();
@@ -40,7 +40,7 @@ const PostCard = ({ post, type,  isFavorite, handleFavorite }) => {
   };
 
   const handleEdit = async () => {
-    router.push(`http://localhost:3000/posting/${type}/edit/${post._id}`);
+    router.push(`http://localhost:3000/posting/${type}/edit/${user?.uid}/${post._id}`);
   };
 
   return (

@@ -12,11 +12,29 @@ import User from "../../models/user";
 import Job from "../../models/job";
 import connectMongo from "../../utils/connectMongo";
 import Service from "../../models/service";
+import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { firebaseAdmin } from "../../firbase/firebaseAdmin";
 
 export async function getServerSideProps(context) {
   try {
     await connectMongo();
     const { userID } = context.query;
+    const {req,res} = context
+
+    const token =  getCookie('token', { req, res });
+    // console.log(token)
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
+
+    const { uid } = decodedToken;
+
+    if (uid !== userID) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/restricted-page",
+        }
+      };
+    }
 
     let results = await User.findOne(
       { uid: userID },
@@ -49,9 +67,9 @@ export async function getServerSideProps(context) {
   } catch (err) {
     console.log(err);
     return {
-      props: {
-        jobs: [],
-        services: [],
+      redirect: {
+        permanent: false,
+        destination: "/login",
       },
     };
   }

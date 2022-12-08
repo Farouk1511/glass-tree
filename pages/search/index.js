@@ -54,7 +54,7 @@ export async function getServerSideProps() {
 const SearchPage = ({ postings }) => {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(postings);
   const [query, setQuery] = useState("");
 
@@ -73,21 +73,21 @@ const SearchPage = ({ postings }) => {
     return filteredPost;
   };
 
-  useEffect(() => {
-    if (!router.isReady) return;
+  // useEffect(() => {
+  //   if (!router.isReady) return;
 
-    const { searchQuery } = router.query;
+  //   const { searchQuery } = router.query;
 
-    if (!searchQuery) {
-      setLoading(false);
-      return;
-    }
-    // console.log(searchQuery);
-    const filteredPost = filter(postings, searchQuery);
+  //   if (!searchQuery) {
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   // console.log(searchQuery);
+  //   const filteredPost = filter(postings, searchQuery);
 
-    setPosts(filteredPost);
-    setLoading(false);
-  }, [router, query, postings]);
+  //   setPosts(filteredPost);
+  //   setLoading(false);
+  // }, [router, query, postings]);
 
   return (
     <Paper elevation={0}>
