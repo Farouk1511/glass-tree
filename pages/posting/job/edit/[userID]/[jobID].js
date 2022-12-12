@@ -90,12 +90,13 @@ const Edit = ({ job }) => {
     try {
       console.log(image);
       const result = await fetch(
-        `http://localhost:3000/api/job/update/${values._id}`,
+        `http://localhost:3000/api/job/update/${user?.uid}/${values._id}`,
         {
           method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization:'Bearer '+getCookie('token')
           },
           body: image
             ? JSON.stringify({ ...values, image })
@@ -103,7 +104,7 @@ const Edit = ({ job }) => {
         }
       );
       await result.json();
-      await router.push(`http://localhost:3000/my-account/${user.uid}`);
+      await router.push(`http://localhost:3000/my-account/${user?.uid}`);
     } catch (err) {
       console.log(err);
     }
