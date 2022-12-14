@@ -1,6 +1,6 @@
 import { getAuth } from "firebase/auth";
-import React, { createContext, useEffect, useState } from "react";
-import {  setCookie, deleteCookie ,getCookie} from 'cookies-next';
+import React, { createContext, useEffect, useState, useContext } from "react";
+import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import clientApp from "../../firbase/clientApp";
 
 // https://colinhacks.com/essays/nextjs-firebase-authentication
@@ -18,17 +18,29 @@ export function AuthProvider({ children }) {
         console.log(`no token found`);
         setUser(null);
         //local storage
-        deleteCookie('token')
-        setCookie('token',null)
+        deleteCookie("token");
+        setCookie("token", null);
       }
 
       console.log(`updating token...`);
       const token = await user?.getIdToken();
-    
-      setUser(user);
+
+      const result = await fetch(`/api/user/read/${user.uid}`, {
+        method: "GET",
+      });
+
+      const userFrmDB = await result.json();
+
+      console.log(userFrmDB);
+
+      setUser({
+        uid: user.uid,
+        name: userFrmDB.user.name,
+        _id: userFrmDB.user._id,
+      });
       //localStorage
-      deleteCookie('token')
-      setCookie('token',token)
+      deleteCookie("token");
+      setCookie("token", token);
       // console.log(getCookie('token'))
     });
   }, []);

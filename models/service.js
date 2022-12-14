@@ -1,4 +1,6 @@
 import { Schema,model, models} from "mongoose";
+import Comment from "./comment";
+
 
 const ServiceSchema = new Schema({
     title:{
@@ -33,7 +35,8 @@ const ServiceSchema = new Schema({
     ratePerHour:{
         type:Number,
         required:"Rate is required"
-    } 
+    },
+    comments:[Comment.schema]
     
 })
 

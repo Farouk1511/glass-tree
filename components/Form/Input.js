@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import React from "react";
 
 
-const Input = ({id,label,placeholder,onChange,type}) => {
+const Input = ({id,label,placeholder,onChange,type,multiline,rows}) => {
 
     return (
         <TextField
@@ -17,9 +17,11 @@ const Input = ({id,label,placeholder,onChange,type}) => {
         required
         id={id}
         label={label}
+        multiline={multiline}
         placeholder={placeholder}
         onChange={onChange}
         type={type}
+        rows={rows}
       />  
     )
 }
