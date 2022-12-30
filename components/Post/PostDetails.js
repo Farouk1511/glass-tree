@@ -29,10 +29,10 @@ const textComments = [
  
 ];
 
-const PostDetails = ({ post, type = "service" }) => {
+const PostDetails = ({ post, type  }) => {
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState("");
-  const [comments,setComments] = useState(textComments)
+  const [content, setContent] = useState("");
+  const [comments,setComments] = useState(post.comments || [])
 
 
   const {user} = useAuth()
@@ -44,19 +44,19 @@ const PostDetails = ({ post, type = "service" }) => {
 
   const handleSubmit = async () => {
   try{
-    setComments([...comments,{text,user:user.name}])
+    setComments([...comments,{content,author:user.name}])
    const result = await fetch(`/api/user/${user._id}/service/comment/${post._id}`,{
       method:'POST',
       headers:{
         Authorization:'Bearer '+getCookie('token'),
         ContetType:'application/json'
       },
-      body:JSON.stringify({content:text,author:user.name})
+      body:JSON.stringify({content,author:user.name})
     })
-    const data = await result.json()
-    console.log(data)
+     await result.json()
+   
     handleClose()
-    setText('')
+    setContent('')
   }catch(err){
     console.log(err)
   }
@@ -242,7 +242,7 @@ const PostDetails = ({ post, type = "service" }) => {
               <Input
                 id="review"
                 label="Review"
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e) => setContent(e.target.value)}
                 multiline
                 rows={4}
               />

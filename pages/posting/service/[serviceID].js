@@ -5,6 +5,7 @@ import Service from "../../../models/service";
 import connectMongo from "../../../utils/connectMongo";
 import User from "../../../models/user";
 import PostDetails from "../../../components/Post/PostDetails";
+import { jsonEval } from "@firebase/util";
 const sections = [
   { title: "Technology", url: "#" },
   { title: "Design", url: "#" },
@@ -18,44 +19,66 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 
-export async function getStaticPaths() {
-  //https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props
-  await connectMongo();
+export async function getServerSideProps(context){
 
-  const services = await Service.find({}).select("_id");
+  //i want to try adding the usersUID in the body when sending post request
+    const { serviceID } = context.params;
 
-  //   console.log(services)
-
-  let ids = JSON.parse(JSON.stringify(services));
-  ids = ids.map((service) => ({ params: { serviceID: service._id } }));
-  //   console.log(ids)
-  return {
-    paths: ids,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps(context) {
-  const { params } = context;
-  await connectMongo();
-  // console.log("Params",params)
-
-  const post = await Service.findById(params.serviceID)
-    .select("_id user title description ratePerHour")
+    const post = await Service.findById(serviceID)
+    .select("_id user title description ratePerHour comments")
     .populate({
       path: "user",
       model: User,
       select: "_id uid name email username averageRating totalRating",
     });
 
-  // console.log(post)
+    // console.log(post)
 
   return {
-    props: {
-      post: JSON.parse(JSON.stringify(post)),
-    },
-  };
+    props:{
+      post:JSON.parse(JSON.stringify(post))
+    }
+  }
 }
+
+// export async function getStaticPaths() {
+//   //https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props
+//   await connectMongo();
+
+//   const services = await Service.find({}).select("_id");
+
+//   //   console.log(services)
+
+//   let ids = JSON.parse(JSON.stringify(services));
+//   ids = ids.map((service) => ({ params: { serviceID: service._id } }));
+//   //   console.log(ids)
+//   return {
+//     paths: ids,
+//     fallback: false,
+//   };
+// }
+
+// export async function getStaticProps(context) {
+//   const { params } = context;
+//   await connectMongo();
+//   // console.log("Params",params)
+
+//   const post = await Service.findById(params.serviceID)
+//     .select("_id user title description ratePerHour")
+//     .populate({
+//       path: "user",
+//       model: User,
+//       select: "_id uid name email username averageRating totalRating",
+//     });
+
+//   // console.log(post)
+
+//   return {
+//     props: {
+//       post: JSON.parse(JSON.stringify(post)),
+//     },
+//   };
+// }
 
 const Post = ({ post }) => {
   return (
@@ -65,7 +88,7 @@ const Post = ({ post }) => {
       {/* Categories */}
       <Categories sections={sections} />
 
-      <PostDetails post={post} />
+      <PostDetails post={post} type={"service"} />
     </>
   );
 };

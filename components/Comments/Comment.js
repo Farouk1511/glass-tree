@@ -1,10 +1,10 @@
 import { Divider, Paper, Typography } from "@mui/material";
 import React from "react";
 
-const Comment = ({ text, user }) => {
+const Comment = ({ content, author }) => {
   return (
     <Paper
-      key={text}
+      key={content}
       elevation={0}
       sx={{ backgroundColor: "#D8DDDE", padding: 2, marginBottom: 1 }}
     >
@@ -13,11 +13,11 @@ const Comment = ({ text, user }) => {
         sx={{ fontFamily: "rockwell", fontWeight: 700 }}
       >
         {" "}
-        {user}
+        {author}
       </Typography>
       <Divider />
       <Typography sx={{ fontFamily: "rockwell", fontWeight: 400 }}>
-        {text}
+        {content}
       </Typography>
     </Paper>
   );
