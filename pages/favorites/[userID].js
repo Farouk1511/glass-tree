@@ -60,8 +60,8 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-        jobs: JSON.parse(JSON.stringify(favoriteJobs)),
-        services: JSON.parse(JSON.stringify(favoriteServices)),
+        jobs: JSON.parse(JSON.stringify(favoriteJobs)||""),
+        services: JSON.parse(JSON.stringify(favoriteServices||"")),
       },
     };
   } catch (err) {
