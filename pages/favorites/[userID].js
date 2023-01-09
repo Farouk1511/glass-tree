@@ -1,30 +1,27 @@
 import { CircularProgress, Paper, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PostCardGrid from "../../components/Post/PostCardGrid";
 import Categories from "../../components/Navigation/Categories";
 import NavBar from "../../components/Navigation/NavBar";
 import Tab from "../../components/Tabs/Tab";
 import Footer from "../../components/Footer/Footer";
-import { getToken } from "../../firbase/utilities";
-import Error from "../../components/Error/Error";
 import User from "../../models/user";
 import Job from "../../models/job";
 import connectMongo from "../../utils/connectMongo";
 import Service from "../../models/service";
-import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { getCookie } from "cookies-next";
 import { firebaseAdmin } from "../../firbase/firebaseAdmin";
 
 export async function getServerSideProps(context) {
   try {
     await connectMongo();
     const { userID } = context.query;
-    const {req,res} = context
+    const { req, res } = context;
 
-    const token =  getCookie('token', { req, res });
+    const token = getCookie("token", { req, res });
     // console.log(token)
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
-
+   
     const { uid } = decodedToken;
 
     if (uid !== userID) {
@@ -32,7 +29,7 @@ export async function getServerSideProps(context) {
         redirect: {
           permanent: false,
           destination: "/restricted-page",
-        }
+        },
       };
     }
 
@@ -59,14 +56,14 @@ export async function getServerSideProps(context) {
       .populate({ path: "user", model: User, select: "-image" });
 
     return {
-      props: {
-        jobs: [],
-        services: [],
-      },
       // props: {
-      //   jobs: JSON.parse(JSON.stringify(favoriteJobs)),
-      //   services: JSON.parse(JSON.stringify(favoriteServices)),
+      //   jobs: [],
+      //   services: [],
       // },
+      props: {
+        jobs: JSON.parse(JSON.stringify(favoriteJobs)),
+        services: JSON.parse(JSON.stringify(favoriteServices)),
+      },
     };
   } catch (err) {
     console.log(err.message);
@@ -87,8 +84,6 @@ const Favorites = ({ jobs, services }) => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState(services);
   const [type, setType] = useState("service");
-
-  
 
   const onTabChange = (tab) => {
     setPost(posts[tab]);
