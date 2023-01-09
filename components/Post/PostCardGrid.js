@@ -85,7 +85,7 @@ const PostCardGrid = ({ postings, type }) => {
   // console.log(postings)
   return (
     <Grid2 container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-      {postings.map((post) => {
+      {postings && postings.map((post) => {
 
         let isFavorite = false;
         if (type === "job" && currentUser) {

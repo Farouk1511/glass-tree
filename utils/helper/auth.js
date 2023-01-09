@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
       console.log(`updating token...`);
       const token = await user?.getIdToken();
 
-      const result = await fetch(`/api/user/read/${user.uid}`, {
+      const result = await fetch(`/api/user/read/${user?.uid}`, {
         method: "GET",
       });
 
@@ -34,9 +34,9 @@ export function AuthProvider({ children }) {
       console.log(userFrmDB);
 
       setUser({
-        uid: user.uid,
-        name: userFrmDB.user.name,
-        _id: userFrmDB.user._id,
+        uid: user?.uid,
+        name: userFrmDB.user?.name,
+        _id: userFrmDB.user?._id,
       });
       //localStorage
       deleteCookie("token");

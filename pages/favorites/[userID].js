@@ -60,9 +60,13 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-        jobs: JSON.parse(JSON.stringify(favoriteJobs || [])),
-        services: JSON.parse(JSON.stringify(favoriteServices|| [])),
+        jobs: [],
+        services: [],
       },
+      // props: {
+      //   jobs: JSON.parse(JSON.stringify(favoriteJobs)),
+      //   services: JSON.parse(JSON.stringify(favoriteServices)),
+      // },
     };
   } catch (err) {
     console.log(err.message);
@@ -83,6 +87,8 @@ const Favorites = ({ jobs, services }) => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState(services);
   const [type, setType] = useState("service");
+
+  
 
   const onTabChange = (tab) => {
     setPost(posts[tab]);
