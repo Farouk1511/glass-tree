@@ -53,7 +53,7 @@ const Create = () => {
     try {
       // console.log(values)
       const result = await fetch(
-        `http://localhost:3000/api/job/by/${user.uid}`,
+        `/api/job/by/${user.uid}`,
         {
           method: "POST",
           headers: {
@@ -63,7 +63,7 @@ const Create = () => {
           body: JSON.stringify({ ...values, image }),
         }
       );
-      await router.push(`http://localhost:3000/my-account/${user.uid}`);
+      await router.push(`/my-account/${user.uid}`);
       console.log(result);
     } catch (err) {
       console.log(err);

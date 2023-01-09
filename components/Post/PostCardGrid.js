@@ -16,7 +16,7 @@ const PostCardGrid = ({ postings, type }) => {
       }
       const { uid } = currentUser;
       await fetch(
-        `http://localhost:3000/api/user/${uid}/${type}/${
+        `/api/user/${uid}/${type}/${
           favorite ? "favorite" : "unfavorite"
         }/${_id}`,
         {
@@ -59,7 +59,7 @@ const PostCardGrid = ({ postings, type }) => {
 
         if (user) {
           const result = await fetch(
-            `http://localhost:3000/api/user/read/${user.uid}`,
+            `/api/user/read/${user.uid}`,
             {
               method: "GET",
               headers: {

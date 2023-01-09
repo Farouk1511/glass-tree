@@ -48,7 +48,7 @@ const PostCard = ({ post, type, isFavorite, handleFavorite }) => {
 
   const handleEdit = async () => {
     router.push(
-      `http://localhost:3000/posting/${type}/edit/${user?.uid}/${post._id}`
+      `/posting/${type}/edit/${user?.uid}/${post._id}`
     );
   };
 

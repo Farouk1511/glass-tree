@@ -78,7 +78,7 @@ const Profile = ({ user, err }) => {
       let token = getToken();
 
       const result = await fetch(
-        `http://localhost:3000/api/user/update/${userID}`,
+        `/api/user/update/${userID}`,
         {
           method: "POST",
           headers: {
@@ -92,7 +92,7 @@ const Profile = ({ user, err }) => {
 
       await result.json();
 
-      router.push(`http://localhost:3000/my-account/${userID}`);
+      router.push(`/my-account/${userID}`);
     } catch (err) {
       setError(err.message);
       console.log(err);

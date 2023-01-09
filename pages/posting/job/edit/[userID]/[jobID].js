@@ -90,7 +90,7 @@ const Edit = ({ job }) => {
     try {
       console.log(image);
       const result = await fetch(
-        `http://localhost:3000/api/job/update/${user?.uid}/${values._id}`,
+        `/api/job/update/${user?.uid}/${values._id}`,
         {
           method: "POST",
           headers: {
@@ -104,7 +104,7 @@ const Edit = ({ job }) => {
         }
       );
       await result.json();
-      await router.push(`http://localhost:3000/my-account/${user?.uid}`);
+      await router.push(`/my-account/${user?.uid}`);
     } catch (err) {
       console.log(err);
     }

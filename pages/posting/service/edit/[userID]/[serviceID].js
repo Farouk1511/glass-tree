@@ -89,7 +89,7 @@ const Edit = ({ post }) => {
   const handleSubmit = async () => {
     try {
       const result = await fetch(
-        `http://localhost:3000/api/service/update/${user?.uid}/${values._id}`,
+        `/api/service/update/${user?.uid}/${values._id}`,
         {
           method: "POST",
           headers: {
@@ -103,7 +103,7 @@ const Edit = ({ post }) => {
         }
       );
       await result.json();
-      await router.push(`http://localhost:3000/my-account/${user.uid}`);
+      await router.push(`/my-account/${user.uid}`);
     } catch (err) {
       console.log(err);
     }

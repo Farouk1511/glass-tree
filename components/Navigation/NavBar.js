@@ -75,7 +75,7 @@ const NavBar = ({ handleSearch }) => {
           </Avatar> */}
           {/* <IconButton
             onClick={() =>
-              router.push(`http://localhost:3000/chat`)
+              router.push(`/chat`)
             }
           >
             <Badge badgeContent={40} color="secondary">
@@ -88,7 +88,7 @@ const NavBar = ({ handleSearch }) => {
          {user && <IconButton
             onClick={() =>{
              
-              router.push(`http://localhost:3000/favorites/${user.uid}`)
+              router.push(`/favorites/${user.uid}`)
             }
             }
           >

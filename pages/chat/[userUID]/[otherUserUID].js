@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
   const { params } = context;
   const { userUID, otherUserUID } = params;
 
-  const res = await fetch(`http://localhost:3000/api/conversation/${userUID}`);
+  const res = await fetch(`/api/conversation/${userUID}`);
   const data = await res.json();
 
   return { props: { data, oUserUID: otherUserUID, uUID: userUID } };

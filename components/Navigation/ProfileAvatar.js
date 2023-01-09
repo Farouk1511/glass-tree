@@ -32,7 +32,7 @@ const ProfileAvatar = ({ name, userID }) => {
     } catch (err) {
       console.log(err);
     } finally {
-      router.push("http://localhost:3000/");
+      router.push("/");
     }
   };
 
@@ -101,7 +101,7 @@ const ProfileAvatar = ({ name, userID }) => {
             },
           }}
           onClick={() =>
-            router.push("http://localhost:3000/posting/service/create")
+            router.push("/posting/service/create")
           }
         >
           Create Service
@@ -116,20 +116,20 @@ const ProfileAvatar = ({ name, userID }) => {
             },
           }}
           onClick={() =>
-            router.push("http://localhost:3000/posting/job/create")
+            router.push("/posting/job/create")
           }
         >
           Post a Job
         </MenuItem>
         <MenuItem onClick={() =>
-            router.push(`http://localhost:3000/profile/${userID}`)
+            router.push(`/profile/${userID}`)
           }>
           <ContentPasteOutlinedIcon sx={{marginRight:1}} /> Profile
         </MenuItem>
 
         <MenuItem
           onClick={() =>
-            router.push(`http://localhost:3000/my-account/${userID}`)
+            router.push(`/my-account/${userID}`)
           }
         >
           <ManageAccountsOutlinedIcon sx={{marginRight:1}}/> My account

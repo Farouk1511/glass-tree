@@ -105,7 +105,7 @@ const PostDetails = ({ post, type  }) => {
             <CardMedia
               component={"img"}
               height="500"
-              image={`http://localhost:3000/api/${type}/image/${post._id}`}
+              image={`/api/${type}/image/${post._id}`}
             />
 
             <CardContent>

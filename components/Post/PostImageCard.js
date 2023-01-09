@@ -12,7 +12,7 @@ const PostImageCard = ({id,type,altTitle}) =>{
         <CardMedia>
           <Image
             alt={`${altTitle}`}
-            src={`http://localhost:3000/api/${type}/image/${id}`}
+            src={`/api/${type}/image/${id}`}
             layout="fill"
             objectFit="cover" // or objectFit="cover"
           />
