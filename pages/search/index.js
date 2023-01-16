@@ -4,6 +4,8 @@ import {
   CircularProgress,
   Container,
   Box,
+  Typography,
+  Button,
 } from "@mui/material";
 
 import Service from "../../models/service";
@@ -118,10 +120,29 @@ const SearchPage = ({ postings }) => {
         >
           <SearchInfo query={query} posts={posts} />
 
-          <PostCardGrid postings={posts} type={"service"} />
+          {posts.length < 1 ? (
+            <Paper
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignItems:"center"
+              }}
+              elevation={0}
+            >
+              <Typography>No Services Posted</Typography>
+              <Button href="/posting/service/create" variant="contained" sx={{
+                marginTop:2,
+                marginBottom:2,
+                backgroundColor:'secondary.main'
+              }} >Post a service</Button>
+            </Paper>
+          ) : (
+            <PostCardGrid postings={posts} type={"service"} />
+          )}
         </Box>
       )}
-      <Footer/>
+      <Footer />
     </Paper>
     // <>
     //   <Header handleSearch={handleSearch} sections={sections} />
