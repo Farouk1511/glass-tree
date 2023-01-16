@@ -2,10 +2,11 @@ import { TextField } from "@mui/material";
 import React from "react";
 
 
-const Input = ({id,label,placeholder,onChange,type,multiline,rows}) => {
+const Input = ({id,label,placeholder,onChange,type,multiline,rows,error}) => {
 
     return (
         <TextField
+        error={error}
         sx={{
           width: "60%",
           marginBottom: 5,
@@ -22,6 +23,8 @@ const Input = ({id,label,placeholder,onChange,type,multiline,rows}) => {
         onChange={onChange}
         type={type}
         rows={rows}
+        inputProps={{ "data-testid": id }}
+        helperText={error?`wrong/incorrect ${id}`:""}
       />  
     )
 }
